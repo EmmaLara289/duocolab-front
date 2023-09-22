@@ -1,0 +1,113 @@
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Registrar Equipo</h5>
+          </div>
+          <div class="card-body">
+            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
+            <div class="modal" *ngIf="modalRegister">
+              <form class="contact-form" method="POST" #registrarEquipoForm="ngForm" (ngSubmit)="registrarEquipo(registrarEquipoForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                  }
+                </style>
+                <div class="form-group">
+                  <label>Nombre</label>
+                  <input class="form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                  <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
+                </div>
+                <div class="form-group">
+                  <label>Key Colab</label>
+                  <input class="form-control" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
+                  <small *ngIf="!key_colab.valid && key_colab.touched" class="invalid-feedback d-block">La key colab no es válida</small>
+                </div>
+                <div class="form-group">
+                  <label>Key Proyecto</label>
+                  <input class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipo.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
+                  <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key proyecto no es válida</small>
+                </div>
+                <div class="card-footer">
+                  <button [disabled]="registrarEquipoForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Registrar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal" *ngIf="modalUpdate">
+              <form class="contact-form" method="POST" (ngSubmit)="updateEquipo(updateEquipoForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                  }
+                </style>
+                <div class="row">
+                  <input name="id_equipo" [(ngModel)]="equipo.id_equipo" [ngModelOptions]="{standalone: true}" hidden="">
+                  <label>Nombre</label>
+                  <input class="form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                  <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
+                </div>
+                <div class="form-group">
+                  <label>Key Colab</label>
+                  <input class="form-control" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
+                  <small *ngIf="!key_colab.valid && key_colab.touched" class="invalid-feedback d-block">La key colab no es válida</small>
+                </div>
+                <div class="form-group">
+                  <label>Key Proyecto</label>
+                  <input class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipo.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
+                  <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key proyecto no es válida</small>
+                </div>
+                <div class="card-footer">
+                  <button [disabled]="updateEquipoForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Editar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="card-header"></div>
+          <div class="card-body">
+            <form (ngSubmit)="buscarEquipos()">
+              <div class="row align-items-center">
+                <div class="col-md-6">
+                  <div class="input-group">
+                    <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Equipo">
+                  </div>
+                </div>
+                <div class="col-md-1 mt-md-0 mt-0">
+                  <button style="position: absolute; top: -30px" type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+              </div>
+            </form>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table tablesorter">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of myList">
+                      <td>{{ item.id_equipo }}</td>
+                      <td>{{ item.nombre }}</td>
+                      <td>
+                        <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_equipo)">Editar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

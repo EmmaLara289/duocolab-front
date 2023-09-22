@@ -1,0 +1,197 @@
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Registrar Tarea</h5>
+          </div>
+          <div class="card-body">
+            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
+            <div class="modal" *ngIf="modalRegister">
+              <form class="contact-form" method="POST" #registrarTareaForm="ngForm" (ngSubmit)="registrarTarea(registrarTareaForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                  }
+                </style>
+                <div class="row">
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Nombre</label>
+                      <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">
+                        El nombre no es válido
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Descripción</label>
+                      <input class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripción" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.descripcion" required minlength="10">
+                      <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block">
+                        La descripción no es válida
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Epica</label>
+                      <input class="form-control" type="text" name="key_epica" placeholder="Ingrese la key épica" #key_epica="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_epica" required minlength="1">
+                      <small *ngIf="!key_epica.valid && key_epica.touched" class="invalid-feedback d-block">
+                        La key épica no es válida
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Sprint</label>
+                      <input class="form-control" type="text" name="key_sprint" placeholder="Ingrese la key sprint" #key_sprint="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_sprint" required minlength="1">
+                      <small *ngIf="!key_sprint.valid && key_sprint.touched" class="invalid-feedback d-block">
+                        La key sprint no es válida
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Proyecto</label>
+                      <input class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_proyecto" required minlength="1">
+                      <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">
+                        La key proyecto no es válida
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Colaborador</label>
+                      <input class="form-control" type="text" name="key_colaborador" placeholder="Ingrese la key colaborador" #key_colaborador="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_colaborador" required minlength="1">
+                      <small *ngIf="!key_colaborador.valid && key_colaborador.touched" class="invalid-feedback d-block">
+                        La key colaborador no es válida
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button [disabled]="registrarTareaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Registrar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal" *ngIf="modalUpdate">
+              <form class="contact-form" method="POST" (ngSubmit)="updateTarea(updateTareaForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                  }
+                </style>
+                <div class="row">
+                  <input name="id_tarea" [(ngModel)]="tarea.id_tarea"  [ngModelOptions]="{standalone: true}" hidden="">
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Nombre</label>
+                      <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">
+                        El nombre no es válido
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Descripción</label>
+                      <input class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripción" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.descripcion" required minlength="10">
+                      <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block">
+                        La descripción no es válida
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Epica</label>
+                      <input class="form-control" type="text" name="key_epica" placeholder="Ingrese la key épica" #key_epica="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_epica" required minlength="1">
+                      <small *ngIf="!key_epica.valid && key_epica.touched" class="invalid-feedback d-block">
+                        La key épica no es válida
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Sprint</label>
+                      <input class="form-control" type="text" name="key_sprint" placeholder="Ingrese la key sprint" #key_sprint="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_sprint" required minlength="1">
+                      <small *ngIf="!key_sprint.valid && key_sprint.touched" class="invalid-feedback d-block">
+                        La key sprint no es válida
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Proyecto</label>
+                      <input class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_proyecto" required minlength="1">
+                      <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">
+                        La key proyecto no es válida
+                      </small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-md-1">
+                    <div class="form-group">
+                      <label for="form-control">Key Colaborador</label>
+                      <input class="form-control" type="text" name="key_colaborador" placeholder="Ingrese la key colaborador" #key_colaborador="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_colaborador" required minlength="1">
+                      <small *ngIf="!key_colaborador.valid && key_colaborador.touched" class="invalid-feedback d-block">
+                        La key colaborador no es válida
+                      </small>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button [disabled]="updateTareaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Editar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+  
+          <div class="card-header">
+            <h4 class="card-title"></h4>
+          </div>
+          <form (ngSubmit)="buscarTareas()">
+            <div class="row">
+                  <div class="col-md-3 px-md-1">
+                    <div class="form-group">
+                      <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Tareas">
+                    </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+          </div>
+        </div>
+          </form>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table tablesorter" id="">
+              <thead class="text-primary">
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of myList">
+                  <td>{{ item.id_tarea }}</td>
+                  <td>{{ item.nombre }}</td>
+                  <td> <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_tarea)">Editar</button> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

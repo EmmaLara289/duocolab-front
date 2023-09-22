@@ -1,0 +1,150 @@
+<div class="content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="title">Registro de Proyectos</h5>
+          </div>
+          <div class="card-body">
+            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
+            <div class="modal" *ngIf="modalRegister">
+              <form class="contact-form" method="POST" #registrarProyectoForm="ngForm" (ngSubmit)="registrarProyecto(registrarProyectoForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                  }
+                </style>
+                <div class="row">
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Nombre</label>
+                      <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Key Equipo</label>
+                      <input class="form-control" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
+                      <small *ngIf="!key_equipo.valid && key_equipo.touched" class="invalid-feedback d-block">La key equipo no es válida</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Imagen</label>
+                      <input class="form-control" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                      <small *ngIf="!imagen.valid && imagen.touched" class="invalid-feedback d-block">La imagen no es válida</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Detalles</label>
+                      <input class="form-control" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                      <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los detalles no son válidos</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button [disabled]="registrarProyectoForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Registrar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal" *ngIf="modalUpdate">
+              <form class="contact-form" method="POST" (ngSubmit)="updateProyecto(updateProyectoForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                  }
+                </style>
+                <div class="row">
+                  <input name="id_proyecto" [(ngModel)]="proyecto.id_proyecto" [ngModelOptions]="{standalone: true}" hidden="">
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Nombre</label>
+                      <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Key Equipo</label>
+                      <input class="form-control" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
+                      <small *ngIf="!key_equipo.valid && key_equipo.touched" class="invalid-feedback d-block">La key equipo no es válida</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Imagen</label>
+                      <input class="form-control" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                      <small *ngIf="!imagen.valid && imagen.touched" class="invalid-feedback d-block">La imagen no es válida</small>
+                    </div>
+                  </div>
+                  <div class="col-md-6 px-md-1">
+                    <div class="form-group">
+                      <label>Detalles</label>
+                      <input class="form-control" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                      <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los detalles no son válidos</small>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <button [disabled]="updateProyectoForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Editar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="card-header"></div>
+          <div class="card-body">
+          <form (ngSubmit)="buscarProyectos()">
+            <div class="row align-items-center">
+              <div class="col-md-6">
+                <div class="input-group">
+                  <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Proyecto">
+                </div>
+              </div>
+                <div class="col-md-1 mt-md-0 mt-0">
+                  <button style="position: absolute; top: -30px" type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+              </div>
+          </form>
+          <div class="card-header">
+            <h4 class="card-title"></h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of myList">
+                    <td>{{ item.id_proyecto }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td>
+                      <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_proyecto)">Editar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

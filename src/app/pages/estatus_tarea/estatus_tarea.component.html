@@ -1,0 +1,100 @@
+<div class=" content">
+    <div class=" row">
+      <div class=" col-md-12">
+        <div class=" card">
+          <div class=" card-header">
+            <h5 class=" title">Registrar Estatus de Tareas</h5>
+          </div>
+          <div class=" card-body">
+            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
+            <div class="modal" *ngIf="modalRegister">
+              <form class="contact-form" method="POST" #registrarEstatusTareaForm="ngForm" (ngSubmit)="registrarEstatusTarea(registrarEstatusTareaForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                    /* ajusta el ancho según tus necesidades */
+                  }
+                </style>
+                <div class=" row">
+                  <div class=" col-md-6 px-md-1">
+                    <div class=" form-group">
+                      <label> Nombre </label>
+                      <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="estatustarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                    </div>
+                  </div>
+                </div>
+                <div class=" card-footer">
+                  <button [disabled]="registrarEstatusTareaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Registrar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+            <div class="modal" *ngIf="modalUpdate">
+              <form class="contact-form" method="POST" (ngSubmit)="updateEstatusTarea(updateEstatusTareaForm)">
+                <style>
+                  form {
+                    margin: auto;
+                    width: 95%;
+                    /* ajusta el ancho según tus necesidades */
+                  }
+                </style>
+                <div class=" row">
+                  <input name="id_estatus" [(ngModel)]="estatustarea.id_estatus" [ngModelOptions]="{standalone: true}" hidden="">
+                  <div class=" col-md-6 px-md-1">
+                    <div class=" form-group">
+                      <label> Nombre </label>
+                      <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="estatustarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                    </div>
+                  </div>
+                </div>
+                <div class=" card-footer">
+                  <button [disabled]="updateEstatusTareaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                    <span>Editar</span>
+                  </button>
+                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                </div>
+              </form>
+            </div>
+            <div class=" card-header"></div>
+            <form (ngSubmit)="buscarEstatusTareas()">
+              <div class="row">
+                <div class="col-md-3 px-md-1">
+                  <div class="form-group">
+                    <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Tarea">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+              </div>
+            </form>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table tablesorter">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Nombre</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of myList">
+                      <td>{{ item.id_estatus }}</td>
+                      <td>{{ item.nombre }}</td>
+                      <td>
+                        <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_estatus)">Editar</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
