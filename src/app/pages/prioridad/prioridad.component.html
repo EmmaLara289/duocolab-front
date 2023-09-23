@@ -3,10 +3,9 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="title">Registro de Prioridad</h5>
+            <h5 class="title" style="color: black;">Registro de Prioridad</h5>
           </div>
           <div class="card-body">
-            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
             <div class="modal" *ngIf="modalRegister">
               <form class="contact-form" method="POST" #registrarPrioridadForm="ngForm" (ngSubmit)="registrarPrioridad(registrarPrioridadForm)">
                 <style>
@@ -59,32 +58,21 @@
                 </div>
               </form>
             </div>
-              <div class=" card-header"></div>
               <form (ngSubmit)="buscarPrioridades()">
                 <div class="row">
-                  <div class="col-md-3 px-md-1">
-                    <div class="form-group">
-                      <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Prioridad">
+                  <div class="row align-items-center">
+                    <div class="px-md-2">
+                      <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Prioridad">
                     </div>
-                    <button type="submit" class="btn btn-primary">Buscar</button>
+                    <div class="px-md-2">
+                      <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                    </div>
+                    <div class="px-md-2">
+                      <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
+                    </div>
                   </div>
                 </div>
               </form>
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Aquí puedes mostrar los resultados de la búsqueda en una tabla -->
-                  <tr *ngFor="let prioridad of prioridades">
-                    <td>{{ prioridad.id_prioridad }}</td>
-                    <td>{{ prioridad.nombre }}</td>
-                  </tr>
-                </tbody>
-              </table>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table tablesorter">

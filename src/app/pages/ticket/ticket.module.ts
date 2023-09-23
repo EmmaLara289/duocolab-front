@@ -4,12 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { TicketComponent } from './ticket.component';
 import { routing } from './ticket.routing';
+import { NbButtonModule } from '@nebular/theme';
+import { NbTreeGridModule } from '@nebular/theme';
+import { NbInputModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    routing
+    routing,
+    NbButtonModule,
+    NbTreeGridModule,
+    NbInputModule
   ],
   declarations: [
     TicketComponent

@@ -3,10 +3,9 @@
       <div class=" col-md-12">
         <div class=" card">
           <div class=" card-header">
-            <h5 class=" title">Registrar Estatus de Tareas</h5>
+            <h5 class=" title" style="color: black;">Registrar Estatus de Tareas</h5>
           </div>
           <div class=" card-body">
-            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
             <div class="modal" *ngIf="modalRegister">
               <form class="contact-form" method="POST" #registrarEstatusTareaForm="ngForm" (ngSubmit)="registrarEstatusTarea(registrarEstatusTareaForm)">
                 <style>
@@ -60,16 +59,20 @@
                 </div>
               </form>
             </div>
-            <div class=" card-header"></div>
             <form (ngSubmit)="buscarEstatusTareas()">
               <div class="row">
-                <div class="col-md-3 px-md-1">
-                  <div class="form-group">
-                    <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Tarea">
+                  <div class="row align-items-center">
+                    <div class="px-md-2">
+                        <input nbInput style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Estatus Tarea">
+                    </div>
+                    <div class="px-md-2">
+                      <button nbButton status="primary" type="submit"  size="giant">Buscar</button>
+                    </div>
+                    <div class="px-md-2">
+                      <button nbButton status="danger" type="button"  size="giant" (click)="openModal()">Registrar</button>
+                    </div>
+                    </div>
                   </div>
-                  <button type="submit" class="btn btn-primary">Buscar</button>
-                </div>
-              </div>
             </form>
             <div class="card-body">
               <div class="table-responsive">
