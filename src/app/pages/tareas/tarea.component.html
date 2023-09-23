@@ -151,7 +151,7 @@
                   <button nbButton [disabled]="updateTareaForm.invalid" type="submit" status="danger">
                     <span>Editar</span>
                   </button>
-                  <button nbButtontype="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                  <button nbButton type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
                 </div>
               </form>
             </div>
@@ -162,37 +162,49 @@
           </div>
           <form (ngSubmit)="buscarTareas()">
             <div class="row">
-                  <div class="col-md-2">
-                      <div class="form-group">
-                        <input class="px-md-3" nbInput status="basic" nbInput  class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Tareas">
-                      </div>
-                  </div>
-                  <div class="col-md-2">
-                    <button nbButton status="primary" type="submit" class="btn btn-primary">Buscar</button>
-                  </div>
-                  <div>
-                     <button nbButton type="button" status="danger" (click)="openModal()">Registrar</button> 
-                  </div>
+              <div class="px-md-2">
+                <div class="form-group">
+                  <input fullWidth class="form-control" nbInput status="basic" nbInput type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Tareas">
+                </div>
+              </div>
+              <div class="px-md-2">
+                <button nbButton status="primary" type="submit" class="btn btn-primary">Buscar</button>
+              </div>
+              <div class="px-md-2">
+                <button nbButton type="button" status="danger" (click)="openModal()">Registrar</button> 
+              </div>
             </div>
+            
           </form>
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table tablesorter" id="">
-              <thead class="text-primary">
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Acciones</th>
-                </tr>
+            <table [nbTreeGrid]="data" equalColumnsWidth>
+              <!-- Encabezados de la tabla -->
+              <thead>
+                <tr nbTreeGridHeaderRow *nbTreeGridHeaderRowDef="columns"></tr>
               </thead>
               <tbody>
-                <tr *ngFor="let item of myList">
-                  <td>{{ item.id_tarea }}</td>
-                  <td>{{ item.nombre }}</td>
-                  <td> <button nbButton type="button" status="danger" (click)="openModalUpdate(item.id_tarea)">Editar</button> </td>
-                </tr>
+                <!-- Filas de la tabla -->
+                <tr nbTreeGridRow *nbTreeGridRowDef="let row; columns: columns"></tr>
+            
+                <!-- Definición de las columnas -->
+                <ng-container *ngFor="let column of columns; let i = index" [nbTreeGridColumnDef]="column">
+                  <td nbTreeGridCell *nbTreeGridCellDef="let row">
+            
+                    <!-- Agregar el botón de expansión si es una carpeta -->
+                    <nb-tree-grid-row-toggle [expanded]="row.expanded" *ngIf="column === 'name' && row.data.kind === 'dir'">
+                    </nb-tree-grid-row-toggle>
+            
+                    {{ row.data[column] }}
+            
+                    <!-- Agregar el botón de edición en la columna de acciones -->
+                    <button nbButton type="button" status="danger" *ngIf="column === 'actions'" (click)="openModalUpdate(row.data.id)">Editar</button>
+                    
+                  </td>
+                </ng-container>
               </tbody>
             </table>
+            
           </div>
         </div>
       </div>

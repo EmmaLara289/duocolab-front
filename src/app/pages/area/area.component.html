@@ -6,7 +6,7 @@
             <h5 class=" title">Registrar Area</h5>
           </div>
           <div class=" card-body">
-            <button type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
+            <button nbButton status="danger" type="button" class="btn btn-fill btn-danger" (click)="openModal()">Registrar</button>
             <div class="modal" *ngIf="modalRegister">
               <form class="contact-form" method="POST" #registrarAreaForm="ngForm" (ngSubmit)="registrarArea(registrarAreaForm)">
                 <style>
@@ -25,10 +25,10 @@
                   </div>
                 </div>
                 <div class=" card-footer">
-                  <button [disabled]="registrarAreaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                  <button nbButton status="danger" [disabled]="registrarAreaForm.invalid" type="submit" class="btn btn-fill btn-danger">
                     <span>Registrar</span>
                   </button>
-                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                  <button nbButton type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
                 </div>
               </form>
             </div>
@@ -51,21 +51,20 @@
                   </div>
                 </div>
                 <div class=" card-footer">
-                  <button [disabled]="updateAreaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                  <button nbButton [disabled]="updateAreaForm.invalid" type="submit" class="btn btn-fill btn-danger">
                     <span>Editar</span>
                   </button>
-                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                  <button nbButton type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
                 </div>
               </form>
             </div>
-            <div class=" card-header"></div>
             <form (ngSubmit)="buscarAreas()">
               <div class="row">
                 <div class="col-md-3 px-md-1">
                   <div class="form-group">
                     <input class="form-control" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Area">
                   </div>
-                  <button type="submit" class="btn btn-primary">Buscar</button>
+                  <button nbButton status="primary" type="submit" class="btn btn-primary">Buscar</button>
                 </div>
               </div>
             </form>
@@ -84,7 +83,7 @@
                       <td>{{ item.id_area }}</td>
                       <td>{{ item.nombre }}</td>
                       <td>
-                        <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_area)">Editar</button>
+                        <button nbButton status="danger" type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_area)">Editar</button>
                       </td>
                     </tr>
                   </tbody>
