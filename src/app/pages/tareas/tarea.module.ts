@@ -4,12 +4,18 @@ import { FormsModule } from '@angular/forms';
 
 import { TareaComponent } from './tarea.component';
 import { routing } from './tarea.routing';
+import { NbInputModule } from '@nebular/theme';
+import { NbButtonModule } from '@nebular/theme';
+import { NbTreeGridModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    routing
+    routing,
+    NbInputModule,
+    NbButtonModule,
+    NbTreeGridModule
   ],
   declarations: [
     TareaComponent

@@ -33,7 +33,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Proyectos',
     link: '/pages/proyecto'
-  }
+  },
+  {
+    title: 'Ticket',
+    link: '/pages/ticket'
+  },
   /*{
     title: 'E-commerce',
     icon: 'shopping-cart-outline',

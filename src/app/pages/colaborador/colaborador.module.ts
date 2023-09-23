@@ -4,12 +4,16 @@ import { FormsModule } from '@angular/forms';
 
 import { ColaboradorComponent } from './colaborador.component';
 import { routing } from './colaborador.routing';
+import { NbInputModule } from '@nebular/theme';
+import { NbButtonModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    routing
+    routing,
+    NbInputModule,
+    NbButtonModule
   ],
   declarations: [
     ColaboradorComponent

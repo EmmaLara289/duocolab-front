@@ -4,12 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { EquipoComponent } from './equipo.component';
 import { routing } from './equipo.routing';
+import { NbInputModule } from '@nebular/theme';
+import { NbButtonModule } from '@nebular/theme';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    routing
+    routing,
+    NbInputModule,
+    NbButtonModule
   ],
   declarations: [
     EquipoComponent

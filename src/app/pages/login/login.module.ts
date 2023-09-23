@@ -2,11 +2,11 @@ import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { AreaComponent } from './area.component';
-import { routing } from './area.routing';
+import { LoginComponent } from './login.component';
+import { routing } from './login.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
- 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -16,7 +16,8 @@ import { NbButtonModule } from '@nebular/theme';
     NbButtonModule
   ],
   declarations: [
-    AreaComponent
+    LoginComponent,
+    
   ]
 })
-export class AreaModule {}
+export class LoginModule {}

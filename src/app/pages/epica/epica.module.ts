@@ -4,12 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { EpicaComponent } from './epica.component';
 import { routing } from './epica.routing';
+import { NbInputModule } from '@nebular/theme';
+import { NbButtonModule } from '@nebular/theme';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    routing
+    routing,
+    NbInputModule,
+    NbButtonModule
   ],
   declarations: [
     EpicaComponent
