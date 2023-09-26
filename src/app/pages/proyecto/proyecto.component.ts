@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-proyecto',
   templateUrl: './proyecto.component.html',
-  //styleUrls: ["./proyecto.component.css"]
+  styleUrls: ["./proyecto.component.scss"]
 })
 export class ProyectoComponent implements OnInit {
   @ViewChild('registrarProyectoForm') registrarProyectoForm: NgForm;

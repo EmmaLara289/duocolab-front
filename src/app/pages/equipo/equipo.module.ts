@@ -6,7 +6,7 @@ import { EquipoComponent } from './equipo.component';
 import { routing } from './equipo.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
-
+import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -14,7 +14,8 @@ import { NbButtonModule } from '@nebular/theme';
     FormsModule,
     routing,
     NbInputModule,
-    NbButtonModule
+    NbButtonModule,
+    NbCardModule
   ],
   declarations: [
     EquipoComponent

@@ -7,6 +7,7 @@ import { routing } from './tarea.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
 import { NbTreeGridModule } from '@nebular/theme';
+import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NbTreeGridModule } from '@nebular/theme';
     routing,
     NbInputModule,
     NbButtonModule,
-    NbTreeGridModule
+    NbTreeGridModule,
+    NbCardModule
   ],
   declarations: [
     TareaComponent

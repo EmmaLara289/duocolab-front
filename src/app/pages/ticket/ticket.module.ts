@@ -7,6 +7,7 @@ import { routing } from './ticket.routing';
 import { NbButtonModule } from '@nebular/theme';
 import { NbTreeGridModule } from '@nebular/theme';
 import { NbInputModule } from '@nebular/theme';
+import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NbInputModule } from '@nebular/theme';
     routing,
     NbButtonModule,
     NbTreeGridModule,
-    NbInputModule
+    NbInputModule,
+    NbCardModule
   ],
   declarations: [
     TicketComponent

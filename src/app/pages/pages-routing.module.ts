@@ -10,7 +10,7 @@ const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
-    {
+    /*{
       path: 'dashboard',
       component: ECommerceComponent,
     },
@@ -72,7 +72,7 @@ const routes: Routes = [{
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',
-    },
+    },*/
     {
       path: 'tarea',
       loadChildren: () => import('./tareas/tarea.module')

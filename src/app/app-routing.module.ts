@@ -22,18 +22,13 @@ export const routes: Routes = [
     path: 'auth',
     component: NbAuthComponent,
     children: [
-      {
+      /*{
         path: '',
         component: NbLoginComponent,
       },
       {
         path: 'loginFalse',
         component: NbLoginComponent,
-      },
-      {
-        path: 'login',
-        loadChildren: () => import('./pages/login/login.module')
-          .then(m => m.LoginModule),
       },
       {
         path: 'register',
@@ -50,6 +45,11 @@ export const routes: Routes = [
       {
         path: 'reset-password',
         component: NbResetPasswordComponent,
+      },*/
+      {
+        path: 'login',
+        loadChildren: () => import('./pages/login/login.module')
+          .then(m => m.LoginModule),
       },
       
     ],

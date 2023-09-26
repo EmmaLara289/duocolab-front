@@ -6,6 +6,9 @@ import { AreaComponent } from './area.component';
 import { routing } from './area.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
+import { NbCardModule } from '@nebular/theme';
+import { NbAlertModule } from '@nebular/theme';
+
  
 @NgModule({
   imports: [
@@ -13,7 +16,9 @@ import { NbButtonModule } from '@nebular/theme';
     FormsModule,
     routing,
     NbInputModule,
-    NbButtonModule
+    NbButtonModule,
+    NbCardModule,
+    NbAlertModule
   ],
   declarations: [
     AreaComponent

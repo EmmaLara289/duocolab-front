@@ -1,60 +1,51 @@
-<div class=" content">
-  <div class=" row">
-    <div class=" col-md-8">
-      <div class=" card">
-        <div class=" card-header">
-          <h5 class=" title" style="color: black;">Registrar Ticket</h5>
-        </div>
-        <div class=" card-body">
-          <form class="contact-form" method="POST" #registrarTicketForm="ngForm" (ngSubmit)="registrarTicket(registrarTicketForm)">
-            <style>
-              form {
-                margin: auto;
-                width: 95%;
-                /* ajusta el ancho según tus necesidades */
-              }
-            </style>
-            <div class=" row">
-              <div class="px-md-2">
-                <div class=" form-group">
-                  <label> Key Proyecto </label>
-                  <input nbInput status="basic" size="giant" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="ticket.key_proyecto" required minlength="1" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block"> La key proyecto no es válida </small>
-                </div>
-              </div>
-              <div class="px-md-2">
-                <div class=" form-group">
-                  <label> Key Usuario </label>
-                  <input class=" form-control" type="text" name="key_usuario" placeholder="Ingrese la key usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!key_usuario.valid && key_usuario.touched" class="invalid-feedback d-block"> La Key Usuario no es válido </small>
-                </div>
-              </div>
-              <div class="px-md-2">
-                <div class=" form-group">
-                  <label> Titulo </label>
-                  <input class=" form-control" type="text" name="titulo" placeholder="Ingrese el Titulo" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!titulo.valid && titulo.touched" class="invalid-feedback d-block"> El Titulo no es válido </small>
-                </div>
-              </div>
-            </div>
-            <div class=" row">
-              <div class="px-md-2">
-                <div class=" form-group">
-                  <label> Detalles </label>
-                  <input class=" form-control" type="text" name="detalles" placeholder="Ingrese los Detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block"> Los Detalles no son válido </small>
-                </div>
-              </div>
-              <div class="px-md-2">
-                <div class=" form-group">
-                  <label> Key Prioridad </label>
-                  <input class=" form-control" type="text" name="key_prioridad" placeholder="Ingrese la key Prioridad" #key_prioridad="ngModel" [(ngModel)]="ticket.key_prioridad" required minlength="1" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!key_prioridad.valid && key_prioridad.touched" class="invalid-feedback d-block"> La key Prioridad no es válida </small>
-                </div>
-              </div>
-            </div>
-            <div class=" card-footer">
-              <button nbButton status="danger" [disabled]="registrarTicketForm.invalid" type="submit">
-                <span>Registrar</span>
-              </button>
-            </div>
+<div class="row">
+    <div class="col-md-12">
+        <nb-card>
+            <nb-card-header>
+                <h5 class="title">Registrar Ticket</h5>
+            </nb-card-header>
+            <form class="contact-form" method="POST" #registrarTicketForm="ngForm" (ngSubmit)="registrarTicket(registrarTicketForm)">
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-md-3 px-md-5">
+                            <label>Key Proyecto</label>
+                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="ticket.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key proyecto no es válida</small>
+                        </div>
+                        <div class="col-md-3 px-md-5">
+                            <label>Key Usuario</label>
+                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="key_usuario" placeholder="Ingrese la key usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_usuario.valid && key_usuario.touched" class="invalid-feedback d-block">La Key Usuario no es válido</small>
+                        </div>
+                        <div class="col-md-3 px-md-5">
+                            <label>Título</label>
+                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="titulo" placeholder="Ingrese el Título" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!titulo.valid && titulo.touched" class="invalid-feedback d-block">El Título no es válido</small>
+                        </div>
+                        <div class="col-md-3 px-md-5">
+                            <label>Detalles</label>
+                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="detalles" placeholder="Ingrese los Detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los Detalles no son válidos</small>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;"></div>
+                    <div class="row">
+                        <div class="col-md-3 px-md-5 mx-auto">
+                            <label>Key Prioridad</label>
+                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="key_prioridad" placeholder="Ingrese la key Prioridad" #key_prioridad="ngModel" [(ngModel)]="ticket.key_prioridad" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_prioridad.valid && key_prioridad.touched" class="invalid-feedback d-block">La key Prioridad no es válida</small>
+                        </div>
+                    </div>
+                    <div style="padding: 15px;"></div>
+                    <div class="card-footer">
+                        <div style="text-align: center;">
+                            <button nbButton status="danger" type="submit">
+                          <span>Registrar</span>
+                        </button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </form>
+        </nb-card>
+    </div>
+</div>

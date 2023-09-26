@@ -1,126 +1,134 @@
-<div class=" content">
-  <div class=" row">
+<div class=" row">
     <div class=" col-md-12">
-      <div class=" card">
-        <div class=" card-header">
-          <h5 class=" title" style="color: black;">Registrar Epica</h5>
-        </div>
-        <div class="card-body">
-        <div class="modal" *ngIf="modalRegister">
-          <form class="contact-form" method="POST" #registrarEpicaForm="ngForm" (ngSubmit)="registrarEpica(registrarEpicaForm)">
-            <style>
-              form {
-                margin: auto;
-                width: 95%;
-                /* ajusta el ancho según tus necesidades */
-              }
-            </style>
-            <div class=" row">
-              <div class=" col-md-6 px-md-1">
-                <div class=" form-group">
-                  <label> Nombre </label>
-                  <input class=" form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
-                </div>
-              </div>
-              <div class=" col-md- pl-md-1">
-                <div class=" form-group">
-                  <label for="form-control"> Proyecto </label>
-                  <input class="form-control" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.proyecto" required minlength="5">
-                  <small *ngIf="!proyecto.valid && proyecto.touched" class="invalid-feedback d-block"> El proyecto no es válido </small>
-                </div>
-              </div>
-              <div class=" col-md- pl-md-1">
-                <div class=" form-group">
-                  <label for="form-control"> Descripción </label>
-                  <input class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
-                  <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block"> La descripcion no es válida </small>
-                </div>
-              </div>
-            </div>
-            <div class=" card-footer">
-              <button [disabled]="registrarEpicaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+        <nb-card>
+            <nb-card-header>
+                <h5 class=" title">Registrar Epica</h5>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="modal" *ngIf="modalRegister">
+                    <form class="contact-form" method="POST" #registrarEpicaForm="ngForm" (ngSubmit)="registrarEpica(registrarEpicaForm)">
+                        <style>
+                            form {
+                                margin: auto;
+                                width: 95%;
+                                /* ajusta el ancho según tus necesidades */
+                            }
+                        </style>
+                        <div class=" row">
+                            <div class=" col-md-6 px-md-1">
+                                <div class=" form-group">
+                                    <label> Nombre </label>
+                                    <input class=" form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es
+                    válido </small>
+                                </div>
+                            </div>
+                            <div class=" col-md- pl-md-1">
+                                <div class=" form-group">
+                                    <label for="form-control"> Proyecto </label>
+                                    <input class="form-control" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.proyecto" required minlength="5">
+                                    <small *ngIf="!proyecto.valid && proyecto.touched" class="invalid-feedback d-block"> El proyecto no es
+                    válido </small>
+                                </div>
+                            </div>
+                            <div class=" col-md- pl-md-1">
+                                <div class=" form-group">
+                                    <label for="form-control"> Descripción </label>
+                                    <input class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
+                                    <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block"> La
+                    descripcion no es válida </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" card-footer">
+                            <button [disabled]="registrarEpicaForm.invalid" type="submit" class="btn btn-fill btn-danger">
                 <span>Registrar</span>
               </button>
-              <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-            </div>
-          </form>
-        </div>
-        <div class="modal" *ngIf="modalUpdate">
-          <form class="contact-form" method="POST" (ngSubmit)="updateEpica(updateEpicaForm)">
-            <style>
-              form {
-                margin: auto;
-                width: 95%;
-              }
-            </style>
-            <div class=" row">
-              <input name="id_epica" [(ngModel)]="epica.id_epica" [ngModelOptions]="{standalone: true}" hidden="">
-              <div class=" col-md-6 px-md-1">
-                <div class=" form-group">
-                  <label> Nombre </label>
-                  <input class=" form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                  <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
-              </div>
-              <div class=" col-md- pl-md-1">
-                <div class=" form-group">
-                  <label for="form-control"> Proyecto </label>
-                  <input class="form-control" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.proyecto" required minlength="5">
-                  <small *ngIf="!proyecto.valid && proyecto.touched" class="invalid-feedback d-block"> El proyecto no es válido </small>
-                </div>
-              </div>
-              <div class=" col-md- pl-md-1">
-                <div class=" form-group">
-                  <label for="form-control"> Descripción </label>
-                  <input class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
-                  <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block"> La descripcion no es válida </small>
-                </div>
-              </div>
-            </div>
-            <div class=" card-footer">
-              <button [disabled]="updateEpicaForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                <div class="modal" *ngIf="modalUpdate">
+                    <form class="contact-form" method="POST" (ngSubmit)="updateEpica(updateEpicaForm)">
+                        <style>
+                            form {
+                                margin: auto;
+                                width: 95%;
+                            }
+                        </style>
+                        <div class=" row">
+                            <input name="id_epica" [(ngModel)]="epica.id_epica" [ngModelOptions]="{standalone: true}" hidden="">
+                            <div class=" col-md-6 px-md-1">
+                                <div class=" form-group">
+                                    <label> Nombre </label>
+                                    <input class=" form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es
+                    válido </small>
+                                </div>
+                            </div>
+                            <div class=" col-md- pl-md-1">
+                                <div class=" form-group">
+                                    <label for="form-control"> Proyecto </label>
+                                    <input class="form-control" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.proyecto" required minlength="5">
+                                    <small *ngIf="!proyecto.valid && proyecto.touched" class="invalid-feedback d-block"> El proyecto no es
+                    válido </small>
+                                </div>
+                            </div>
+                            <div class=" col-md- pl-md-1">
+                                <div class=" form-group">
+                                    <label for="form-control"> Descripción </label>
+                                    <input class="form-control" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
+                                    <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block"> La
+                    descripcion no es válida </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" card-footer">
+                            <button [disabled]="updateEpicaForm.invalid" type="submit" class="btn btn-fill btn-danger">
                 <span>Editar</span>
               </button>
-              <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-            </div>
-          </form>
-        </div>
-        <form (ngSubmit)="buscarEpicas()">
-          <div class="row">
-            <div class="row align-items-center">
-              <div class="px-md-2">
-                  <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Epicas">
-              </div>  
-              <div class="px-md-2">
-                  <button nbButton status="primary" type="submit" size="giant">Buscar</button>
-              </div>
-              <div class="px-md-2">
-                  <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
-              </div>
-            </div>
-          </div>
-        </form>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table tablesorter">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of myList">
-                  <td>{{ item.id_epica }}</td>
-                  <td>{{ item.nombre }}</td>
-                  <td>
-                    <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_epica)">Editar</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                        </div>
+                    </form>
+                </div>
+                <form (ngSubmit)="buscarEpicas()">
+                    <div class="row">
+                        <div class="row align-items-center">
+                            <div class="px-md-2">
+                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Epicas">
+                            </div>
+                            <div class="px-md-2">
+                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                            </div>
+                            <div class="px-md-2">
+                                <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <nb-card-body>
+                    <div class="table-responsive">
+                        <table class="table dark-table ">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of myList">
+                                    <td>{{ item.id_epica }}</td>
+                                    <td>{{ item.nombre }}</td>
+                                    <td>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_epica)">Editar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </nb-card-body>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

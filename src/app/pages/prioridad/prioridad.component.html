@@ -1,97 +1,100 @@
-<div class="content">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="title" style="color: black;">Registro de Prioridad</h5>
-          </div>
-          <div class="card-body">
-            <div class="modal" *ngIf="modalRegister">
-              <form class="contact-form" method="POST" #registrarPrioridadForm="ngForm" (ngSubmit)="registrarPrioridad(registrarPrioridadForm)">
-                <style>
-                  form {
-                    margin: auto;
-                    width: 95%;
-                    /* ajusta el ancho según tus necesidades */
-                  }
-                </style>
-                <div class=" row">
-                  <div class=" col-md-6 px-md-1">
-                    <div class=" form-group">
-                      <label> Nombre </label>
-                      <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
-                    </div>
-                  </div>
-                </div>
-                <div class=" card-footer">
-                  <button [disabled]="registrarPrioridadForm.invalid" type="submit" class="btn btn-fill btn-danger">
+<div class="row">
+    <div class="col-md-12">
+        <nb-card>
+            <nb-card-header>
+                <h5 class="title">Registro de Prioridad</h5>
+            </nb-card-header>
+            <nb-card-body>
+                <div class="modal" *ngIf="modalRegister">
+                    <form class="contact-form" method="POST" #registrarPrioridadForm="ngForm" (ngSubmit)="registrarPrioridad(registrarPrioridadForm)">
+                        <style>
+                            form {
+                                margin: auto;
+                                width: 95%;
+                                /* ajusta el ancho según tus necesidades */
+                            }
+                        </style>
+                        <div class=" row">
+                            <div class=" col-md-6 px-md-1">
+                                <div class=" form-group">
+                                    <label> Nombre </label>
+                                    <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" card-footer">
+                            <button [disabled]="registrarPrioridadForm.invalid" type="submit" class="btn btn-fill btn-danger">
                     <span>Registrar</span>
                   </button>
-                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
-              </form>
-            </div>
-            <div class="modal" *ngIf="modalUpdate">
-              <form class="contact-form" method="POST" (ngSubmit)="updatePrioridad(updatePrioridadForm)">
-                <style>
-                  form {
-                    margin: auto;
-                    width: 95%;
-                  }
-                </style>
-                <div class=" row">
-                  <input name="id_prioridad" [(ngModel)]="prioridad.id_prioridad" [ngModelOptions]="{standalone: true}" hidden="">
-                  <div class=" col-md-6 px-md-1">
-                    <div class=" form-group">
-                      <label> Nombre </label>
-                      <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
-                    </div>
-                  </div>
-                </div>
-                <div class=" card-footer">
-                  <button [disabled]="updatePrioridadForm.invalid" type="submit" class="btn btn-fill btn-danger">
+                <div class="modal" *ngIf="modalUpdate">
+                    <form class="contact-form" method="POST" (ngSubmit)="updatePrioridad(updatePrioridadForm)">
+                        <style>
+                            form {
+                                margin: auto;
+                                width: 95%;
+                            }
+                        </style>
+                        <div class=" row">
+                            <input name="id_prioridad" [(ngModel)]="prioridad.id_prioridad" [ngModelOptions]="{standalone: true}" hidden="">
+                            <div class=" col-md-6 px-md-1">
+                                <div class=" form-group">
+                                    <label> Nombre </label>
+                                    <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" card-footer">
+                            <button [disabled]="updatePrioridadForm.invalid" type="submit" class="btn btn-fill btn-danger">
                     <span>Registrar</span>
                   </button>
-                  <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
-              </form>
-            </div>
-              <form (ngSubmit)="buscarPrioridades()">
-                <div class="row">
-                  <div class="row align-items-center">
-                    <div class="px-md-2">
-                      <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Prioridad">
+                <form (ngSubmit)="buscarPrioridades()">
+                    <div class="row">
+                        <div class="row align-items-center">
+                            <div class="px-md-2">
+                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Prioridad">
+                            </div>
+                            <div class="px-md-2">
+                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                            </div>
+                            <div class="px-md-2">
+                                <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="px-md-2">
-                      <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                </form>
+                <nb-card-body>
+                    <div class="table-responsive">
+                        <table class="table dark-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of myList">
+                                    <td>{{ item.id_prioridad }}</td>
+                                    <td>{{ item.nombre }}</td>
+                                    <td>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_prioridad)">Editar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="px-md-2">
-                      <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table tablesorter">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Nombre</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of myList">
-                      <td>{{ item.id_prioridad }}</td>
-                      <td>{{ item.nombre }}</td>
-                      <td>
-                        <button type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_prioridad)">Editar</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                </nb-card-body>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

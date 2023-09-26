@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-epica',
   templateUrl: './epica.component.html',
-  //styleUrls: ["./epica.component.css"]
+  styleUrls: ["./epica.component.scss"]
 })
 
 export class EpicaComponent implements OnInit {

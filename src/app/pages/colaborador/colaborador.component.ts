@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-colaborador',
   templateUrl: './colaborador.component.html',
-  //styleUrls: ["./colaborador.component.css"]
+  styleUrls: ["./colaborador.component.scss"]
 })
 export class ColaboradorComponent implements OnInit {
 	colaborador: Colaborador;
@@ -24,6 +24,8 @@ export class ColaboradorComponent implements OnInit {
   colaboradores: any=[];
   termino: string;
   myList: any=[];
+  alertUpdate = false;
+  alert = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -38,15 +40,12 @@ export class ColaboradorComponent implements OnInit {
     });
   }
 
-  registrarColaborador(form){
+  registrarColaborador(){
   this._userService.registrarColaborador(this.colaborador.nombre, this.colaborador.telefono, this.colaborador.foto, this.colaborador.github, this.colaborador.correo).subscribe(
       response => {
       if(response.status != 'error'){
           this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/']);
+          this.alert = true;
         }
   
       },
@@ -57,15 +56,12 @@ export class ColaboradorComponent implements OnInit {
    	);
 	}
 
-  updateColaborador(form){
+  updateColaborador(){
   this._userService.updateColaborador(this.colaborador.id_colab, this.colaborador.nombre, this.colaborador.telefono, this.colaborador.foto, this.colaborador.github, this.colaborador.correo).subscribe(
       response => {
       if(response.status != 'error'){
           this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/']);
+          this.alertUpdate = true;
         }
   
       },

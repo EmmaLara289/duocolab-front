@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-prioridad',
   templateUrl: './prioridad.component.html',
-  //styleUrls: ["./prioridad.component.css"]
+  styleUrls: ["./prioridad.component.scss"]
 })
 
 export class PrioridadComponent implements OnInit {

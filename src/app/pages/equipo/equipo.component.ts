@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-equipo',
   templateUrl: './equipo.component.html',
-  //styleUrls: ["./equipo.component.css"]
+  styleUrls: ["./equipo.component.scss"]
 })
 
 export class EquipoComponent implements OnInit {

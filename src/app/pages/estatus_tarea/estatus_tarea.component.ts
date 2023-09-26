@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-estatus_tarea',
   templateUrl: './estatus_tarea.component.html',
-  //styleUrls: ["./estatustarea.component.css"]
+  styleUrls: ["./estatus_tarea.component.css"]
 })
 
 export class EstatusTareaComponent implements OnInit {

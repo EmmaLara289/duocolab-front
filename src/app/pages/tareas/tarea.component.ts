@@ -5,16 +5,13 @@ import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare var $: any;
-import { NgForm } from '@angular/forms';
-import { RouterModule } from '@angular/router'; // we also need angular router for Nebular to function properly
-import { NbSidebarModule, NbLayoutModule, NbButtonModule } from '@nebular/theme'
 import { HttpClient } from '@angular/common/http';
 
 
 @Component({
   selector: 'app-tarea',
   templateUrl: './tarea.component.html',
-  //styleUrls: ["./tarea.component.css"]
+  styleUrls: ["./tarea.component.scss"]
 })
 
 export class TareaComponent {

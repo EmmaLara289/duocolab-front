@@ -1,101 +1,127 @@
-<div class=" content">
-    <div class=" row">
-      <div class=" col-md-12">
-        <div class=" card">
-          <div class=" card-header">
-            <h5 class=" title" style="color: black;">Registrar Area</h5>
-          </div>
-          <div class=" card-body">
-            <div class="modal" *ngIf="modalRegister">
-              <form class="contact-form" method="POST" #registrarAreaForm="ngForm" (ngSubmit)="registrarArea(registrarAreaForm)">
-                <style>
-                  form {
-                    margin: auto;
-                    width: 95%;
-                  }
-                </style>
-                <div class=" row">
-                  <div class=" col-md-8 px-md-1">
-                    <div class=" form-group">
-                      <label>Nombre</label>
-                      <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+<nb-alert *ngIf="alert" status="success" closable (close)="claseAlert()">
+    <div style="text-align: center;">!Registro realizado con exito! </div>
+</nb-alert>
+
+<nb-alert *ngIf="alertUpdate" status="success" closable (close)="claseAlert()">
+    <div style="text-align: center;">!Actualización realizada con exito! </div>
+</nb-alert>
+
+<div class=" row">
+    <div class=" col-md-12">
+        <nb-card>
+            <nb-card-header>
+                <h5 class=" title">Registrar Area</h5>
+            </nb-card-header>
+            <nb-card-body>
+                <form (ngSubmit)="buscarAreas()">
+                    <div class="row">
+                        <div class="row align-items-center">
+                            <div class="px-md-4">
+                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Area">
+                            </div>
+                            <div class="px-md-1">
+                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                            </div>
+                            <div class="px-md-2">
+                                <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <div class=" card-footer">
-                  <button nbButton status="danger" [disabled]="registrarAreaForm.invalid" type="submit" class="btn btn-fill btn-danger">
-                    <span>Registrar</span>
-                  </button>
-                  <button nbButton type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                </div>
-              </form>
-            </div>
-            <div class="modal" *ngIf="modalUpdate">
-              <form class="contact-form" method="POST" (ngSubmit)="updateArea(updateAreaForm)">
-                <style>
-                  form {
-                    margin: auto;
-                    width: 95%;
-                  }
-                </style>
-                <div class=" row">
-                  <div class=" col-md-8 px-md-1">
-                    <input name="id_area" [(ngModel)]="area.id_area" [ngModelOptions]="{standalone: true}" hidden="">
-                    <div class=" form-group">
-                      <label>Nombre</label>
-                      <input class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                      <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                </form>
+                <nb-card-body>
+                    <div class="table-responsive">
+                        <table class="table dark-table ">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of myList">
+                                    <td>{{ item.id_area }}</td>
+                                    <td>{{ item.nombre }}</td>
+                                    <td>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_area)">Editar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                  </div>
-                </div>
-                <div class=" card-footer">
-                  <button nbButton [disabled]="updateAreaForm.invalid" type="submit" class="btn btn-fill btn-danger">
-                    <span>Editar</span>
-                  </button>
-                  <button nbButton type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                </div>
-              </form>
-            </div>
-            <form (ngSubmit)="buscarAreas()">
-              <div class="row">
-                <div class="row align-items-center">
-                  <div class="px-md-2">
-                    <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Area">
-                  </div>
-                  <div class="px-md-2">
-                    <button nbButton status="primary" type="submit" size="giant">Buscar</button>
-                  </div>
-                  <div class="px-md-2">
-                    <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>\
-                  </div>
-                </div>
-              </div>
-            </form>
-            <div class="card-body">
-              <div class="table-responsive">
-                <table class="table tablesorter">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Nombre</th>
-                      <th>Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let item of myList">
-                      <td>{{ item.id_area }}</td>
-                      <td>{{ item.nombre }}</td>
-                      <td>
-                        <button nbButton status="danger" type="button" class="btn btn-fill btn-danger" (click)="openModalUpdate(item.id_area)">Editar</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                </nb-card-body>
+            </nb-card-body>
+        </nb-card>
     </div>
-  </div>
+</div>
+
+
+<div class="modal" [class.show]="modalRegister" style="display: block;" *ngIf="modalRegister">
+    <div class="modal-dialog">
+        <div style="background-color: rgb(47, 62, 106);" class="modal-content">
+            <div class="modal-header">
+                <h style="font-weight: bold; color: rgb(255, 255, 255);">Registrar un nuevo dato</h>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="registrarArea()">
+                    <div class=" row">
+                        <div class=" form-group mx-auto">
+                            <label>Nombre</label>
+                            <input nbInput status="danger" shape="semi-round" class=" form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es
+    válido </small>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;"></div>
+                    <div class="card-footer">
+                        <div style="padding: 10px;"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button nbButton status="primary" type="button" (click)="closeModal()">Cerrar</button>
+                            </div>
+                            <div class="col text-right">
+                                <button nbButton status="danger" type="submit">Registrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
+    <div class="modal-dialog">
+        <div style="background-color: rgb(47, 62, 106);" class="modal-content">
+            <div class="modal-header">
+                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edición</h>
+            </div>
+            <div class="modal-body">
+                <form (ngSubmit)="updateArea()">
+                    <input name="id_area" [(ngModel)]="area.id_area" [ngModelOptions]="{standalone: true}" hidden="">
+                    <div class="row">
+                        <div class=" form-group mx-auto">
+                            <label style="position: relative ; left: 38%;">Nombre</label>
+                            <input nbInput status="danger" fullWidth shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;"></div>
+                    <div class=" card-footer">
+                        <div style="padding: 10px;"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button nbButton status="primary" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                            </div>
+                            <div class="col text-right">
+                                <button nbButton status="danger" type="submit">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

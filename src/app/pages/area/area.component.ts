@@ -11,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-area',
   templateUrl: './area.component.html',
-  //styleUrls: ["./area.component.css"]
+  styleUrls: ["./area.component.scss"]
 })
 export class AreaComponent implements OnInit {
 	area: Area;
@@ -23,6 +23,8 @@ export class AreaComponent implements OnInit {
   public identity;
   public status: string;
   myList: any=[];
+  alert = false;
+  alertUpdate = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -37,15 +39,14 @@ export class AreaComponent implements OnInit {
     });
   }
 
-  registrarArea(form){
+  registrarArea(){
   this._userService.registrarArea(this.area.nombre).subscribe(
       response => {
       if(response.status != 'error'){
           this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/registrar-area']);
+          this.closeModal();
+          this.ngOnInit();
+          this.alert = true;
         }
         
       },
@@ -56,15 +57,14 @@ export class AreaComponent implements OnInit {
    	);
 	}
 
-  updateArea(form){
+  updateArea(){
   this._userService.updateArea(this.area.id_area, this.area.nombre).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/registrar-area']);
+        this.status = 'success';
+        this.closeModal();
+        this.ngOnInit();
+        this.alertUpdate = true;
         }
         
       },
@@ -73,6 +73,11 @@ export class AreaComponent implements OnInit {
         this.status = 'error';
         }
     );
+  }
+
+  claseAlert(){
+    this.alertUpdate = false;
+    this.alert = false;
   }
 
   buscarAreas() {
@@ -84,7 +89,6 @@ export class AreaComponent implements OnInit {
 
   openModal() {
   this.modalRegister = true;
-  
   }
 
   openModalUpdate(id_area) {
@@ -99,7 +103,7 @@ export class AreaComponent implements OnInit {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.area= new Area('', '');
   }
 
 }

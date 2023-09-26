@@ -3,38 +3,47 @@ import { NbMenuItem } from '@nebular/theme';
 export const MENU_ITEMS: NbMenuItem[] = [
 
   {
+    icon: 'edit-2-outline',
     title: 'Tareas',
     link: '/pages/tarea'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Areas',
     link: '/pages/area'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Colaboradores',
     link: '/pages/colaborador'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Epicas',
     link: '/pages/epica'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Equipos',
     link: '/pages/equipo'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Estatus Tareas',
     link: '/pages/estatus-tarea'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Prioridades',
     link: '/pages/prioridad'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Proyectos',
     link: '/pages/proyecto'
   },
   {
+    icon: 'edit-2-outline',
     title: 'Ticket',
     link: '/pages/ticket'
   },
