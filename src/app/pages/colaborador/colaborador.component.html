@@ -1,4 +1,4 @@
-<nb-alert *ngIf="alert" status="success" closable (close)="claseAlert()">
+<!--<nb-alert *ngIf="alert" status="success" closable (close)="claseAlert()">
     <div style="text-align: center;">!Registro realizado con exito! </div>
 </nb-alert>
 
@@ -13,108 +13,108 @@
                 <h5 class="title">Registro de Colaboradores</h5>
             </nb-card-header>
             <nb-card-body>
-                <form (ngSubmit)="buscarColaboradores()">
+                <h6 class="title text-center">Registrar nuevo Colaborador</h6>
+                <form (ngSubmit)="registrarColaborador()">
                     <div class="row">
-                        <div class="row align-items-center">
-                            <div class="px-md-2">
-                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Colaborador">
+                        <div class="col-md-6 px-md-1">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="colaborador.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
                             </div>
-                            <div class="px-md-2">
-                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
-                            </div>
-                            <div class="px-md-2">
-                                <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
+                        </div>
+                        <div class="col-md-3 px-md-1">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input class="form-control" type="text" name="telefono" placeholder="Ingrese el teléfono" #telefono="ngModel" [(ngModel)]="colaborador.telefono" required minlength="1" [ngModelOptions]="{standalone: true}">
+                                <small *ngIf="!telefono.valid && telefono.touched" class="invalid-feedback d-block">El teléfono no es válido</small>
                             </div>
                         </div>
                     </div>
-                </form>
-                <nb-card-body>
-                    <div class="table-responsive">
-                        <table class="table dark-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of myList">
-                                    <td>{{ item.id_colab }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_colab)">Editar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col-md-6 px-md-1">
+                            <div class="form-group">
+                                <label>GitHub</label>
+                                <input class="form-control" type="text" name="github" placeholder="Ingrese el GitHub" #github="ngModel" [(ngModel)]="colaborador.github" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                <small *ngIf="!github.valid && github.touched" class="invalid-feedback d-block">El GitHub no es válido</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 px-md-1">
+                            <div class="form-group">
+                                <label>Correo</label>
+                                <input class="form-control" type="email" name="correo" placeholder="Ingrese el Correo" #correo="ngModel" [(ngModel)]="colaborador.correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                <small *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">El correo no es válido</small>
+                            </div>
+                        </div>
                     </div>
-                </nb-card-body>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-fill btn-danger">
+                  <span>Registrar</span>
+                </button>
+                        <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                    </div>
+                </form>
+                <div class="col-md-4">
+                    <div class="card card-user">
+                        <div class="card-body">
+                            <form class="contact-form" method="POST" #registrarColaboradorForm2="ngForm" (ngSubmit)="registrarColaborador()">
+                                <p class="card-text"></p>
+                                <div class="author">
+                                    <a href="javascript:void(0)">
+                                        <label>
+                          <button type="button" class="btn btn-primary">Subir foto</button>
+                          <input type="file" name="foto" #foto="ngModel" [(ngModel)]="colaborador.foto" [ngModelOptions]="{standalone: true}" required minlength="3" style="display: none">
+                        </label>
+                                    </a>
+                                    <p class="description">Colaborador</p>
+                                </div>
+                            </form>
+                            <form (ngSubmit)="buscarColaboradores()">
+                                <div class="row">
+                                    <div class="row align-items-center">
+                                        <div class="px-md-2">
+                                            <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Colaborador">
+                                        </div>
+                                        <div class="px-md-2">
+                                            <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                                        </div>
+                                        <div class="px-md-2">
+                                            <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <nb-card-body>
+                                <div class="table-responsive">
+                                    <table class="table dark-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nombre</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let item of myList">
+                                                <td>{{ item.id_colab }}</td>
+                                                <td>{{ item.nombre }}</td>
+                                                <td>
+                                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_colab)">Editar</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </nb-card-body>
+                        </div>
+                    </div>
+                </div>
             </nb-card-body>
         </nb-card>
     </div>
 </div>
 
-<div class="modal" *ngIf="modalRegister">
-    <form (ngSubmit)="registrarColaborador()">
-        <div class="row">
-            <div class="col-md-6 px-md-1">
-                <div class="form-group">
-                    <label>Nombre</label>
-                    <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="colaborador.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
-                </div>
-            </div>
-            <div class="col-md-3 px-md-1">
-                <div class="form-group">
-                    <label>Teléfono</label>
-                    <input class="form-control" type="text" name="telefono" placeholder="Ingrese el teléfono" #telefono="ngModel" [(ngModel)]="colaborador.telefono" required minlength="1" [ngModelOptions]="{standalone: true}">
-                    <small *ngIf="!telefono.valid && telefono.touched" class="invalid-feedback d-block">El teléfono no es válido</small>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 px-md-1">
-                <div class="form-group">
-                    <label>GitHub</label>
-                    <input class="form-control" type="text" name="github" placeholder="Ingrese el GitHub" #github="ngModel" [(ngModel)]="colaborador.github" [ngModelOptions]="{standalone: true}" required minlength="5">
-                    <small *ngIf="!github.valid && github.touched" class="invalid-feedback d-block">El GitHub no es válido</small>
-                </div>
-            </div>
-            <div class="col-md-6 px-md-1">
-                <div class="form-group">
-                    <label>Correo</label>
-                    <input class="form-control" type="email" name="correo" placeholder="Ingrese el Correo" #correo="ngModel" [(ngModel)]="colaborador.correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngModelOptions]="{standalone: true}" required minlength="5">
-                    <small *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">El correo no es válido</small>
-                </div>
-            </div>
-        </div>
-        <div class="card-footer">
-            <button [disabled]="registrarColaboradorForm.invalid" type="submit" class="btn btn-fill btn-danger">
-  <span>Registrar</span>
-</button>
-            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-        </div>
-    </form>
-    <div class="col-md-4">
-        <div class="card card-user">
-            <div class="card-body">
-                <form class="contact-form" method="POST" #registrarColaboradorForm2="ngForm" (ngSubmit)="registrarColaborador(registrarColaboradorForm2)">
-                    <p class="card-text"></p>
-                    <div class="author">
-                        <a href="javascript:void(0)">
-                            <label>
-          <button type="button" class="btn btn-primary">Subir foto</button>
-          <input type="file" name="foto" #foto="ngModel" [(ngModel)]="colaborador.foto" [ngModelOptions]="{standalone: true}" required minlength="3" style="display: none">
-        </label>
-                        </a>
-                        <p class="description">Colaborador</p>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <form (ngSubmit)="updateColaborador()">
     <div class="row">
@@ -177,4 +177,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
+<div class="title text-center">!We are Working to make this possible! :)</div>
+<div class="text text-center">Thanks for ur understanding</div>

@@ -46,6 +46,7 @@ export class ColaboradorComponent implements OnInit {
       if(response.status != 'error'){
           this.status = 'success';
           this.alert = true;
+          this.ngOnInit();
         }
   
       },
@@ -62,6 +63,7 @@ export class ColaboradorComponent implements OnInit {
       if(response.status != 'error'){
           this.status = 'success';
           this.alertUpdate = true;
+          this.ngOnInit();
         }
   
       },

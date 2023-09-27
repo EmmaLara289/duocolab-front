@@ -5,7 +5,6 @@ import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare var $: any;
-import { NgForm } from '@angular/forms';
 
 
 
@@ -48,12 +47,7 @@ export class LoginComponent implements OnInit {
       response => {
         if (response.status != 'error') {
           this.status = 'success';
-          this.identity = response.user;
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Bienvenido...', 'Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
-          this._userService.onSuccessLogin.emit();
+          this._router.navigate(['/pages/tarea']);
         }
 
         

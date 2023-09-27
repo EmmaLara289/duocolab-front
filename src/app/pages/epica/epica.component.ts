@@ -5,7 +5,6 @@ import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare var $: any;
-import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -24,6 +23,8 @@ export class EpicaComponent implements OnInit {
   modalRegister = false;
   id_epica:string=null;
   modalUpdate = false;
+  alert = false;
+  alertUpdate = false;
 
   constructor(
   private _userService: UserService,
@@ -37,37 +38,34 @@ export class EpicaComponent implements OnInit {
   ngOnInit(){
   this._userService.getEpicas().subscribe((response) => {
       this.myList = response;
+      console.log(this.myList);
     });
   }
 
-  registrarEpica(form){
+  registrarEpica(){
   this._userService.registrarEpica(this.epica.nombre, this.epica.proyecto, this.epica.descripcion).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.epica;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+        this.ngOnInit();
+        this.alert = true;
+        this.clearData();
         }
 
       },
       error => {
         Swal.fire('UPS', 'La epica no se ha podido registrar.', 'error');
-        this.status = 'error';
       }
    		);
 	}
 
-  updateEpica(form){
+  updateEpica(){
   this._userService.updateEpica(this.epica.id_epica, this.epica.nombre, this.epica.proyecto, this.epica.descripcion).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.epica;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+        this.ngOnInit();
+        this.alertUpdate = true;
+        this.clearData();
+        this.closeModal();
         }
 
       },
@@ -102,8 +100,16 @@ export class EpicaComponent implements OnInit {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.clearData();
   }
 
+  clearData(){
+    this.epica = new Epica('','','','');
+  }
+
+  closeAlert(){
+    this.alertUpdate = false;
+    this.alert = false;
+  }
 
 }

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare var $: any;
 import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './tarea.component.html',
   styleUrls: ["./tarea.component.scss"]
 })
+
 
 export class TareaComponent {
   public identity;
@@ -24,6 +26,9 @@ export class TareaComponent {
   modalRegister = false;
   id_tarea:string=null;
   modalUpdate = false;
+  alertUpdate = false;
+  alert = false;
+  tareaCopy: Tarea;
 
   constructor(
   private _userService: UserService,
@@ -32,6 +37,7 @@ export class TareaComponent {
 
   ) { 
   this.tarea = new Tarea('','','','','','','');
+  this.tareaCopy = new Tarea('','','','','','','');
   }
 
   ngOnInit(){
@@ -40,34 +46,30 @@ export class TareaComponent {
     });
   }
 
-  registrarTarea(form){
+  registrarTarea(){
   this._userService.registrarTarea(this.tarea.nombre, this.tarea.descripcion, this.tarea.key_epica, this.tarea.key_sprint, this.tarea.key_proyecto, this.tarea.key_colaborador).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.tarea;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+          this.ngOnInit();
+          this.alert = true;
+          this.clearData();
         }
 
       },
       error => {
         Swal.fire('UPS', 'La tarea no se ha podido registrar.', 'error');
-        this.status = 'error';
       }
    		);
 	}
 
-  updateTarea(form){
+  updateTarea(){
   this._userService.updateTarea(this.tarea.id_tarea, this.tarea.nombre, this.tarea.descripcion, this.tarea.key_epica, this.tarea.key_sprint, this.tarea.key_proyecto, this.tarea.key_colaborador).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.tarea;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+          this.ngOnInit();
+          this.alertUpdate = true;
+          this.clearData();
+          this.closeModal();
         }
 
       },
@@ -102,9 +104,25 @@ export class TareaComponent {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
+    this.clearData();
     console.log('Modal cerrado');
   }
 
+  closeAlert(){
+    this.alertUpdate = false;
+    this.alert = false;
+  }
+
+  clearData(){
+  /*this.tarea.nombre = '';
+  this.tarea.key_proyecto = '';
+  this.tarea.descripcion = '';
+  this.tarea.key_colaborador = '';
+  this.tarea.key_epica = '';
+  this.tarea.key_sprint = '';*/
+  this.tarea = new Tarea('','','','','','','');
+  this.tareaCopy= new Tarea('','','','','','','');
+  }
 
   
 }

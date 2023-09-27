@@ -7,6 +7,7 @@ import { routing } from './epica.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
 import { NbCardModule } from '@nebular/theme';
+import { NbAlertModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NbCardModule } from '@nebular/theme';
     routing,
     NbInputModule,
     NbButtonModule,
-    NbCardModule
+    NbCardModule,
+    NbAlertModule
   ],
   declarations: [
     EpicaComponent

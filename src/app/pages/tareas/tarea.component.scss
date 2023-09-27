@@ -12,3 +12,12 @@
     color: white;
     /* Cambiar el color del texto a blanco en las celdas de datos */
 }
+
+.modal-container {
+    width: 900px;
+    height: 700px;
+    background-color: rgb(47, 62, 106);
+    right: 40%;
+    bottom: 40%;
+    position: relative;
+}
