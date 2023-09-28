@@ -11,17 +11,16 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-estatus_tarea',
   templateUrl: './estatus_tarea.component.html',
-  styleUrls: ["./estatus_tarea.component.css"]
+  styleUrls: ["./estatus_tarea.component.scss"]
 })
 
 export class EstatusTareaComponent implements OnInit {
   public identity;
   modalRegister = false;
+  alert = false;
+  alertUpdate = false;
   modalUpdate = false;
-
   id_estatus:string=null;
-
-  
   public status: string;
   estatus: any=[];
   termino: string;
@@ -42,15 +41,14 @@ export class EstatusTareaComponent implements OnInit {
     });
   }
 
-  registrarEstatusTarea(form){
+  registrarEstatusTarea(){
   this._userService.registrarEstatusTarea(this.estatustarea.nombre).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.estatustarea;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+        this.ngOnInit();
+        this.alert = true;
+        this.closeModal();
+        this.clearData();
         }
 
       },
@@ -61,15 +59,14 @@ export class EstatusTareaComponent implements OnInit {
    		);
 	}
 
-  updateEstatusTarea(form){
+  updateEstatusTarea(){
   this._userService.updateEstatusTarea(this.estatustarea.id_estatus, this.estatustarea.nombre).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.estatustarea;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+        this.ngOnInit();
+        this.alertUpdate = true;
+        this.clearData();
+        this.closeModal();
         }
 
       },
@@ -102,8 +99,16 @@ export class EstatusTareaComponent implements OnInit {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.clearData();
   }
 
+  clearData(){
+    this.estatustarea = new EstatusTarea('','');
+  }
+
+  closeAlert(){
+    this.alert = false;
+    this.alertUpdate = false;
+  }
 
 }

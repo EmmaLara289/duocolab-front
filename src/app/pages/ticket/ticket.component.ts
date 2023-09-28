@@ -14,6 +14,7 @@ import { NgForm } from '@angular/forms';
 })
 export class TicketComponent implements OnInit {
 	ticket: Ticket;
+  alert = false;
 	public identity;
 	public status: string;
   constructor(
@@ -26,21 +27,18 @@ export class TicketComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  registrarTicket(form){
+  registrarTicket(){
   this._userService.registrarTicket(this.ticket.key_proyecto, this.ticket.key_usuario, this.ticket.titulo, this.ticket.detalles, this.ticket.key_prioridad).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/registrar-ticket']);
+        this.ngOnInit();
+        this.alert = true;
+        this.ticket= new Ticket('','','','','');
         }
         
       },
       error => {
         Swal.fire('UPS', 'El ticket no se ha podido registrar.', 'error');
-        this.status = 'error';
       	}
    	);
 	}

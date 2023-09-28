@@ -1,3 +1,11 @@
+<nb-alert *ngIf="alert" status="success" closable (close)="closeAlert()">
+    <div style="text-align: center;">!Registro realizado con exito! </div>
+</nb-alert>
+
+<nb-alert *ngIf="alertUpdate" status="success" closable (close)="closeAlert()">
+    <div style="text-align: center;">!Actualización realizada con exito! </div>
+</nb-alert>
+
 <div class="row">
     <div class="col-md-12">
         <nb-card>
@@ -5,114 +13,47 @@
                 <h5 class="title">Registro de Proyectos</h5>
             </nb-card-header>
             <nb-card-body>
-                <div class="modal" *ngIf="modalRegister">
-                    <form class="contact-form" method="POST" #registrarProyectoForm="ngForm" (ngSubmit)="registrarProyecto(registrarProyectoForm)">
-                        <style>
-                            form {
-                                margin: auto;
-                                width: 95%;
-                            }
-                        </style>
-                        <div class="row">
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Key Equipo</label>
-                                    <input class="form-control" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!key_equipo.valid && key_equipo.touched" class="invalid-feedback d-block">La key equipo no es válida</small>
-                                </div>
-                            </div>
+                <h6 class="title text-center">Registrar nuevo Proyecto</h6>
+                <div style="padding: 10px;"></div>
+                <form class="col-md-10" style="position: relative; left: 8%;" (ngSubmit)="registrarProyecto()">
+                    <div class="row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Nombre</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched && proyecto.nombre !== ''" class="invalid-feedback d-block">El nombre no es válido</small>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Imagen</label>
-                                    <input class="form-control" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
-                                    <small *ngIf="!imagen.valid && imagen.touched" class="invalid-feedback d-block">La imagen no es válida</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Detalles</label>
-                                    <input class="form-control" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
-                                    <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los detalles no son válidos</small>
-                                </div>
-                            </div>
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Key Equipo</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_equipo.valid && key_equipo.touched && proyecto.key_equipo !== ''" class="invalid-feedback d-block">La key equipo no es válida</small>
                         </div>
-                        <div class="card-footer">
-                            <button [disabled]="registrarProyectoForm.invalid" type="submit" class="btn btn-fill btn-danger">
-                    <span>Registrar</span>
-                  </button>
-                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                    </div>
+                    <div class="row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Imagen</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                            <small *ngIf="!imagen.valid && imagen.touched && proyecto.imagen !== ''" class="invalid-feedback d-block">La imagen no es válida</small>
                         </div>
-                    </form>
-                </div>
-                <div class="modal" *ngIf="modalUpdate">
-                    <form class="contact-form" method="POST" (ngSubmit)="updateProyecto(updateProyectoForm)">
-                        <style>
-                            form {
-                                margin: auto;
-                                width: 95%;
-                            }
-                        </style>
-                        <div class="row">
-                            <input name="id_proyecto" [(ngModel)]="proyecto.id_proyecto" [ngModelOptions]="{standalone: true}" hidden="">
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input class="form-control" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Key Equipo</label>
-                                    <input class="form-control" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!key_equipo.valid && key_equipo.touched" class="invalid-feedback d-block">La key equipo no es válida</small>
-                                </div>
-                            </div>
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Detalles</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                            <small *ngIf="!detalles.valid && detalles.touched && proyecto.detalles !== ''" class="invalid-feedback d-block">Los detalles no son válidos</small>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Imagen</label>
-                                    <input class="form-control" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
-                                    <small *ngIf="!imagen.valid && imagen.touched" class="invalid-feedback d-block">La imagen no es válida</small>
-                                </div>
-                            </div>
-                            <div class="col-md-6 px-md-1">
-                                <div class="form-group">
-                                    <label>Detalles</label>
-                                    <input class="form-control" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
-                                    <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los detalles no son válidos</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button [disabled]="updateProyectoForm.invalid" type="submit" class="btn btn-fill btn-danger">
-                    <span>Editar</span>
-                  </button>
-                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-                <form (ngSubmit)="buscarProyectos()">
+                    </div>
+                    <div style="padding: 10px;"></div>
+                    <div class="text-center">
+                        <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Registrar</button>
+                    </div>
+                </form>
+                <div style="padding: 30px;"></div>
+                <form class="pl-md-5" (ngSubmit)="buscarProyectos()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
-                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Proyecto">
+                                <input style="width : 600px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Proyecto">
                             </div>
                             <div class="px-md-2">
                                 <button nbButton status="primary" type="submit" size="giant">Buscar</button>
-                            </div>
-                            <div class="px-md-2">
-                                <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
                             </div>
                         </div>
                     </div>
@@ -141,5 +82,53 @@
                 </nb-card-body>
             </nb-card-body>
         </nb-card>
+    </div>
+</div>
+
+<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
+    <div class="modal-dialog">
+        <div class="modal-content" style=" margin-top: 30%; width: 1200px; height: 600px; background-color: rgb(47, 62, 106); right: 50%;">
+            <div class="modal-header">
+                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Proyectos</h>
+            </div>
+            <div style="padding: 50px;"></div>
+            <div class="modal-body">
+                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateProyecto()">
+                    <div class="row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Nombre</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched && proyecto.nombre !== ''" class="invalid-feedback d-block">El nombre no es válido</small>
+                        </div>
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Key Equipo</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_equipo.valid && key_equipo.touched && proyecto.key_equipo !== ''" class="invalid-feedback d-block">La key equipo no es válida</small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Imagen</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                            <small *ngIf="!imagen.valid && imagen.touched && proyecto.imagen !== ''" class="invalid-feedback d-block">La imagen no es válida</small>
+                        </div>
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Detalles</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                            <small *ngIf="!detalles.valid && detalles.touched && proyecto.detalles !== ''" class="invalid-feedback d-block">Los detalles no son válidos</small>
+                        </div>
+                    </div>
+                    <div style="padding: 20px;"></div>
+                    <div class="row">
+                        <div class="col">
+                            <button nbButton status="danger" size="medium" type="submit" class="btn btn-fill btn-danger">Editar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button nbButton status="primary" size="medium" type="button" (click)="closeModal()">Cerrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

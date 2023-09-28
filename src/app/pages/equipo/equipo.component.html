@@ -1,3 +1,11 @@
+<nb-alert *ngIf="alert" status="success" closable (close)="closeAlert()">
+    <div style="text-align: center;">!Registro realizado con exito! </div>
+</nb-alert>
+
+<nb-alert *ngIf="alertUpdate" status="success" closable (close)="closeAlert()">
+    <div style="text-align: center;">!Actualización realizada con exito! </div>
+</nb-alert>
+
 <div class="row">
     <div class="col-md-12">
         <nb-card>
@@ -5,86 +13,47 @@
                 <h5 class="title">Registrar Equipo</h5>
             </nb-card-header>
             <nb-card-body>
-                <div class="modal" *ngIf="modalRegister">
-                    <form class="contact-form" method="POST" #registrarEquipoForm="ngForm" (ngSubmit)="registrarEquipo(registrarEquipoForm)">
-                        <style>
-                            form {
-                                margin: auto;
-                                width: 95%;
-                            }
-                        </style>
-                        <div class="form-group">
+                <h6 class="title text-center">Registrar nuevo equipo</h6>
+                <div style="padding: 10px;"></div>
+                <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarEquipo()">
+                    <div class=" row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Nombre</label>
-                            <input class="form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched && equipo.nombre !== ''" class="invalid-feedback d-block">El nombre no es
                 válido</small>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class=" row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Key Colab</label>
-                            <input class="form-control" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_colab.valid && key_colab.touched" class="invalid-feedback d-block">La key colab no es
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_colab.valid && key_colab.touched && equipo.key_colab !== ''" class="invalid-feedback d-block">La key colab no es
                 válida</small>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class=" row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Key Proyecto</label>
-                            <input class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipo.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipo.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_proyecto.valid && key_proyecto.touched && equipo.key_proyecto !== ''" class="invalid-feedback d-block">La key
                 proyecto no es válida</small>
                         </div>
-                        <div class="card-footer">
-                            <button [disabled]="registrarEquipoForm.invalid" type="submit" class="btn btn-fill btn-danger">
-                <span>Registrar</span>
-              </button>
-                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal" *ngIf="modalUpdate">
-                    <form class="contact-form" method="POST" (ngSubmit)="updateEquipo(updateEquipoForm)">
-                        <style>
-                            form {
-                                margin: auto;
-                                width: 95%;
-                            }
-                        </style>
-                        <div class="row">
-                            <input name="id_equipo" [(ngModel)]="equipo.id_equipo" [ngModelOptions]="{standalone: true}" hidden="">
-                            <label>Nombre</label>
-                            <input class="form-control" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es
-                válido</small>
-                        </div>
-                        <div class="form-group">
-                            <label>Key Colab</label>
-                            <input class="form-control" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_colab.valid && key_colab.touched" class="invalid-feedback d-block">La key colab no es
-                válida</small>
-                        </div>
-                        <div class="form-group">
-                            <label>Key Proyecto</label>
-                            <input class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipo.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key
-                proyecto no es válida</small>
-                        </div>
-                        <div class="card-footer">
-                            <button [disabled]="updateEquipoForm.invalid" type="submit" class="btn btn-fill btn-danger">
-                <span>Editar</span>
-              </button>
-                            <button type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                        </div>
-                    </form>
-                </div>
-                <form (ngSubmit)="buscarEquipos()">
+                    </div>
+                    <div style="padding: 10px;"></div>
+                    <div class="text-center">
+                        <button nbButton status="danger" type="submit">Registrar</button>
+                    </div>
+                </form>
+                <div style="padding: 30px;"></div>
+                <form class="pl-md-5" (ngSubmit)="buscarEquipos()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
-                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Equipo">
+                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Equipo">
                             </div>
                             <div class="px-md-2">
                                 <button nbButton status="primary" type="submit" size="giant">Buscar</button>
-                            </div>
-                            <div class="px-md-2">
-                                <button nbButton status="danger" type="button" size="giant" (click)="openModal()">Registrar</button>
                             </div>
                         </div>
                     </div>
@@ -113,5 +82,53 @@
                 </nb-card-body>
             </nb-card-body>
         </nb-card>
+    </div>
+</div>
+
+<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
+    <div class="modal-dialog">
+        <div class="modal-content" style=" margin-top: 20%; width: 1200px; height: 600px; background-color: rgb(47, 62, 106); right: 50%;">
+            <div class="modal-header">
+                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Equipo</h>
+            </div>
+            <div style="padding: 30px;"></div>
+            <div class="modal-body">
+                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateEquipo()">
+                    <div class=" row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Nombre</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched && equipo.nombre !== ''" class="invalid-feedback d-block">El nombre no es
+                válido</small>
+                        </div>
+                    </div>
+                    <div class=" row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Key Colab</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_colab.valid && key_colab.touched && equipo.key_colab !== ''" class="invalid-feedback d-block">La key colab no es
+                válida</small>
+                        </div>
+                    </div>
+                    <div class=" row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                            <label>Key Proyecto</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipo.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_proyecto.valid && key_proyecto.touched && equipo.key_proyecto !== ''" class="invalid-feedback d-block">La key
+                proyecto no es válida</small>
+                        </div>
+                    </div>
+                    <div style="padding: 20px;"></div>
+                    <div class="row">
+                        <div class="col">
+                            <button nbButton status="danger" size="medium" type="submit">Editar</button>
+                        </div>
+                        <div class="col text-right">
+                            <button nbButton status="primary" size="medium" type="button" (click)="closeModal()">Cerrar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

@@ -25,6 +25,8 @@ export class PrioridadComponent implements OnInit {
   termino: string;
   myList: any=[];
   isOpen = false;
+  alert = false;
+  alertUpdate = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -40,15 +42,14 @@ export class PrioridadComponent implements OnInit {
     });
   }
 
-  registrarPrioridad(form){
+  registrarPrioridad(){
   this._userService.registrarPrioridad(this.prioridad.nombre).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.prioridad;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+        this.ngOnInit();
+        this.alert = true;
+        this.clearData();
+        this.closeModal();
         }
 
       },
@@ -59,15 +60,14 @@ export class PrioridadComponent implements OnInit {
    		);
 	}
 
-  updatePrioridad(form){
+  updatePrioridad(){
   this._userService.updatePrioridad(this.prioridad.id_prioridad, this.prioridad.nombre).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.prioridad;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/']);
+        this.ngOnInit();
+        this.alertUpdate = true;
+        this.clearData();
+        this.closeModal();
         }
 
       },
@@ -103,9 +103,17 @@ export class PrioridadComponent implements OnInit {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.clearData();
   }
   
+  closeAlert(){
+    this.alert = false;
+    this.alertUpdate = false;
+  }
+
+  clearData(){
+  this.prioridad = new Prioridad('','');
+  }
 
 
 }

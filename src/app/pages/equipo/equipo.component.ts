@@ -25,6 +25,8 @@ export class EquipoComponent implements OnInit {
   equipos: any=[];
   termino: string;
   myList: any=[];
+  alert = false;
+  alertUpdate = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -40,40 +42,36 @@ export class EquipoComponent implements OnInit {
     });
   }
 
-  registrarEquipo(form){
+  registrarEquipo(){
   this._userService.registrarEquipo(this.equipo.nombre, this.equipo.key_proyecto, this.equipo.key_colab).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.equipo;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Ingreso realizado con éxito', 'success');
-          this._router.navigate(['/registrar-equipo']);
+          this.ngOnInit();
+          this.clearData();
+          this.alert = true;
         }
 
       },
       error => {
         Swal.fire('UPS', 'El equipo no se ha podido registrar.', 'error');
-        this.status = 'error';
       }
    		);
 	}
 
-  updateEquipo(form){
+  updateEquipo(){
   this._userService.updateEquipo(this.equipo.id_equipo, this.equipo.nombre, this.equipo.key_proyecto, this.equipo.key_colab).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.equipo;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/registrar-equipo']);
+          this.ngOnInit(); 
+          this.clearData(); 
+          this.closeModal();
+          this.alertUpdate = true;
         }
 
       },
       error => {
         Swal.fire('UPS', 'El equipo no se ha podido registrar.', 'error');
-        this.status = 'error';
+
       }
       );
   }
@@ -94,14 +92,28 @@ export class EquipoComponent implements OnInit {
     this.modalUpdate = true;
     this.id_equipo = id_equipo;
     this.equipo = { ...this.myList.find(item => item.id_equipo ===        id_equipo) };
-    console.log(this.id_equipo);
   }
 
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.clearData(); 
   }
+
+  closeAlert(){
+    this.alert = false;
+    this.alertUpdate = false;
+  }
+
+  openAlert(){
+    this.alert = true;
+    this.alertUpdate = true;
+  }
+
+  clearData(){
+    this.equipo = new Equipo('','','','');
+  }
+
 
 
 

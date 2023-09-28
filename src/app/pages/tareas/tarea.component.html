@@ -122,7 +122,7 @@
 </div>
 
 
-<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
+<div class="modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
         <div class="modal-content" style="width: 1200px; height: 700px; background-color: rgb(47, 62, 106); right: 50%;">
             <div class="modal-header">
@@ -196,10 +196,10 @@
                     <div style="padding: 20px;"></div>
                     <div class="row">
                         <div class="col">
-                            <button nbButton status="danger" type="button" (click)="closeModal()">Cerrar</button>
+                            <button nbButton status="primary" type="submit">Editar</button>
                         </div>
                         <div class="col text-right">
-                            <button nbButton status="primary" type="submit">Editar</button>
+                            <button nbButton status="danger" type="button" (click)="closeModal()">Cerrar</button>
                         </div>
                     </div>
                 </form>

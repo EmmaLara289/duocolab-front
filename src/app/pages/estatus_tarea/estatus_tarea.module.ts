@@ -7,6 +7,7 @@ import { routing } from './estatus_tarea.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
 import { NbCardModule } from '@nebular/theme';
+import { NbAlertModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { NbCardModule } from '@nebular/theme';
     NbInputModule,
     NbButtonModule,
     NbCardModule,
+    NbAlertModule
   ],
   declarations: [
     EstatusTareaComponent

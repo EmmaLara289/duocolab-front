@@ -23,6 +23,8 @@ export class ProyectoComponent implements OnInit {
 	public identity;
   id_proyecto: string = null;
 	public status: string;
+  alert = false;
+  alertUpdate = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -37,15 +39,14 @@ export class ProyectoComponent implements OnInit {
     });
   }
 
-  registrarProyecto(form){
+  registrarProyecto(){
   this._userService.registrarProyecto(this.proyecto.nombre, this.proyecto.key_equipo, this.proyecto.imagen, this.proyecto.detalles).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/registrar-proyecto']);
+        this.ngOnInit();
+        this.alert = true;
+        this.clearData();
+        this.closeModal();
         }
 
       },
@@ -56,15 +57,14 @@ export class ProyectoComponent implements OnInit {
    	);
 	}
 
-  updateProyecto(form){
+  updateProyecto(){
   this._userService.updateProyecto(this.proyecto.id_proyecto, this.proyecto.nombre, this.proyecto.key_equipo, this.proyecto.imagen, this.proyecto.detalles).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
-          this.identity = response.proyecto;
-          localStorage.setItem('identity', JSON.stringify(this.identity));
-          Swal.fire('Registro realizado con éxito', 'success');
-          this._router.navigate(['/registrar-proyecto']);
+        this.ngOnInit();
+        this.alertUpdate = true;
+        this.clearData();
+        this.closeModal();
         }
 
       },
@@ -99,10 +99,17 @@ openModalUpdate(id_proyecto) {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.clearData();
   }
 
+  closeAlert(){
+    this.alert = false;
+    this.alertUpdate = false;
+  }
 
+  clearData(){
+    this.proyecto= new Proyecto('', '','', '','');
+  }
 
 
 }

@@ -8,6 +8,7 @@ import { NbButtonModule } from '@nebular/theme';
 import { NbTreeGridModule } from '@nebular/theme';
 import { NbInputModule } from '@nebular/theme';
 import { NbCardModule } from '@nebular/theme';
+import { NbAlertModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { NbCardModule } from '@nebular/theme';
     NbButtonModule,
     NbTreeGridModule,
     NbInputModule,
-    NbCardModule
+    NbCardModule,
+    NbAlertModule
   ],
   declarations: [
     TicketComponent

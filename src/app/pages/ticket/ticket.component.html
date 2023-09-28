@@ -1,51 +1,55 @@
+<nb-alert *ngIf="alert" status="success" closable (close)="closeAlert()">
+    <div style="text-align: center;">!Registro realizado con exito! </div>
+</nb-alert>
+
 <div class="row">
     <div class="col-md-12">
         <nb-card>
             <nb-card-header>
                 <h5 class="title">Registrar Ticket</h5>
             </nb-card-header>
-            <form class="contact-form" method="POST" #registrarTicketForm="ngForm" (ngSubmit)="registrarTicket(registrarTicketForm)">
-                <nb-card-body>
+            <nb-card-body>
+                <h6 class="title text-center">Registrar nuevo equipo</h6>
+                <div style="padding: 10px;"></div>
+                <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarTicket()">
                     <div class="row">
-                        <div class="col-md-3 px-md-5">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Key Proyecto</label>
-                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="ticket.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="ticket.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
                             <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key proyecto no es válida</small>
                         </div>
-                        <div class="col-md-3 px-md-5">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Key Usuario</label>
-                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="key_usuario" placeholder="Ingrese la key usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_usuario" placeholder="Ingrese la key usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standalone: true}">
                             <small *ngIf="!key_usuario.valid && key_usuario.touched" class="invalid-feedback d-block">La Key Usuario no es válido</small>
                         </div>
-                        <div class="col-md-3 px-md-5">
+                    </div>
+                    <div class="row">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Título</label>
-                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="titulo" placeholder="Ingrese el Título" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="titulo" placeholder="Ingrese el Título" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standalone: true}">
                             <small *ngIf="!titulo.valid && titulo.touched" class="invalid-feedback d-block">El Título no es válido</small>
                         </div>
-                        <div class="col-md-3 px-md-5">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Detalles</label>
-                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="detalles" placeholder="Ingrese los Detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los Detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standalone: true}">
                             <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los Detalles no son válidos</small>
                         </div>
                     </div>
-                    <div style="padding: 10px;"></div>
                     <div class="row">
-                        <div class="col-md-3 px-md-5 mx-auto">
+                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Key Prioridad</label>
-                            <input nbInput fullWidth shape="semi-round" class="form-control" type="text" name="key_prioridad" placeholder="Ingrese la key Prioridad" #key_prioridad="ngModel" [(ngModel)]="ticket.key_prioridad" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_prioridad" placeholder="Ingrese la key Prioridad" #key_prioridad="ngModel" [(ngModel)]="ticket.key_prioridad" required minlength="1" [ngModelOptions]="{standalone: true}">
                             <small *ngIf="!key_prioridad.valid && key_prioridad.touched" class="invalid-feedback d-block">La key Prioridad no es válida</small>
                         </div>
                     </div>
-                    <div style="padding: 15px;"></div>
-                    <div class="card-footer">
-                        <div style="text-align: center;">
-                            <button nbButton status="danger" type="submit">
-                          <span>Registrar</span>
-                        </button>
-                        </div>
+                    <div style="padding: 20px;"></div>
+                    <div style="text-align: center;">
+                        <button nbButton status="danger" type="submit">Registrar</button>
                     </div>
-                </nb-card-body>
-            </form>
+                </form>
+                <div style="padding: 15px;"></div>
+            </nb-card-body>
         </nb-card>
     </div>
 </div>

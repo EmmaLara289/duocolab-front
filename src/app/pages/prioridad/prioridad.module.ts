@@ -6,6 +6,7 @@ import { PrioridadComponent } from './prioridad.component';
 import { routing } from './prioridad.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
+import { NbAlertModule } from '@nebular/theme';
 import { NbCardModule } from '@nebular/theme';
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NbCardModule } from '@nebular/theme';
     routing,
     NbInputModule,
     NbButtonModule,
-    NbCardModule
+    NbCardModule,
+    NbAlertModule
   ],
   declarations: [
     PrioridadComponent
