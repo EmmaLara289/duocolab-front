@@ -42,9 +42,15 @@ export class UserService {
     {nombre:nombre, key_equipo:key_equipo, imagen:imagen, detalles:detalles});
   }
 
-  public registrarColaborador(nombre:string, telefono:string, foto:string, github:string, correo:string): Observable<any>{
-    return this._http.post(global.url + 'createColaborador',
-    {nombre:nombre, telefono:telefono, foto:foto, github:github, correo:correo});
+  registrarColaborador(nombre: string, telefono: string, foto: File, github: string, correo: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('telefono', telefono);
+    formData.append('foto', foto); // Agrega la foto como archivo al FormData
+    formData.append('github', github);
+    formData.append('correo', correo);
+
+    return this._http.post(global.url + 'createColaborador', formData);
   }
 
   public registrarEpica(nombre:string, proyecto: string, descripcion:string): Observable<any>{

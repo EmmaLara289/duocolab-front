@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ColaboradorComponent implements OnInit {
 	colaborador: Colaborador;
+  fotoAlert = true;
   modalRegister = false;
   modalUpdate = false;
   id_colab: string=null;
@@ -26,6 +27,7 @@ export class ColaboradorComponent implements OnInit {
   myList: any=[];
   alertUpdate = false;
   alert = false;
+  keyFoto: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -47,6 +49,7 @@ export class ColaboradorComponent implements OnInit {
           this.status = 'success';
           this.alert = true;
           this.ngOnInit();
+          this.clearData();
         }
   
       },
@@ -64,6 +67,7 @@ export class ColaboradorComponent implements OnInit {
           this.status = 'success';
           this.alertUpdate = true;
           this.ngOnInit();
+          this.clearData();
         }
   
       },
@@ -86,7 +90,7 @@ export class ColaboradorComponent implements OnInit {
   
   }
 
-  openModalUpdate(id_colab) {
+  openModalUpdate(id_colab){
     this.modalUpdate = true;
     this.id_colab = id_colab;
     this.colaborador = { ...this.myList.find(item => item.id_colab === id_colab) };
@@ -98,7 +102,63 @@ export class ColaboradorComponent implements OnInit {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    console.log('Modal cerrado');
+    this.clearData();
   }
+
+  foto(files: FileList){
+    this.handleFileInput(files);
+    this.handleFileInputURL(files);
+  }
+
+  handleFileInput(files: FileList) {
+    this.colaborador.foto = files.item(0);
+    console.log(this.colaborador.foto);
+    this.fotoAlert = false;
+  }
+
+  handleFileInputURL(files: FileList) {
+    const file = files.item(0);
+  
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        const dataUrl = e.target.result as string;
+  
+        // Generar una clave única para identificar la imagen en localStorage
+        const uniqueKey = 'foto_' + new Date().getTime();
+  
+        // Guardar la URL de datos en localStorage
+        localStorage.setItem(uniqueKey, dataUrl);
+  
+        // Almacena la clave única en tu objeto colaborador
+        this.keyFoto = uniqueKey;
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getFotoUrl() {
+    // Obtén la clave única almacenada en this.colaborador.fotoKey
+    const uniqueKey = this.keyFoto;
+  
+    if (uniqueKey) {
+      // Obtén la URL de datos desde localStorage
+      const dataUrl = localStorage.getItem(uniqueKey);
+  
+      // Devuelve la URL de datos
+      return dataUrl;
+    }
+  
+    // Si no hay clave única, devuelve una URL de imagen predeterminada o una URL vacía según tu necesidad
+    return 'URL_de_imagen_predeterminada.jpg'; // Cambia esto según tu caso
+  }
+  
+  clearData(){
+  this.colaborador= new Colaborador('', '','', '','','');
+  this.fotoAlert = true;
+  }  
+
 
 }
