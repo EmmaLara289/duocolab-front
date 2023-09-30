@@ -42,6 +42,14 @@ export class UserService {
     {nombre:nombre, key_equipo:key_equipo, imagen:imagen, detalles:detalles});
   }
 
+  public findProyecto(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchProyectos', {params: params});
+  }
+
   registrarColaborador(nombre: string, telefono: string, foto: File, github: string, correo: string): Observable<any> {
     const formData = new FormData();
     formData.append('nombre', nombre);
@@ -66,9 +74,26 @@ export class UserService {
     {nombre:nombre, proyecto:proyecto, descripcion:descripcion});
   }
 
+  public findEpica(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchEpicas', {params: params});
+  }
+
+
   public registrarTarea(nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string): Observable<any>{
     return this._http.post(global.url + 'createTarea',
     {nombre:nombre, descripcion:descripcion, key_epica:key_epica, key_sprint:key_sprint, key_proyecto:key_proyecto, key_colaborador:key_colaborador});
+  }
+
+  public findTarea(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchTareas', {params: params});
   }
 
   public registrarEstatusTarea(nombre:string): Observable<any>{
@@ -108,10 +133,6 @@ export class UserService {
     return this._http.get(global.url + 'getColaboradores');
   }
 
-  public getAreas(): Observable<any>{
-    return this._http.get(global.url + 'getAreas');
-  }
-
   public getEstatusTareas(): Observable<any>{
     return this._http.get(global.url + 'getEstatusTareas');
   }
@@ -137,6 +158,14 @@ export class UserService {
     {id_proyecto:id_proyecto, nombre:nombre, key_equipo:key_equipo, imagen:imagen, detalles:detalles});
   }
 
+  public findEquipo(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchEquipos', {params: params});
+  }
+
   public updateEquipo(id_equipo:string, nombre: string, key_proyecto:string, key_colab:string): Observable<any> {
     return this._http.post(global.url + 'updateEquipo',
      {id_equipo:id_equipo, nombre: nombre, key_proyecto: key_proyecto, key_colab:key_colab});
@@ -152,14 +181,42 @@ export class UserService {
     {id_area:id_area, nombre:nombre});
   } 
 
+  public getAreas(): Observable<any>{
+    return this._http.get(global.url + 'getAreas');
+  }
+
+  public findArea(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchAreas', {params: params});
+  }
+
   public updateEstatusTarea(id_estatus:string, nombre:string): Observable<any>{
     return this._http.post(global.url + 'updateEstatusTarea',
     {id_estatus:id_estatus, nombre:nombre});
   }
 
+  public findEstatusTarea(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchEstatusTareas', {params: params});
+  }
+
   public updatePrioridad(id_prioridad:string, nombre:string): Observable<any>{
     return this._http.post(global.url + 'updatePrioridad',
     {id_prioridad:id_prioridad, nombre:nombre});
+  }
+
+  public findPrioridad(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchPrioridades', {params: params});
   }
 
   public updateSprint(id_sprint:string, nombre:string, descripcion:string, key_proyecto:string): Observable<any>{

@@ -23,7 +23,7 @@ export class ColaboradorComponent implements OnInit {
 	public identity;
 	public status: string;
   colaboradores: any=[];
-  text: string;
+  text: string = '';
   myList: any=[];
   myList2: any=[];
   alertUpdate = false;

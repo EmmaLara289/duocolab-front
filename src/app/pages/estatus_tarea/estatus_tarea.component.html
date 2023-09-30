@@ -34,7 +34,7 @@
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
-                                <input nbInput style="width : 600px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="termino" name="termino" placeholder="Buscar Estatus Tarea">
+                                <input nbInput style="width : 600px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Estatus Tarea">
                             </div>
                             <div class="px-md-2">
                                 <button nbButton status="primary" type="submit" size="giant">Buscar</button>
@@ -43,7 +43,7 @@
                     </div>
                 </form>
                 <nb-card-body>
-                    <div class="table-responsive">
+                    <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
                         <table class="table dark-table ">
                             <thead>
                                 <tr>
@@ -54,6 +54,26 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of myList">
+                                    <td>{{ item.id_estatus }}</td>
+                                    <td>{{ item.nombre }}</td>
+                                    <td>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
+                        <table class="table dark-table ">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_estatus }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>

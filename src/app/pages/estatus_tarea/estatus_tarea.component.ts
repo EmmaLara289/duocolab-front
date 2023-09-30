@@ -23,10 +23,12 @@ export class EstatusTareaComponent implements OnInit {
   id_estatus:string=null;
   public status: string;
   estatus: any=[];
-  termino: string;
+  text: string = '';
   myList: any=[];
   estatustarea: EstatusTarea;
   estatustareaCopy: any;
+  myList2: any;
+  modalTable: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -76,10 +78,11 @@ export class EstatusTareaComponent implements OnInit {
   }
 
   buscarEstatusTareas() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchEstatusTareas?text=${this.termino}`)
-      .subscribe(estatus => {
-        this.estatus = estatus;
-      });
+    this._userService.findEstatusTarea(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {

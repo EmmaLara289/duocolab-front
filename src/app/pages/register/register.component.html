@@ -6,10 +6,23 @@
         </div>
     </div>
     <div style="padding: 5%"> </div>
-    <h5 class="title text-center">Ingresa tus datos de acceso</h5>
+    <h5 class="title text-center">Registra tus datos de acceso</h5>
     <div style="height: 300px">
+        <form (ngSubmit)="register()">
 
-        <form (ngSubmit)="login()" #form="ngForm" aria-labelledby="title">
+            <div class="form-control-group" col-md-5>
+                <label class="label" for="name">Nombre:</label>
+                <input nbInput fullWidth [(ngModel)]="user.name" #name="ngModel" name="name" id="input-name" pattern=".+@.+\..+" placeholder="Ingrese su Correo Electronico" fieldSize="large" autofocus [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
+                    [attr.aria-invalid]="name.invalid && name.touched ? true : null">
+                <ng-container *ngIf="name.invalid && name.touched">
+                    <p class="caption status-danger" *ngIf="name.errors?.required">
+                        name is required!
+                    </p>
+                    <p class="caption status-danger" *ngIf="name.errors?.pattern">
+                        name should be the real one!
+                    </p>
+                </ng-container>
+            </div>
 
             <div class="form-control-group" col-md-5>
                 <label class="label" for="input-email">Correo Electronico:</label>
@@ -27,8 +40,8 @@
 
             <div class="form-control-group">
                 <span class="label-with-link">
-                  <label class="label" for="input-password">Contraseña:</label>
-                </span>
+                      <label class="label" for="input-password">Contraseña:</label>
+                    </span>
                 <input nbInput fullWidth [(ngModel)]="user.password" #password="ngModel" name="password" type="password" id="input-password" placeholder="Ingrese su Contraseña" fieldSize="large" [attr.aria-invalid]="password.invalid && password.touched ? true : null">
                 <ng-container *ngIf="password.invalid && password.touched ">
                     <p class="caption status-danger" *ngIf="password.errors?.required">
@@ -39,8 +52,24 @@
                     </p>
                 </ng-container>
             </div>
+            <!--
+            <div class="form-control-group">
+                <span class="label-with-link">
+                      <label class="label" for="input-password">Tipo de usuario:</label>
+                    </span>
+                <input nbInput fullWidth [(ngModel)]="user.lk" #password="ngModel" name="password" type="password" id="input-password" placeholder="Ingrese su Contraseña" fieldSize="large" [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+                <ng-container *ngIf="password.invalid && password.touched ">
+                    <p class="caption status-danger" *ngIf="password.errors?.required">
+                        Password is required!
+                    </p>
+                    <p class="caption status-danger" *ngIf="password.errors?.minlength || password.errors?.maxlength">
+                        Password should contain from {{ getConfigValue('forms.validation.password.minLength') }} to {{ getConfigValue('forms.validation.password.maxLength') }} characters
+                    </p>
+                </ng-container>
+            </div>
+-->
             <div class="text-center">
-                <button nbButton status="primary" fullWidth> Log In</button>
+                <button nbButton status="danger" fullWidth>Registrar</button>
             </div>
         </form>
     </div>

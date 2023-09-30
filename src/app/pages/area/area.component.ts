@@ -20,7 +20,9 @@ export class AreaComponent implements OnInit {
   areas: any=[];
   modalRegister = false;
   modalUpdate = false;
-  termino: string;
+  modalTable = false;
+  myList2 : any;
+  text: string = '';
   public identity;
   public status: string;
   myList: any=[];
@@ -82,10 +84,11 @@ export class AreaComponent implements OnInit {
   }
 
   buscarAreas() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchAreas?text=${this.termino}`)
-      .subscribe(areas => {
-        this.areas = areas;
-      });
+    this._userService.findArea(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {

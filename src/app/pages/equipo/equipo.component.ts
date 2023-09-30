@@ -24,10 +24,12 @@ export class EquipoComponent implements OnInit {
   equipo: Equipo;
   equipoCopy: any;
   equipos: any=[];
-  termino: string;
+  text: string;
   myList: any=[];
   alert = false;
   alertUpdate = false;
+  myList2: any;
+  modalTable: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -78,10 +80,11 @@ export class EquipoComponent implements OnInit {
   }
 
   buscarEquipos() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchEquipos?text=${this.termino}`)
-      .subscribe(equipos => {
-        this.equipos = equipos;
-      });
+    this._userService.findEquipo(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {

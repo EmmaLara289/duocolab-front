@@ -22,12 +22,14 @@ export class PrioridadComponent implements OnInit {
   prioridades: any=[];
   modalRegister = false;
   modalUpdate = false;
-  termino: string;
+  text: string = '';
   myList: any=[];
   isOpen = false;
   alert = false;
   alertUpdate = false;
   prioridadCopy: any;
+  myList2: any;
+  modalTable: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -80,10 +82,11 @@ export class PrioridadComponent implements OnInit {
   }
 
   buscarPrioridades() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchPrioridades?text=${this.termino}`)
-      .subscribe(prioridades => {
-        this.prioridades = prioridades;
-      });
+    this._userService.findPrioridad(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
 

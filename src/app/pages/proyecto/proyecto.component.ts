@@ -19,13 +19,15 @@ export class ProyectoComponent implements OnInit {
   myList: any= [];
   modalRegister = false;
   modalUpdate = false;
-  termino: string;
+  text: string = '';
   proyectos: any= [];
 	public identity;
   id_proyecto: string = null;
 	public status: string;
   alert = false;
   alertUpdate = false;
+  myList2: any;
+  modalTable: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -77,10 +79,11 @@ export class ProyectoComponent implements OnInit {
   }
 
   buscarProyectos() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchProyectos?text=${this.termino}`)
-      .subscribe( proyectos => {
-        this.proyectos = proyectos;
-      });
+    this._userService.findProyecto(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {

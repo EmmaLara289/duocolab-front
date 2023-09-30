@@ -17,9 +17,11 @@ export class EpicaComponent implements OnInit {
   public identity;
   public status: string;
   epicas: any=[];
-  termino: string;
+  text: string = '';
   myList: any=[];
   epica: Epica;
+  myList2: any;
+  modalTable: any;
   modalRegister = false;
   id_epica:string=null;
   modalUpdate = false;
@@ -77,10 +79,11 @@ export class EpicaComponent implements OnInit {
   }
 
   buscarEpicas() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchEpicas?text=${this.termino}`)
-      .subscribe(epicas => {
-        this.epicas = epicas;
-      });
+    this._userService.findEpica(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {

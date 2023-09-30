@@ -20,8 +20,10 @@ export class TareaComponent {
   public identity;
   public status: string;
   tareas: any=[];
-  termino: string;
+  text: string = '';
   myList: any=[];
+  myList2: any;
+  modalTable = false;
   tarea: Tarea;
   modalRegister = false;
   id_tarea:string=null;
@@ -81,10 +83,11 @@ export class TareaComponent {
   }
 
   buscarTareas() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchTareas?text=${this.termino}`)
-      .subscribe(tareas => {
-        this.tareas = tareas;
-      });
+    this._userService.findTarea(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {
