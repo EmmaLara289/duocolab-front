@@ -13,7 +13,7 @@
                 <h5 class="title">Registro de Proyectos</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar nuevo Proyecto</h6>
+                <h6 class="title text-center">Registrar un nuevo Proyecto</h6>
                 <div style="padding: 10px;"></div>
                 <form class="col-md-10" style="position: relative; left: 8%;" (ngSubmit)="registrarProyecto()">
                     <div class="row">
@@ -73,7 +73,7 @@
                                     <td>{{ item.id_proyecto }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_proyecto)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -87,35 +87,35 @@
 
 <div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 30%; width: 1200px; height: 600px; background-color: rgb(47, 62, 106); right: 50%;">
+        <div class="modal-content" style=" margin-top: 50%; width: 1200px; background-color: rgb(47, 62, 106); right: 60%;">
             <div class="modal-header">
                 <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Proyectos</h>
             </div>
-            <div style="padding: 50px;"></div>
+            <div style="padding: 20px;"></div>
             <div class="modal-body">
                 <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateProyecto()">
                     <div class="row">
                         <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Nombre</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && proyecto.nombre !== ''" class="invalid-feedback d-block">El nombre no es válido</small>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyectoCopy.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
                         </div>
                         <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Key Equipo</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_equipo.valid && key_equipo.touched && proyecto.key_equipo !== ''" class="invalid-feedback d-block">La key equipo no es válida</small>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyectoCopy.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_equipo.valid && key_equipo.touched" class="invalid-feedback d-block">La key equipo no es válida</small>
                         </div>
                     </div>
                     <div class="row">
                         <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Imagen</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
-                            <small *ngIf="!imagen.valid && imagen.touched && proyecto.imagen !== ''" class="invalid-feedback d-block">La imagen no es válida</small>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyectoCopy.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                            <small *ngIf="!imagen.valid && imagen.touched" class="invalid-feedback d-block">La imagen no es válida</small>
                         </div>
                         <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label>Detalles</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
-                            <small *ngIf="!detalles.valid && detalles.touched && proyecto.detalles !== ''" class="invalid-feedback d-block">Los detalles no son válidos</small>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyectoCopy.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                            <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los detalles no son válidos</small>
                         </div>
                     </div>
                     <div style="padding: 20px;"></div>
@@ -127,6 +127,7 @@
                             <button nbButton status="primary" size="medium" type="button" (click)="closeModal()">Cerrar</button>
                         </div>
                     </div>
+                    <div style="padding: 20px;"></div>
                 </form>
             </div>
         </div>

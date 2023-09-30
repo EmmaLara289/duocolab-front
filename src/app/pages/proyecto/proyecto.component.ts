@@ -15,6 +15,7 @@ export class ProyectoComponent implements OnInit {
   @ViewChild('registrarProyectoForm') registrarProyectoForm: NgForm;
 
 	proyecto : Proyecto;
+  proyectoCopy: any;
   myList: any= [];
   modalRegister = false;
   modalUpdate = false;
@@ -58,7 +59,7 @@ export class ProyectoComponent implements OnInit {
 	}
 
   updateProyecto(){
-  this._userService.updateProyecto(this.proyecto.id_proyecto, this.proyecto.nombre, this.proyecto.key_equipo, this.proyecto.imagen, this.proyecto.detalles).subscribe(
+  this._userService.updateProyecto(this.proyectoCopy.id_proyecto, this.proyectoCopy.nombre, this.proyectoCopy.key_equipo, this.proyectoCopy.imagen, this.proyectoCopy.detalles).subscribe(
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
@@ -87,11 +88,12 @@ export class ProyectoComponent implements OnInit {
   
   }
 
-openModalUpdate(id_proyecto) {
+openModalUpdate(item){
   this.modalUpdate = true;
-  this.id_proyecto = id_proyecto;
+  this.proyectoCopy = {...item};
+  /*this.id_proyecto = id_proyecto;
   this.proyecto = { ...this.myList.find(item => item.id_proyecto === id_proyecto) };
-  console.log(this.id_proyecto);
+  console.log(this.id_proyecto);*/
 }
 
 

@@ -13,7 +13,7 @@
                 <h5 class=" title">Registrar Epica</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar nueva Epica</h6>
+                <h6 class="title text-center">Registrar una nueva Epica</h6>
                 <div style="padding: 10px;"></div>
                 <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarEpica()">
                     <div style="position: relative; left: 25%;">
@@ -81,7 +81,7 @@
                                     <td>{{ item.id_epica }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_epica)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -95,7 +95,7 @@
 
 <div class="modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 20%; width: 1200px; height: 600px; background-color: rgb(47, 62, 106); right: 50%;">
+        <div class="modal-content" style=" margin-top: 30%; width: 1200px; height: 600px; background-color: rgb(47, 62, 106); right: 55%;">
             <div class="modal-header">
                 <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Epica</h>
             </div>
@@ -106,8 +106,8 @@
                         <div class="col-md-6 px-md-4 text-center mx-auto">
                             <div class=" form-group">
                                 <label> Nombre </label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                                <small *ngIf="!nombre.valid && nombre.touched && epica.nombre !== ''" class="invalid-feedback d-block"> El nombre no es
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epicaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es
                 válido </small>
                             </div>
                         </div>
@@ -116,8 +116,8 @@
                         <div class="col-md-6 px-md-4 text-center mx-auto">
                             <div class=" form-group">
                                 <label for="form-control"> Proyecto </label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.proyecto" required minlength="5">
-                                <small *ngIf="!proyecto.valid && proyecto.touched && epica.proyecto !== ''" class="invalid-feedback d-block"> El proyecto no es
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epicaCopy.proyecto" required minlength="5">
+                                <small *ngIf="!proyecto.valid && proyecto.touched" class="invalid-feedback d-block"> El proyecto no es
                 válido </small>
                             </div>
                         </div>
@@ -126,8 +126,9 @@
                         <div class="col-md-6 px-md-4 text-center mx-auto">
                             <div class=" form-group">
                                 <label for="form-control"> Descripción </label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
-                                <small *ngIf="!descripcion.valid && descripcion.touched && epica.descripcion !== ''" class="invalid-feedback d-block"> La
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epicaCopy.descripcion" required
+                                    minlength="10">
+                                <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block"> La
                 descripcion no es válida </small>
                             </div>
                         </div>

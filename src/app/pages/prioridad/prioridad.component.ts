@@ -27,6 +27,7 @@ export class PrioridadComponent implements OnInit {
   isOpen = false;
   alert = false;
   alertUpdate = false;
+  prioridadCopy: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -61,7 +62,7 @@ export class PrioridadComponent implements OnInit {
 	}
 
   updatePrioridad(){
-  this._userService.updatePrioridad(this.prioridad.id_prioridad, this.prioridad.nombre).subscribe(
+  this._userService.updatePrioridad(this.prioridadCopy.id_prioridad, this.prioridadCopy.nombre).subscribe(
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
@@ -91,11 +92,12 @@ export class PrioridadComponent implements OnInit {
   
   }
 
-  openModalUpdate(id_prioridad) {
+  openModalUpdate(item) {
     this.modalUpdate = true;
-    this.id_prioridad = id_prioridad;
+    this.prioridadCopy = {...item};
+    /*this.id_prioridad = id_prioridad;
     this.prioridad = { ...this.myList.find(item => item.id_prioridad ===id_prioridad) };
-    console.log(this.id_prioridad);
+    console.log(this.id_prioridad);*/
   }
 
 
@@ -103,7 +105,6 @@ export class PrioridadComponent implements OnInit {
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    this.clearData();
   }
   
   closeAlert(){

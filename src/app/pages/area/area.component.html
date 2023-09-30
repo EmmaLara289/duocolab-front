@@ -13,7 +13,7 @@
                 <h5 class=" title">Registro de Areas</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar nueva Tarea</h6>
+                <h6 class="title text-center">Registrar una nueva Area</h6>
                 <div style="padding: 10px;"></div>
                 <form style="left: 8%;" class="col-md-10" (ngSubmit)="registrarArea()">
                     <div class=" row">
@@ -57,7 +57,7 @@
                                     <td>{{ item.id_area }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_area)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -73,18 +73,20 @@
 
 <div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
-        <div class="modal-content" style="margin-top: 50%; width: 1200px; height: 400px; background-color: rgb(47, 62, 106); right: 50%;">
+        <div class="modal-content" style="margin-top: 50%; width: 800px; background-color: rgb(47, 62, 106); right: 30%;">
             <div class="modal-header">
                 <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Area</h>
             </div>
-            <div style="padding: 30px;"></div>
+            <div style="padding: 20px;"></div>
             <div class="modal-body">
                 <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateArea()">
                     <div class="row">
-                        <div class=" form-group mx-auto">
-                            <label style="position: relative ; left: 38%;">Nombre</label>
-                            <input nbInput status="danger" fullWidth shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                        <div class="px-md-1 col-md-8 form-group mx-auto text-center">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input nbInput status="danger" class="text-center" fullWidth shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="areaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+                            </div>
                         </div>
                     </div>
                     <div style="padding: 20px;"></div>
@@ -96,6 +98,7 @@
                             <button nbButton status="primary" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
                         </div>
                     </div>
+                    <div style="padding: 20px;"></div>
                 </form>
             </div>
         </div>

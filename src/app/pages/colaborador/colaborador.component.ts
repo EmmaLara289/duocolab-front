@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Colaborador } from '../../models/colaborador';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
-declare var jQuery: any;
-declare var $: any;
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { global } from '../../services/global';
 
 
 @Component({
@@ -17,23 +16,31 @@ import { HttpClient } from '@angular/common/http';
 export class ColaboradorComponent implements OnInit {
 	colaborador: Colaborador;
   fotoAlert = true;
+  fotoAlertUpdate = true;
   modalRegister = false;
   modalUpdate = false;
   id_colab: string=null;
 	public identity;
 	public status: string;
   colaboradores: any=[];
-  termino: string;
+  text: string;
   myList: any=[];
+  myList2: any=[];
   alertUpdate = false;
   alert = false;
   keyFoto: any;
+  colaboradorCopy: any;
+  global: any;
+  getFotoUrlAddress: any;
+  colaboradorUpdate: any= [];
+  modalTable = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private http: HttpClient
   ) {
-  this.colaborador= new Colaborador('', '','', '','','')
+  this.colaborador= new Colaborador('', '','', '','','');
+  this.global = global.url;
   }
 
   ngOnInit(){
@@ -61,28 +68,29 @@ export class ColaboradorComponent implements OnInit {
 	}
 
   updateColaborador(){
-  this._userService.updateColaborador(this.colaborador.id_colab, this.colaborador.nombre, this.colaborador.telefono, this.colaborador.foto, this.colaborador.github, this.colaborador.correo).subscribe(
+  this._userService.updateColaborador(this.colaboradorCopy.id_colab, this.colaboradorCopy.nombre, this.colaboradorCopy.telefono, this.colaboradorCopy.foto, this.colaboradorCopy.github, this.colaboradorCopy.correo).subscribe(
       response => {
       if(response.status != 'error'){
-          this.status = 'success';
           this.alertUpdate = true;
           this.ngOnInit();
           this.clearData();
+          this.closeModal();
+          this.buscarColaboradores();
         }
   
       },
       error => {
         Swal.fire('UPS', 'El equipo no se ha podido registrar.', 'error');
-        this.status = 'error';
         }
     );
   }
 
   buscarColaboradores() {
-    this.http.get<any[]>(`http://127.0.0.1:8000/api/searchColaboradores?text=${this.termino}`)
-      .subscribe(colaboradores => {
-        this.colaboradores = colaboradores;
-      });
+    this._userService.findColaborador(this.text).subscribe((response) => {
+      this.myList2 = response;
+      this.modalTable = true;
+      console.log(response);
+    });
   }
 
   openModal() {
@@ -90,11 +98,18 @@ export class ColaboradorComponent implements OnInit {
   
   }
 
-  openModalUpdate(id_colab){
+  openModalUpdate(item){
     this.modalUpdate = true;
-    this.id_colab = id_colab;
-    this.colaborador = { ...this.myList.find(item => item.id_colab === id_colab) };
-    console.log(this.id_colab);
+    this.colaboradorCopy = { ...item };
+
+    this.colaboradorUpdate = this.colaboradorCopy;
+    console.log('item', item);
+    //this.colaborador = { ...this.myList.find(item => item.id_colab === id_colab) };
+    this.fotoAlertUpdate = this.colaboradorCopy.foto;
+    this.getFotoUrlAddress = this.global.replace('/api/', '/');
+    console.log(this.getFotoUrlAddress);
+    //this.get
+    //http://127.0.0.1:8000/storage/colaboradores/50a78bb8fd562d556785e04ba87529de.jpg
   }
 
 
@@ -159,6 +174,11 @@ export class ColaboradorComponent implements OnInit {
   this.colaborador= new Colaborador('', '','', '','','');
   this.fotoAlert = true;
   }  
+
+  closeAlert(){
+    this.alert = false;
+    this.alertUpdate = false;
+  }
 
 
 }

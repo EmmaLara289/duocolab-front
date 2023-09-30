@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AreaComponent implements OnInit {
 	area: Area;
+  areaCopy: any;
   id_area:string=null;
   areas: any=[];
   modalRegister = false;
@@ -58,7 +59,7 @@ export class AreaComponent implements OnInit {
 	}
 
   updateArea(){
-  this._userService.updateArea(this.area.id_area, this.area.nombre).subscribe(
+  this._userService.updateArea(this.areaCopy.id_area, this.areaCopy.nombre).subscribe(
       response => {
       if(response.status != 'error'){
         this.status = 'success';
@@ -91,11 +92,12 @@ export class AreaComponent implements OnInit {
   this.modalRegister = true;
   }
 
-  openModalUpdate(id_area) {
+  openModalUpdate(item){
     this.modalUpdate = true;
-    this.id_area = id_area;
+    this.areaCopy = {...item}
+    /*this.id_area = id_area;
     this.area = { ...this.myList.find(item => item.id_area === id_area) };
-    console.log(this.id_area);
+    console.log(this.id_area);*/
   }
 
 

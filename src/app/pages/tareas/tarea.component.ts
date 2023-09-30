@@ -28,7 +28,7 @@ export class TareaComponent {
   modalUpdate = false;
   alertUpdate = false;
   alert = false;
-  tareaCopy: Tarea;
+  tareaCopy: any;
 
   constructor(
   private _userService: UserService,
@@ -37,7 +37,7 @@ export class TareaComponent {
 
   ) { 
   this.tarea = new Tarea('','','','','','','');
-  this.tareaCopy = new Tarea('','','','','','','');
+  //this.tareaCopy = new Tarea('','','','','','','');
   }
 
   ngOnInit(){
@@ -63,7 +63,7 @@ export class TareaComponent {
 	}
 
   updateTarea(){
-  this._userService.updateTarea(this.tarea.id_tarea, this.tarea.nombre, this.tarea.descripcion, this.tarea.key_epica, this.tarea.key_sprint, this.tarea.key_proyecto, this.tarea.key_colaborador).subscribe(
+  this._userService.updateTarea(this.tareaCopy.id_tarea, this.tareaCopy.nombre, this.tareaCopy.descripcion, this.tareaCopy.key_epica, this.tareaCopy.key_sprint, this.tareaCopy.key_proyecto, this.tareaCopy.key_colaborador).subscribe(
       response => {
       if(response.status != 'error'){
           this.ngOnInit();
@@ -92,11 +92,11 @@ export class TareaComponent {
   
   }
 
-  openModalUpdate(id_tarea) {
+  openModalUpdate(item) {
     this.modalUpdate = true;
-    this.id_tarea = id_tarea;
-    this.tarea = { ...this.myList.find(item => item.id_tarea === id_tarea) };
-    console.log(this.id_tarea);
+    this.tareaCopy = { ...item };
+    //this.tarea = { ...this.myList.find(item => item.id_tarea === id_tarea) };
+    //console.log(this.id_tarea);
   }
 
 
@@ -114,12 +114,6 @@ export class TareaComponent {
   }
 
   clearData(){
-  /*this.tarea.nombre = '';
-  this.tarea.key_proyecto = '';
-  this.tarea.descripcion = '';
-  this.tarea.key_colaborador = '';
-  this.tarea.key_epica = '';
-  this.tarea.key_sprint = '';*/
   this.tarea = new Tarea('','','','','','','');
   this.tareaCopy= new Tarea('','','','','','','');
   }

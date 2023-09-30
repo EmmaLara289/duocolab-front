@@ -25,7 +25,7 @@ export class EpicaComponent implements OnInit {
   modalUpdate = false;
   alert = false;
   alertUpdate = false;
-
+  epicaCopy: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -59,7 +59,7 @@ export class EpicaComponent implements OnInit {
 	}
 
   updateEpica(){
-  this._userService.updateEpica(this.epica.id_epica, this.epica.nombre, this.epica.proyecto, this.epica.descripcion).subscribe(
+  this._userService.updateEpica(this.epicaCopy.id_epica, this.epicaCopy.nombre, this.epicaCopy.proyecto, this.epicaCopy.descripcion).subscribe(
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
@@ -88,11 +88,12 @@ export class EpicaComponent implements OnInit {
   
   }
 
-  openModalUpdate(id_epica) {
+  openModalUpdate(item) {
     this.modalUpdate = true;
-    this.id_epica = id_epica;
+    this.epicaCopy = {...item};
+    /*this.id_epica = id_epica;
     this.epica = { ...this.myList.find(item => item.id_epica === id_epica) };
-    console.log(this.id_epica);
+    console.log(this.id_epica);*/
   }
 
 

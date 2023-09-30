@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { global } from './global';
 
@@ -51,6 +51,14 @@ export class UserService {
     formData.append('correo', correo);
 
     return this._http.post(global.url + 'createColaborador', formData);
+  }
+
+  public findColaborador(text:string):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+    params = params.set('text', text);
+  }
+  return this._http.get(this.url+ 'searchColaboradores', {params: params});
   }
 
   public registrarEpica(nombre:string, proyecto: string, descripcion:string): Observable<any>{

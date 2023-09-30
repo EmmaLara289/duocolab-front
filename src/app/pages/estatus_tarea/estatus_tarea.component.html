@@ -13,7 +13,7 @@
                 <h5 class=" title">Registro de Estatus de Tareas</h5>
             </nb-card-header>
             <nb-card-body>
-                <h5 class="title text-center">Registrar Estatus de Tareas</h5>
+                <h5 class="title text-center">Registrar un nuevo Estatus de Tareas</h5>
                 <div style="padding: 10px;"></div>
                 <form style="left: 8%;" class="col-md-10" (ngSubmit)="registrarEstatusTarea()">
                     <div class=" row">
@@ -57,7 +57,7 @@
                                     <td>{{ item.id_estatus }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_estatus)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -71,18 +71,18 @@
 
 <div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 50%; width: 1200px; height: 400px; background-color: rgb(47, 62, 106); right: 50%;">
+        <div class="modal-content" style=" margin-top: 50%; width: 1200px; background-color: rgb(47, 62, 106); right: 60%;">
             <div class="modal-header">
                 <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Estatus de Tarea</h>
             </div>
-            <div style="padding: 30px;"></div>
+            <div style="padding: 20px;"></div>
             <div class="modal-body">
                 <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateEstatusTarea()">
                     <div class=" row">
                         <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label> Nombre </label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="estatustarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && estatustarea.nombre !== ''" class="invalid-feedback d-block"> El nombre no es
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="estatustareaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched " class="invalid-feedback d-block"> El nombre no es
                     válido </small>
                         </div>
                     </div>
@@ -95,6 +95,7 @@
                             <button nbButton status="primary" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
                         </div>
                     </div>
+                    <div style="padding: 20px;"></div>
                 </form>
             </div>
         </div>

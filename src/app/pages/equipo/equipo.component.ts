@@ -22,6 +22,7 @@ export class EquipoComponent implements OnInit {
   modalRegister = false;
   modalUpdate = false;
   equipo: Equipo;
+  equipoCopy: any;
   equipos: any=[];
   termino: string;
   myList: any=[];
@@ -59,7 +60,7 @@ export class EquipoComponent implements OnInit {
 	}
 
   updateEquipo(){
-  this._userService.updateEquipo(this.equipo.id_equipo, this.equipo.nombre, this.equipo.key_proyecto, this.equipo.key_colab).subscribe(
+  this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, this.equipoCopy.key_proyecto, this.equipoCopy.key_colab).subscribe(
       response => {
       if(response.status != 'error'){
           this.ngOnInit(); 
@@ -88,10 +89,11 @@ export class EquipoComponent implements OnInit {
   
   }
 
-  openModalUpdate(id_equipo) {
+  openModalUpdate(item) {
     this.modalUpdate = true;
-    this.id_equipo = id_equipo;
-    this.equipo = { ...this.myList.find(item => item.id_equipo ===        id_equipo) };
+    this.equipoCopy = {...item};
+    /*this.id_equipo = id_equipo;
+    this.equipo = { ...this.myList.find(item => item.id_equipo ===        id_equipo) };*/
   }
 
   closeModal() {

@@ -13,7 +13,7 @@
                 <h5 class="title">Registro de Prioridad</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar nueva prioridad</h6>
+                <h6 class="title text-center">Registrar una nueva Prioridad</h6>
                 <div style="padding: 10px;"></div>
                 <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarPrioridad()">
                     <div class=" row">
@@ -55,7 +55,7 @@
                                     <td>{{ item.id_prioridad }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item.id_prioridad)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -69,18 +69,18 @@
 
 <div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 50%; width: 1200px; height: 400px; background-color: rgb(47, 62, 106); right: 50%;">
+        <div class="modal-content" style=" margin-top: 50%; width: 1200px; background-color: rgb(47, 62, 106); right: 60%;">
             <div class="modal-header">
                 <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Prioridad</h>
             </div>
-            <div style="padding: 30px;"></div>
+            <div style="padding: 20px;"></div>
             <div class="modal-body">
                 <form class="col-md-10" style="left: 8%;" (ngSubmit)="updatePrioridad()">
                     <div class=" row">
                         <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                             <label> Nombre </label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && prioridad.nombre !== ''" class="invalid-feedback d-block"> El nombre no es válido </small>
+                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridadCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
                         </div>
                     </div>
                     <div style="padding: 20px;"></div>
@@ -92,6 +92,7 @@
                             <button nbButton status="primary" size="medium" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
                         </div>
                     </div>
+                    <div style="padding: 20px;"></div>
                 </form>
             </div>
         </div>

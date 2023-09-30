@@ -26,6 +26,7 @@ export class EstatusTareaComponent implements OnInit {
   termino: string;
   myList: any=[];
   estatustarea: EstatusTarea;
+  estatustareaCopy: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -48,7 +49,6 @@ export class EstatusTareaComponent implements OnInit {
         this.ngOnInit();
         this.alert = true;
         this.closeModal();
-        this.clearData();
         }
 
       },
@@ -60,19 +60,17 @@ export class EstatusTareaComponent implements OnInit {
 	}
 
   updateEstatusTarea(){
-  this._userService.updateEstatusTarea(this.estatustarea.id_estatus, this.estatustarea.nombre).subscribe(
+  this._userService.updateEstatusTarea(this.estatustareaCopy.id_estatus, this.estatustareaCopy.nombre).subscribe(
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
         this.alertUpdate = true;
-        this.clearData();
         this.closeModal();
         }
 
       },
       error => {
         Swal.fire('UPS', 'El estatustarea no se ha podido registrar.', 'error');
-        this.status = 'error';
       }
       );
   }
@@ -89,11 +87,12 @@ export class EstatusTareaComponent implements OnInit {
   
   }
 
-  openModalUpdate(id_estatus) {
+  openModalUpdate(item){
   this.modalUpdate = true;
-  this.id_estatus = id_estatus;
+  this.estatustareaCopy = {...item};
+  /*this.id_estatus = id_estatus;
   this.estatustarea = { ...this.myList.find(item => item.id_estatus === id_estatus) };
-  console.log(this.id_estatus);
+  console.log(this.id_estatus);*/
   }
 
   closeModal() {
