@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { CheckUser } from '../../services/checkUser';
 import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare var $: any;
@@ -14,28 +15,17 @@ declare var $: any;
 })
 
 export class LoginComponent implements OnInit {
-  public page_title: string;
-  mostrarFormulario = false;
+
   public user: User;
-  public user_reg: User;
-  public userTypes: any[] = [];
-  public status: string;
-  public token: string;
-  public identity;
-  public details;
-  public data_error: string;
-  public error_reg: string;
-  public success_reg: string;
-  public checkbox;
-  public user_reg_aux: { name: string, surname: string, email_reg: string, email_hash: string, description: string, image: string, password_reg: string, password_repeat: string, key_type_user: any, key_business_type: any, role_user: string, enterprise_name: string, rfc: string, social_reason: string };
+
   constructor(
     private _userService: UserService,
     private _router: Router,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private ChekUser: CheckUser
   ) {
-    this.page_title = 'Identificate';
-    this.user = new User(1, '', '', '', '', '');
-    this.user_reg = new User(1, '', '', '', '', '');
+    this.user = new User(1, '', '', '', '', 1);
+    //this.user_reg = new User(1, '', '', '', '', '');
   }
 
   ngOnInit() {
@@ -46,15 +36,44 @@ export class LoginComponent implements OnInit {
     this._userService.login(this.user.email, this.user.password).subscribe(
       response => {
         if (response.status != 'error') {
-          this.status = 'success';
-          this._router.navigate(['/pages/tarea']);
+//          console.log(response.user);
+          this.ChekUser.userData = response.user;
+          
+          if(response.user.key_role == 1){
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Bienvenido Administrador',
+              showConfirmButton: false,
+              timer: 1200
+            });
+            this._router.navigate(['/pages/tarea']);
+          }else if(response.user.key_role == 2){
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Bienvenido Colaborador',
+              showConfirmButton: false,
+              timer: 1200
+            });
+            this._router.navigate(['/pages/tarea']);
+          }else if(response.user.key_role == 3){
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Bienvenido Coordinador',
+              showConfirmButton: false,
+              timer: 1200
+            });
+            this._router.navigate(['/pages/ticket']);
+          }
+          this.ChekUser.login = true;
         }
 
         
       },
       error => {
         Swal.fire('UPS', 'El usuario no se ha podido identificar.', 'error');
-        this.status = 'error';
       }
     );
   }

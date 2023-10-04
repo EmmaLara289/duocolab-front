@@ -12,8 +12,7 @@
 
             <div class="form-control-group" col-md-5>
                 <label class="label" for="name">Nombre:</label>
-                <input nbInput fullWidth [(ngModel)]="user.name" #name="ngModel" name="name" id="input-name" pattern=".+@.+\..+" placeholder="Ingrese su Correo Electronico" fieldSize="large" autofocus [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'"
-                    [attr.aria-invalid]="name.invalid && name.touched ? true : null">
+                <input nbInput fullWidth [(ngModel)]="user.name" #name="ngModel" name="name" id="input-name" placeholder="Ingrese su Correo Electronico" fieldSize="large" autofocus [status]="name.dirty ? (name.invalid  ? 'danger' : 'success') : 'basic'" [attr.aria-invalid]="name.invalid && name.touched ? true : null">
                 <ng-container *ngIf="name.invalid && name.touched">
                     <p class="caption status-danger" *ngIf="name.errors?.required">
                         name is required!
@@ -52,23 +51,14 @@
                     </p>
                 </ng-container>
             </div>
-            <!--
             <div class="form-control-group">
-                <span class="label-with-link">
-                      <label class="label" for="input-password">Tipo de usuario:</label>
-                    </span>
-                <input nbInput fullWidth [(ngModel)]="user.lk" #password="ngModel" name="password" type="password" id="input-password" placeholder="Ingrese su Contraseña" fieldSize="large" [attr.aria-invalid]="password.invalid && password.touched ? true : null">
-                <ng-container *ngIf="password.invalid && password.touched ">
-                    <p class="caption status-danger" *ngIf="password.errors?.required">
-                        Password is required!
-                    </p>
-                    <p class="caption status-danger" *ngIf="password.errors?.minlength || password.errors?.maxlength">
-                        Password should contain from {{ getConfigValue('forms.validation.password.minLength') }} to {{ getConfigValue('forms.validation.password.maxLength') }} characters
-                    </p>
-                </ng-container>
+                <nb-select fullWidth #key_role="ngModel" name="key_role" type="number" id="input-key_role" [(ngModel)]="user.key_role" selected="1">
+                    <nb-option value="1">Administrador</nb-option>
+                    <nb-option value="2">Colaborador</nb-option>
+                    <nb-option value="3">Coordinador </nb-option>
+                </nb-select>
             </div>
--->
-            <div class="text-center">
+            <div class="text-center ">
                 <button nbButton status="danger" fullWidth>Registrar</button>
             </div>
         </form>

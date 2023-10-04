@@ -7,7 +7,7 @@ export class User {
         public email: string,
         public password: string,
         public password_repeat: string,
-        public key_role: any,
+        public key_role: number,
 
 
     ) { }

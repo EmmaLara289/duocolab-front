@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
     private _router: Router,
     private _route: ActivatedRoute
   ) {
-    this.user = new User(1, '', '', '', '', '');
+    this.user = new User(1, '', '', '', '', 1);
   }
 
   ngOnInit() {
@@ -28,10 +28,12 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-  this._userService.register(this.user.name, this.user.email, this.user.password).subscribe(
+  this._userService.register(this.user.name, this.user.email, this.user.password, this.user.key_role).subscribe(
     response => {
       if (response.status != 'error') {
-          Swal.fire('Registro realizado con éxito', 'success');
+          console.log('respuesta:',response);
+          Swal.fire('Registro realizado con éxito...', 'Ahora accede a tu cuenta creada', 'success');
+          //Swal.fire('Usuario creado...', 'El usuario se creó con éxito', 'success');
           this._router.navigate(['/auth/login']);
       }
     },

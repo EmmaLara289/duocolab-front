@@ -8,6 +8,10 @@ import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
 import { NbCardModule } from '@nebular/theme';
 import { NbAlertModule } from '@nebular/theme';
+import { NbPopoverModule } from '@nebular/theme';
+import { NbSelectModule } from '@nebular/theme';
+
+
 
 @NgModule({
   imports: [
@@ -17,10 +21,12 @@ import { NbAlertModule } from '@nebular/theme';
     NbInputModule,
     NbButtonModule,
     NbCardModule,
-    NbAlertModule
+    NbAlertModule,
+    NbPopoverModule,
+    NbSelectModule
   ],
   declarations: [
-    EquipoComponent
+    EquipoComponent,
   ]
 })
 export class EquipoModule {}

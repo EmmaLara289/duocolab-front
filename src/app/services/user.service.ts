@@ -22,9 +22,9 @@ export class UserService {
      { email: email, password: password });
   }
 
-  public register(name:string, email:string, password:string): Observable<any>{
+  public register(name:string, email:string, password:string, key_role:any): Observable<any>{
     return this._http.post(global.url + 'register',
-    { name:name, email:email, password: password});
+    { name:name, email:email, password: password, key_role: key_role});
   }
 
   public getUsers(): Observable<any>{

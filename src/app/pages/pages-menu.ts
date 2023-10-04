@@ -1,4 +1,5 @@
 import { NbMenuItem } from '@nebular/theme';
+import { CheckUser } from '../services/checkUser';
 
 export const MENU_ITEMS: NbMenuItem[] = [
 
@@ -47,7 +48,86 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Ticket',
     link: '/pages/ticket'
   },
-  /*{
+]
+/*
+let MENU_ITEMS: NbMenuItem[];
+console.log(CheckUser.key_role);
+if (CheckUser.key_role === 2) {
+  MENU_ITEMS = [
+  
+    {
+      icon: 'edit-2-outline',
+      title: 'Tareas',
+      link: '/pages/tarea'
+    },
+    {
+      icon: 'edit-2-outline',
+      title: 'Areas',
+      link: '/pages/area'
+    },
+  ];
+}else if(CheckUser.key_role === 1){ 
+  MENU_ITEMS = [
+  {
+    icon: 'edit-2-outline',
+    title: 'Tareas',
+    link: '/pages/tarea'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Areas',
+    link: '/pages/area'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Colaboradores',
+    link: '/pages/colaborador'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Epicas',
+    link: '/pages/epica'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Equipos',
+    link: '/pages/equipo'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Estatus Tareas',
+    link: '/pages/estatus-tarea'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Prioridades',
+    link: '/pages/prioridad'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Proyectos',
+    link: '/pages/proyecto'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Ticket',
+    link: '/pages/ticket'
+  }
+];
+}
+
+export { MENU_ITEMS };
+
+*/
+
+
+
+
+
+
+
+/*
+/*{
     title: 'E-commerce',
     icon: 'shopping-cart-outline',
     link: '/pages/dashboard',
@@ -291,4 +371,3 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
 */
-];

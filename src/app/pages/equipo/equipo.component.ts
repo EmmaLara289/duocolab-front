@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-equipo',
   templateUrl: './equipo.component.html',
@@ -30,6 +31,8 @@ export class EquipoComponent implements OnInit {
   alertUpdate = false;
   myList2: any;
   modalTable: any;
+  integrantes: any;
+  users: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -42,8 +45,14 @@ export class EquipoComponent implements OnInit {
   ngOnInit(){
   this._userService.getEquipos().subscribe((response) => {
       this.myList = response;
+      console.log(response);
     });
+
+  this._userService.getUsers().subscribe((response) =>{
+    this.users = response;
+  })
   }
+
 
   registrarEquipo(){
   this._userService.registrarEquipo(this.equipo.nombre, this.equipo.key_proyecto, this.equipo.key_colab).subscribe(
@@ -89,7 +98,11 @@ export class EquipoComponent implements OnInit {
 
   openModal() {
   this.modalRegister = true;
-  
+  }
+
+  selectEquipo(item){
+    this.integrantes = item.integrantes;
+    console.log(this.integrantes);
   }
 
   openModalUpdate(item) {

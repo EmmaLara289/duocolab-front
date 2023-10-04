@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <nb-card>
+        <nb-card status="danger">
             <nb-card-header>
                 <h5 class="title">Registrar Equipo</h5>
             </nb-card-header>
@@ -25,11 +25,13 @@
                         </div>
                     </div>
                     <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Colab</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_colab.valid && key_colab.touched && equipo.key_colab !== ''" class="invalid-feedback d-block">La key colab no es
-                válida</small>
+                        <div class=" px-md-4 col-md-6 form-group mx-auto">
+                            <div class="row justify-content-center">
+                                <label>Integrantes</label>
+                            </div>
+                            <nb-select class="justify-content-center" fullWidth>
+                                <nb-option class="justify-content-center" *ngFor="let option of users" [value]="option.id">{{ option.name }}</nb-option>
+                            </nb-select>
                         </div>
                     </div>
                     <div class=" row">
@@ -45,7 +47,11 @@
                         <button nbButton status="danger" type="submit">Registrar</button>
                     </div>
                 </form>
-                <div style="padding: 30px;"></div>
+
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
                 <form class="pl-md-5" (ngSubmit)="buscarEquipos()">
                     <div class="row">
                         <div class="row align-items-center">
@@ -58,52 +64,61 @@
                         </div>
                     </div>
                 </form>
-                <nb-card-body>
-                    <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
-                        <table class="table dark-table ">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of myList">
-                                    <td>{{ item.id_equipo }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
-                        <table class="table dark-table ">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of myList2">
-                                    <td>{{ item.id_equipo }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </nb-card-body>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th> </th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList">
+                                <td>{{ item.id_equipo }}</td>
+                                <td>{{ item.nombre }}</td>
+                                <td> <button nbButton status="warning" [nbPopover]="list" nbPopoverPlacement="top" (click)="selectEquipo(item)">Integrantes</button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th> </th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList2">
+                                <td>{{ item.id_equipo }}</td>
+                                <td>{{ item.nombre }}</td>
+                                <td> <button nbButton status="warning" [nbPopover]="list" nbPopoverPlacement="top" (click)="selectEquipo(item)">Integrantes</button> </td>
+                                <td>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </nb-card-body>
         </nb-card>
     </div>
 </div>
+
+<ng-template #list>
+    <nb-card status="warning">
+        <nb-card-header>Integrantes del Equipo</nb-card-header>
+        <nb-list-item *ngFor="let integrante of integrantes">
+            {{ integrante }}
+        </nb-list-item>
+    </nb-card>
+</ng-template>
 
 <div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
     <div class="modal-dialog">
@@ -153,3 +168,9 @@
         </div>
     </div>
 </div>
+
+<!--
+    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipo.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
+                            <small *ngIf="!key_colab.valid && key_colab.touched && equipo.key_colab !== ''" class="invalid-feedback d-block">La key colab no es
+                válida</small>
+-->
