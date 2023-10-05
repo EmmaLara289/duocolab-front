@@ -10,8 +10,10 @@ import { NbCardModule } from '@nebular/theme';
 import { NbAlertModule } from '@nebular/theme';
 import { NbPopoverModule } from '@nebular/theme';
 import { NbSelectModule } from '@nebular/theme';
-
-
+import { NbIconModule } from '@nebular/theme';
+import { NbFormFieldModule } from '@nebular/theme';
+import { NbSearchModule } from '@nebular/theme';
+import { NbDialogModule } from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -23,7 +25,11 @@ import { NbSelectModule } from '@nebular/theme';
     NbCardModule,
     NbAlertModule,
     NbPopoverModule,
-    NbSelectModule
+    NbSelectModule,
+    NbIconModule,
+    NbFormFieldModule,
+    NbSearchModule,
+    NbDialogModule
   ],
   declarations: [
     EquipoComponent,

@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { CheckUser } from '../../services/checkUser';
 import Swal from 'sweetalert2';
-declare var jQuery: any;
-declare var $: any;
+
 
 
 
@@ -29,7 +28,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.ChekUser.userData = JSON.parse(localStorage.getItem('userData'));
+    console.log(this.ChekUser.userData);
+    this.ChekUser.login = JSON.parse(localStorage.getItem('login'));
+    //console.log()
+    if(this.ChekUser.login === true){
+      this._router.navigate(['/pages/tarea']);
+    }
   }
 
   login() {
@@ -38,7 +43,9 @@ export class LoginComponent implements OnInit {
         if (response.status != 'error') {
 //          console.log(response.user);
           this.ChekUser.userData = response.user;
-          
+          localStorage.setItem('userData', JSON.stringify(this.ChekUser.userData));
+          this.ChekUser.login = true;
+          localStorage.setItem('login', JSON.stringify(this.ChekUser.login));
           if(response.user.key_role == 1){
             Swal.fire({
               position: 'center',
@@ -67,7 +74,6 @@ export class LoginComponent implements OnInit {
             });
             this._router.navigate(['/pages/ticket']);
           }
-          this.ChekUser.login = true;
         }
 
         

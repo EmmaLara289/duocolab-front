@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Equipo } from '../../models/equipo';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
+import { NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'app-equipo',
@@ -25,7 +25,7 @@ export class EquipoComponent implements OnInit {
   equipo: Equipo;
   equipoCopy: any;
   equipos: any=[];
-  text: string;
+  text: string= "";
   myList: any=[];
   alert = false;
   alertUpdate = false;
@@ -33,11 +33,13 @@ export class EquipoComponent implements OnInit {
   modalTable: any;
   integrantes: any;
   users: any;
+  modalUsers = false;
+  proyectos: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
-  private http: HttpClient
-
+  private http: HttpClient,
+  private dialogService: NbDialogService,
   ) { 
   this.equipo = new Equipo('','','','');
   }
@@ -50,7 +52,12 @@ export class EquipoComponent implements OnInit {
 
   this._userService.getUsers().subscribe((response) =>{
     this.users = response;
-  })
+    console.log(this.users);
+  })/*;
+  
+  this._userService.getProyectos().subscribe((response) => {
+    this.proyectos = response;
+  });*/
   }
 
 
@@ -100,9 +107,10 @@ export class EquipoComponent implements OnInit {
   this.modalRegister = true;
   }
 
-  selectEquipo(item){
+  selectEquipo(item, dialog: TemplateRef<any>){
     this.integrantes = item.integrantes;
     console.log(this.integrantes);
+    this.open2(dialog);
   }
 
   openModalUpdate(item) {
@@ -131,6 +139,25 @@ export class EquipoComponent implements OnInit {
   clearData(){
     this.equipo = new Equipo('','','','');
   }
+
+  open2(dialog: TemplateRef<any>) {
+    this.dialogService.open(
+      dialog,
+      { context: 'this is some additional data passed to dialog' });
+  }
+
+  dialogUsers(dialog: TemplateRef<any>) {
+    this.dialogService.open(
+      dialog,
+      { context: 'this is some additional data passed to dialog' });
+  }
+  
+  dialogProyectos(dialog: TemplateRef<any>) {
+    this.dialogService.open(
+      dialog,
+      { context: 'this is some additional data passed to dialog' });
+  }
+
 
 
 
