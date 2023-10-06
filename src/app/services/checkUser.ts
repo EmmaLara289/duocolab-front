@@ -11,6 +11,8 @@ export class CheckUser {
   	userData: any=[];
 	login = false;
   	static key_role: number;
-  	//password: any = [];
-  	//token : any;
+	  clearData() {
+        this.userData = [];
+		this.login = false;
+    }
 }

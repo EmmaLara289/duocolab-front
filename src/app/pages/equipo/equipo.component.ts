@@ -32,9 +32,12 @@ export class EquipoComponent implements OnInit {
   myList2: any;
   modalTable: any;
   integrantes: any;
-  users: any;
+  user: any;
   modalUsers = false;
-  proyectos: any;
+  proyecto: any;
+  idSelected = "";
+  idsText = "";
+  usersList: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -50,14 +53,13 @@ export class EquipoComponent implements OnInit {
       console.log(response);
     });
 
-  this._userService.getUsers().subscribe((response) =>{
-    this.users = response;
-    console.log(this.users);
-  })/*;
-  
+  this._userService.getUsers().subscribe((response) => {
+      this.user = response;
+  });
+
   this._userService.getProyectos().subscribe((response) => {
-    this.proyectos = response;
-  });*/
+    this.proyecto = response;
+  });
   }
 
 
@@ -145,11 +147,12 @@ export class EquipoComponent implements OnInit {
       dialog,
       { context: 'this is some additional data passed to dialog' });
   }
-
-  dialogUsers(dialog: TemplateRef<any>) {
+//el nombre de la variable del array no debe de ser el mismo que el del template
+  dialogUsers(dialog: TemplateRef<any>, dialog2: TemplateRef<any> ) {
     this.dialogService.open(
       dialog,
       { context: 'this is some additional data passed to dialog' });
+
   }
   
   dialogProyectos(dialog: TemplateRef<any>) {
@@ -157,6 +160,32 @@ export class EquipoComponent implements OnInit {
       dialog,
       { context: 'this is some additional data passed to dialog' });
   }
+
+  dialogUserList(dialog: TemplateRef<any>) {
+    this.dialogService.open(
+      dialog,
+      { context: 'this is some additional data passed to dialog' });
+  }
+
+  selectedUsers(id){
+    if(this.idSelected === ""){
+      this.idSelected = id;
+    }else{
+      this.idSelected = this.idSelected + "," + id;
+      let colabs: string[] = this.idSelected.split(',');
+      this.team(this.idSelected);
+    console.log(colabs);
+    }
+    console.log(this.idSelected); 
+  }
+
+  team(ids: string){
+    this._userService.findUsers(ids).subscribe((response) => {
+      this.usersList = response;
+      console.log(this.usersList);
+    });
+  }
+
 
 
 
