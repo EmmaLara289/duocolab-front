@@ -17,3 +17,26 @@
     max-width: 600px;
     max-height: 500px;
 }
+
+.tag-style {
+    display: inline-block;
+    background-color: #ff0000;
+    /* color de fondo del "tag" */
+    color: #ffffff;
+    /* color del texto del "tag" */
+    padding: 5px 10px;
+    /* espacio alrededor del texto del "tag" */
+    margin-right: 10px;
+    /* margen entre los "tags" */
+    border-radius: 5px;
+    /* esquinas redondeadas */
+}
+
+.list-card {
+    nb-card-header {
+        border-bottom: none;
+    }
+    nb-card-body {
+        padding: 0;
+    }
+}

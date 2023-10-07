@@ -37,6 +37,12 @@ export class UserService {
     return this._http.get(this.url + 'findUsers', {params: params});
   }
 
+  public findProyect(ids: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('ids', ids);
+    return this._http.get(this.url + 'findProyectos', {params: params});
+  }
+
 
   public registrarEquipo(nombre: string, key_proyecto:string, key_colab:string): Observable<any> {
     return this._http.post(global.url + 'createEquipo',

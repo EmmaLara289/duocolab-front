@@ -28,13 +28,13 @@
                         <div class="col-md-2">
                             <label class="label">Integrantes</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogUsers(users, usersList)" readonly>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogUsers(users)" readonly>
                                 <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
                             <label class="label">Proyecto</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogProyectos(proyectos)" readonly>
+                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogProyectos()" placeholder="{{this.nameProyect}}" readonly>
                         </div>
                         <div class="px-md-1" style="position: relative; top: 25px;">
                             <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
@@ -122,60 +122,63 @@
 </ng-template>
 
 <ng-template #users let-data let-ref="dialogRef">
-    <nb-card status="danger" style="width: 400px; max-height: 900px; overflow-y: auto;">
-        <nb-card-header>Colaboradores</nb-card-header>
-        <nb-list-item *ngFor="let item of user">
-            <b>{{ item.name }}</b>
-            <div class="float-right">
-                <button nbButton status="danger" style="margin-right: 20px;" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add-outline" pack="eva"></nb-icon></button>
-            </div>
-        </nb-list-item>
-        <nb-card-footer style="position: static;">
-            <div class="text-center">
-                <button nbButton (click)="ref.close()">Cerrar</button>
-            </div>
-        </nb-card-footer>
-    </nb-card>
-</ng-template>
-
-<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style=" width: 200px; background-color: rgb(47, 62, 106); right: 20%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Colaboradores Seleccionados</h>
-            </div>
-            <div style="padding: 30px;"></div>
-            <div class="modal-body">
-                <nb-card-header>Colaboradores Seleccionados</nb-card-header>
-                <nb-list-item *ngFor="let item of usersList">
-                    <b>{{ item.nombre }}</b>
-                </nb-list-item>
-                <nb-card-footer style="position: static;">
-                    <div class="text-center">
-                        <button nbButton (click)="ref.close()">Cerrar</button>
-                    </div>
-                </nb-card-footer>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Colaboradores</nb-card-header>
+                    <nb-list-item *ngFor="let item of user">
+                        <b>{{ item.name }}</b>
+                        <div class="button" style="position: fixed; right: 42%;">
+                            <button nbButton status="danger" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add-outline" pack="eva"></nb-icon></button>
+                        </div>
+                    </nb-list-item>
+                    <nb-card-footer style="position: static;">
+                        <div class="text-center">
+                            <button nbButton (click)="ref.close()">Cerrar</button>
+                        </div>
+                    </nb-card-footer>
+                </nb-card>
+                <nb-card class="list-card" status="danger" style="max-width: 400px; max-height: 900px; overflow-y: auto; position: fixed; right: 25%;">
+                    <nb-card-header>Colaboradores Seleccionados</nb-card-header>
+                    <nb-card-body>
+                        <nb-list>
+                            <nb-list-item *ngFor="let item of usersList">
+                                {{ item.nombre}}
+                            </nb-list-item>
+                        </nb-list>
+                    </nb-card-body>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
-
-
-
-
-<ng-template #proyectos let-data let-ref="dialogRef">
-    <nb-card status="danger" style="width: 400px;">
-        <nb-card-header>Proyectos</nb-card-header>
-        <nb-list-item class="text-center" *ngFor="let item of proyecto">
-            {{ item.nombre }}
-        </nb-list-item>
-        <nb-card-footer>
-            <div class="text-center">
-                <button nbButton (click)="ref.close()">Cerrar</button>
-            </div>
-        </nb-card-footer>
-    </nb-card>
 </ng-template>
+
+
+<div class="modal custom-modal" [class.show]="dialogProyect" style="display: block;" *ngIf="dialogProyect">
+    <div class="modal-dialog">
+        <div class="modal-content" style=" margin-top: 10%; width: 600px; max-height: 900px; background-color: rgb(34,43,69); right: 30%;">
+            <div class="modal-header" status="danger">
+                <h style="font-weight: bold; color: rgb(255, 255, 255);">Proyectos</h>
+            </div>
+            <nb-card-body>
+                <nb-list-item *ngFor="let item of proyecto">
+                    <div class="row">
+                        <b>{{ item.nombre }}</b>
+                        <div style="position: absolute; left: 80%; margin-top: -10px;">
+                            <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="person-add-outline" pack="eva"></nb-icon></button>
+                        </div>
+                    </div>
+                </nb-list-item>
+                <div style="padding: 20px;">
+                    <div class="text-center">
+                        <button nbButton (click)="dialogProyectosClose()">Cerrar</button>
+                    </div>
+                </div>
+            </nb-card-body>
+        </div>
+    </div>
+</div>
 
 <ng-template #dialogCopy let-data let-ref="dialogRef">
     <nb-card>

@@ -10,7 +10,7 @@ export class ShowcaseDialogComponent {
 
   @Input() title: string;
 
-  constructor(protected ref: NbDialogRef<ShowcaseDialogComponent>) {}
+  constructor(public ref: NbDialogRef<ShowcaseDialogComponent>) {}
 
   dismiss() {
     this.ref.close();

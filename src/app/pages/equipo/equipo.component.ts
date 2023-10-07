@@ -1,21 +1,19 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { Equipo } from '../../models/equipo';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { NbDialogService } from '@nebular/theme';
+import { Modal } from '../../services/modal';
 
 @Component({
   selector: 'app-equipo',
   templateUrl: './equipo.component.html',
-  styleUrls: ["./equipo.component.scss"]
+  styleUrls: ["./equipo.component.scss"],
 })
 
 export class EquipoComponent implements OnInit {
-  @ViewChild('registrarEquipoForm') registrarEquipoForm: NgForm;
-
   id_equipo: string = null;
 
   public identity;
@@ -35,9 +33,14 @@ export class EquipoComponent implements OnInit {
   user: any;
   modalUsers = false;
   proyecto: any;
-  idSelected = "";
+  idSelectedUser = "";
+  idSelectedProyect = "";
+  nameProyect: any;
   idsText = "";
   usersList: any;
+  proyectList: any;
+  modalList = false;
+  dialogProyect = false;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -50,16 +53,19 @@ export class EquipoComponent implements OnInit {
   ngOnInit(){
   this._userService.getEquipos().subscribe((response) => {
       this.myList = response;
-      console.log(response);
     });
 
   this._userService.getUsers().subscribe((response) => {
       this.user = response;
+      //console.log(response);
   });
 
   this._userService.getProyectos().subscribe((response) => {
     this.proyecto = response;
+    console.log(response);
   });
+
+  
   }
 
 
@@ -111,7 +117,9 @@ export class EquipoComponent implements OnInit {
 
   selectEquipo(item, dialog: TemplateRef<any>){
     this.integrantes = item.integrantes;
-    console.log(this.integrantes);
+    //console.log(this.integrantes);
+    //console.log(this.user);
+
     this.open2(dialog);
   }
 
@@ -148,47 +156,72 @@ export class EquipoComponent implements OnInit {
       { context: 'this is some additional data passed to dialog' });
   }
 //el nombre de la variable del array no debe de ser el mismo que el del template
-  dialogUsers(dialog: TemplateRef<any>, dialog2: TemplateRef<any> ) {
+  dialogUsers(dialog: TemplateRef<any>) {
     this.dialogService.open(
       dialog,
       { context: 'this is some additional data passed to dialog' });
-
+      this.modalList = true;
   }
   
-  dialogProyectos(dialog: TemplateRef<any>) {
-    this.dialogService.open(
-      dialog,
-      { context: 'this is some additional data passed to dialog' });
+  dialogProyectos() {
+    this.dialogProyect = true;
+  }
+
+  dialogProyectosClose() {
+    this.dialogProyect = false;
   }
 
   dialogUserList(dialog: TemplateRef<any>) {
     this.dialogService.open(
       dialog,
-      { context: 'this is some additional data passed to dialog' });
+      { context: 'this is some additional data passed to dialog',
+      hasBackdrop: false, });
   }
 
   selectedUsers(id){
-    if(this.idSelected === ""){
-      this.idSelected = id;
+    if(this.idSelectedUser === ""){
+      this.idSelectedUser = id;
+      this.team(this.idSelectedUser);
     }else{
-      this.idSelected = this.idSelected + "," + id;
-      let colabs: string[] = this.idSelected.split(',');
-      this.team(this.idSelected);
-    console.log(colabs);
+      this.idSelectedUser = this.idSelectedUser + "," + id;
+      let colabs: string[] = this.idSelectedUser.split(',');
+      this.team(this.idSelectedUser);
+    //console.log(colabs);
     }
-    console.log(this.idSelected); 
+    this.equipo.key_colab = this.idSelectedUser;
+    const index = this.user.findIndex(user => user.id === id);
+    //console.log(index);
+
+    // Si el usuario se encuentra en el array, elimínalo usando splice()
+    if (index !== -1) {
+      this.user.splice(index, 1);
+     //console.log('Usuario eliminado:', id);
+    }
+    //console.log(this.idSelectedUser); 
+  }
+
+  selectedProyect(item){
+    this.idSelectedProyect = item.id_proyecto;
+    this.equipo.key_proyecto = this.idSelectedProyect;
+    this.nameProyect = item.nombre;
+    this.dialogProyectosClose();
   }
 
   team(ids: string){
     this._userService.findUsers(ids).subscribe((response) => {
       this.usersList = response;
-      console.log(this.usersList);
+      console.log("Seleccionados:" ,this.usersList);
     });
   }
 
+  proyect(ids: string){
+    this._userService.findProyect(ids).subscribe((response) =>{
+      this.proyectList = response;
+      console.log("Seleccionados:" ,this.proyectList);
+    })
+  }
 
-
-
+  
 
 
 

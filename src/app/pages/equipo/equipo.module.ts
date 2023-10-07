@@ -14,6 +14,8 @@ import { NbIconModule } from '@nebular/theme';
 import { NbFormFieldModule } from '@nebular/theme';
 import { NbSearchModule } from '@nebular/theme';
 import { NbDialogModule } from '@nebular/theme';
+import { NbListModule } from '@nebular/theme';
+
 
 @NgModule({
   imports: [
@@ -29,7 +31,8 @@ import { NbDialogModule } from '@nebular/theme';
     NbIconModule,
     NbFormFieldModule,
     NbSearchModule,
-    NbDialogModule
+    NbDialogModule,
+    NbListModule
   ],
   declarations: [
     EquipoComponent,
