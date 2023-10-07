@@ -5,7 +5,9 @@ import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { NbDialogService } from '@nebular/theme';
-import { Modal } from '../../services/modal';
+//import { ShowcaseComponent } from '../../services/modal';
+import { NbDialogRef } from '@nebular/theme';
+import { type } from 'os';
 
 @Component({
   selector: 'app-equipo',
@@ -14,6 +16,7 @@ import { Modal } from '../../services/modal';
 })
 
 export class EquipoComponent implements OnInit {
+  private ref: NbDialogRef<any>;
   id_equipo: string = null;
 
   public identity;
@@ -35,17 +38,21 @@ export class EquipoComponent implements OnInit {
   proyecto: any;
   idSelectedUser = "";
   idSelectedProyect = "";
-  nameProyect: any;
+  nameProyect = "";
   idsText = "";
   usersList: any;
   proyectList: any;
   modalList = false;
   dialogProyect = false;
+  countUsers = 0;
+  usersText: string  = "";
+  private Modal: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private http: HttpClient,
   private dialogService: NbDialogService,
+  
   ) { 
   this.equipo = new Equipo('','','','');
   }
@@ -75,7 +82,18 @@ export class EquipoComponent implements OnInit {
       if(response.status != 'error'){
           this.ngOnInit();
           this.clearData();
-          this.alert = true;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Guardado con éxito',
+            showConfirmButton: false,
+            timer: 1200
+          })
+          this.idSelectedProyect = "";
+          this.idSelectedUser = "";
+          this.nameProyect = "";
+          this.usersText = "";
+          this.modalTable = false;
         }
 
       },
@@ -104,11 +122,28 @@ export class EquipoComponent implements OnInit {
   }
 
   buscarEquipos() {
+    if(this.text === ""){
+      this._userService.getEquipos().subscribe((response) => {
+        this.myList = response;
+        this.modalTable = false;
+      });
+    }else{
     this._userService.findEquipo(this.text).subscribe((response) => {
+      if(response.response !== "No hay coincidencias"){
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
+      }else{
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'No hay resultados...',
+          showConfirmButton: false,
+          timer: 1200
+        });
+      }
     });
+  }
   }
 
   openModal() {
@@ -163,9 +198,11 @@ export class EquipoComponent implements OnInit {
       this.modalList = true;
   }
   
-  dialogProyectos() {
-    this.dialogProyect = true;
-  }
+  dialogProyectos(dialog: TemplateRef<any>) {
+    this.ref = this.dialogService.open(
+      dialog,
+      { context: 'this is some additional data passed to dialog' });
+     }
 
   dialogProyectosClose() {
     this.dialogProyect = false;
@@ -179,9 +216,28 @@ export class EquipoComponent implements OnInit {
   }
 
   selectedUsers(id){
+    const numerosArray = this.idSelectedUser.split(',');
+    //console.log(numerosArray.length);
+    if(numerosArray.length === 1){
+      this.countUsers = this.countUsers + 1;
+      console.log("igual a " ,this.countUsers);
+    }
+    else{
+      this.countUsers = numerosArray.length;
+      this.countUsers = this.countUsers + 1;
+      console.log("igual a " ,this.countUsers);
+    }
+    
+    if(this.countUsers === 1){
+      this.usersText = "1 Integrante";
+    }else{
+      this.usersText = this.countUsers+" Integrantes";
+    }
+    //console.log("contador: ",this.countUsers);
     if(this.idSelectedUser === ""){
-      this.idSelectedUser = id;
+      this.idSelectedUser = id.toString(); // Convierte el número a cadena antes de asignarlo
       this.team(this.idSelectedUser);
+
     }else{
       this.idSelectedUser = this.idSelectedUser + "," + id;
       let colabs: string[] = this.idSelectedUser.split(',');
@@ -190,38 +246,143 @@ export class EquipoComponent implements OnInit {
     }
     this.equipo.key_colab = this.idSelectedUser;
     const index = this.user.findIndex(user => user.id === id);
+    //
+    //console.log(id, 'es de tipo ', typeof(id)); number
     //console.log(index);
-
     // Si el usuario se encuentra en el array, elimínalo usando splice()
     if (index !== -1) {
       this.user.splice(index, 1);
      //console.log('Usuario eliminado:', id);
     }
-    //console.log(this.idSelectedUser); 
+    //contador de usuarios
+    this.countUsers = numerosArray.length;
+    //console.log(numerosArray);
+    
+    //console.log(this.usersText);
+  }
+
+  deleteSelectedUsers(id_user){
+    this.countUsers = this.countUsers - 1;
+    if (this.idSelectedUser.includes(',')) {
+     // console.log("Hay ",this.idSelectedUser, " integrantes.")
+      let numeros = this.idSelectedUser.split(',');
+
+    // Número específico que deseas eliminar
+    //let numeroAEliminar = '3'; // Por ejemplo, eliminar el número 3
+    //convierte en cadena
+    let idCadena = id_user.toString();
+    //console.log(typeof(id_user), id_user);
+    // Encontrar el índice del número específico en el array
+    let indice = numeros.indexOf(idCadena);
+
+    // Si se encuentra el número, eliminarlo del array
+    if (indice !== -1) {
+        numeros.splice(indice, 1);
+    }
+
+    // Volver a unir los números en una cadena, separados por comas
+    this.idSelectedUser = numeros.join(',');
+
+    /*this.recargarTablaUsers();
+    console.log("Aqui no se ha borrado nada:" ,this.user);
+
+    //console.log("Borró:" ,idCadena, " y queda el ", this.idSelectedUser);
+    //console.log(typeof(this.idSelectedUser));
+
+    let idSobranteArray = this.idSelectedUser.split(',');      
+    //console.log('Ids sobrantes: ', idSobranteArray);
+    //let idSobranteArray: number[] = this.idSelectedUser.split(',').map(item => parseInt(item, 10));
+    //console.log(typeof(idSobranteArray));
+    //console.log(typeof(this.user.id));
+
+    console.log("numeros a borrar:" , this.idSelectedUser);
+    // Iterar sobre los números en idSobranteArray y eliminar los usuarios correspondientes de this.user
+    idSobranteArray.forEach(id => {
+      const idNumero = parseInt(id, 10); // Convertir texto a número
+      //console.log(idNumero, " es de tipo ", typeof(idNumero));
+      //this.deleteUserTable(idNumero);
+    });
+*/
+    this.excluseUsers(this.idSelectedUser);
+    this.team(this.idSelectedUser);
+    const numerosArray = this.idSelectedUser.split(',');
+    this.countUsers = numerosArray.length;
+    //console.log("despues de borrar hay:", numerosArray.length);
+    if(numerosArray.length === 1){
+      this.usersText = "1 Integrante";  
+    }else{
+    this.usersText = this.countUsers + " Integrantes";
+    }
+
+  } else {
+    //console.log("Hay solo uno");
+    this.idSelectedUser = "";
+    this.usersList = [];
+
+      this._userService.getUsers().subscribe((response) => {
+        this.user = response;
+        //console.log(response);
+    });
+
+    this.usersText = "Seleccionar"
+    
+
+  }
+
+  
+    
   }
 
   selectedProyect(item){
     this.idSelectedProyect = item.id_proyecto;
     this.equipo.key_proyecto = this.idSelectedProyect;
     this.nameProyect = item.nombre;
-    this.dialogProyectosClose();
+    this.dismiss();
   }
 
   team(ids: string){
-    this._userService.findUsers(ids).subscribe((response) => {
-      this.usersList = response;
-      console.log("Seleccionados:" ,this.usersList);
-    });
+    if(ids !== ""){
+      this._userService.findUsers(ids).subscribe((response) => {
+        this.usersList = response;
+        //console.log("Seleccionados:" ,this.usersList);
+        //console.log(this.idSelectedUser);
+      });
+    }
   }
 
   proyect(ids: string){
     this._userService.findProyect(ids).subscribe((response) =>{
       this.proyectList = response;
-      console.log("Seleccionados:" ,this.proyectList);
+      //console.log("Seleccionados:" ,this.proyectList);
     })
   }
 
-  
+  dismiss() {
+    this.ref.close();
+  }
+
+  recargarTablaUsers(){
+    this._userService.getUsers().subscribe((response) => {
+      this.user = response;
+      });
+  }
+
+  excluseUsers(ids){
+    this._userService.excludeUsers(ids).subscribe((response) =>{
+      this.user = response;
+    })
+  }
+
+  deleteUserTable(id: number){
+    const index = this.user.findIndex(user => user.id === id);
+    console.log("Aqui se ha borrado el numero:",id ," de " ,this.user);
+    console.log("valor de index: ",index);
+  // Si el usuario se encuentra en el array, elimínalo usando splice()
+  if (index !== -1) {
+    this.user.splice(index, 1);
+   //console.log('Usuario eliminado:', id);
+  }
+  }
 
 
 

@@ -1,16 +1,19 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 
-
-@Injectable({
-  providedIn: 'root',
+@Component({
+  selector: 'ngx-showcase-dialog',
+  templateUrl: 'modal.component.html',
+  styleUrls: ['modal.scss'],
 })
-export class Modal{
-  constructor(public ref: NbDialogRef<Modal>) {}
+export class ShowcaseComponent {
 
-  dismiss(){
+  @Input() title: string;
+
+  constructor(public ref: NbDialogRef<ShowcaseComponent>) {}
+
+  public dismiss() {
     this.ref.close();
   }
-
 }
+

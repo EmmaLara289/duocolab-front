@@ -22,19 +22,22 @@
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
                                 <small *ngIf="!nombre.valid && nombre.touched && equipo.nombre !== ''" class="invalid-feedback d-block">El nombre no es
                     válido</small>
-                                <nb-icon nbSuffix icon="people-outline" pack="eva"></nb-icon>
+                                <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
                             <label class="label">Integrantes</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogUsers(users)" readonly>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogUsers(users)" [value]="usersText" readonly>
                                 <nb-icon nbSuffix icon="search-outline" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
                             <label class="label">Proyecto</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogProyectos()" placeholder="{{this.nameProyect}}" readonly>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogProyectos(proyects)" [value]="nameProyect" readonly>
+                                <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
                         <div class="px-md-1" style="position: relative; top: 25px;">
                             <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
@@ -74,8 +77,8 @@
                             <tr *ngFor="let item of myList">
                                 <td>{{ item.id_equipo }}</td>
                                 <td>{{ item.nombre }}</td>
-                                <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people-outline" pack="eva"></nb-icon> </button> </td>
-                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button> </td>
+                                <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon> </button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -94,10 +97,8 @@
                             <tr *ngFor="let item of myList2">
                                 <td>{{ item.id_equipo }}</td>
                                 <td>{{ item.nombre }}</td>
-                                <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people-outline" pack="eva"></nb-icon> </button> </td>
-                                <td>
-                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
-                                </td>
+                                <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon> </button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -130,7 +131,7 @@
                     <nb-list-item *ngFor="let item of user">
                         <b>{{ item.name }}</b>
                         <div class="button" style="position: fixed; right: 42%;">
-                            <button nbButton status="danger" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add-outline" pack="eva"></nb-icon></button>
+                            <button nbButton status="info" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
                         </div>
                     </nb-list-item>
                     <nb-card-footer style="position: static;">
@@ -145,6 +146,9 @@
                         <nb-list>
                             <nb-list-item *ngFor="let item of usersList">
                                 {{ item.nombre}}
+                                <div class="button" style="position: fixed; right: 27%;">
+                                    <button nbButton status="danger" (click)="deleteSelectedUsers(item.id_user)"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
+                                </div>
                             </nb-list-item>
                         </nb-list>
                     </nb-card-body>
@@ -155,30 +159,33 @@
 </ng-template>
 
 
-<div class="modal custom-modal" [class.show]="dialogProyect" style="display: block;" *ngIf="dialogProyect">
-    <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 10%; width: 600px; max-height: 900px; background-color: rgb(34,43,69); right: 30%;">
-            <div class="modal-header" status="danger">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Proyectos</h>
-            </div>
-            <nb-card-body>
-                <nb-list-item *ngFor="let item of proyecto">
-                    <div class="row">
-                        <b>{{ item.nombre }}</b>
-                        <div style="position: absolute; left: 80%; margin-top: -10px;">
-                            <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="person-add-outline" pack="eva"></nb-icon></button>
+<ng-template #proyects let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Proyectos</nb-card-header>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of proyecto">
+                            <div class="row">
+                                <b>{{ item.nombre }}</b>
+                                <div style="position: absolute; left: 80%; margin-top: -10px;">
+                                    <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                </div>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="dismiss()">Cerrar</button>
+                            </div>
                         </div>
-                    </div>
-                </nb-list-item>
-                <div style="padding: 20px;">
-                    <div class="text-center">
-                        <button nbButton (click)="dialogProyectosClose()">Cerrar</button>
-                    </div>
-                </div>
-            </nb-card-body>
+                    </nb-card-body>
+                </nb-card>
+            </div>
         </div>
     </div>
-</div>
+</ng-template>
+
 
 <ng-template #dialogCopy let-data let-ref="dialogRef">
     <nb-card>
