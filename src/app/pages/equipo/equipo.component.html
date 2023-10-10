@@ -78,7 +78,7 @@
                                 <td>{{ item.id_equipo }}</td>
                                 <td>{{ item.nombre }}</td>
                                 <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon> </button> </td>
-                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -98,7 +98,7 @@
                                 <td>{{ item.id_equipo }}</td>
                                 <td>{{ item.nombre }}</td>
                                 <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon> </button> </td>
-                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -147,7 +147,7 @@
                             <nb-list-item *ngFor="let item of usersList">
                                 {{ item.nombre}}
                                 <div class="button" style="position: fixed; right: 27%;">
-                                    <button nbButton status="danger" (click)="deleteSelectedUsers(item.id_user)"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
+                                    <button nbButton status="danger"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
                                 </div>
                             </nb-list-item>
                         </nb-list>
@@ -197,51 +197,110 @@
     </nb-card>
 </ng-template>
 
-<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 30%; width: 1200px; background-color: rgb(47, 62, 106); right: 60%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Equipo</h>
-            </div>
-            <div style="padding: 30px;"></div>
-            <div class="modal-body">
-                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateEquipo()">
-                    <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Nombre</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipoCopy.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es
+<ng-template #dialogModalEdit let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <nb-card status="danger" style="width: 800px;">
+                <nb-card-header>Editor</nb-card-header>
+                <nb-card-body>
+                    <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateEquipo()">
+                        <div class=" row">
+                            <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                                <label>Nombre</label>
+                                <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipoCopy.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es
                 válido</small>
+                            </div>
                         </div>
-                    </div>
-                    <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Colab</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_colab" placeholder="Ingrese la key colab" #key_colab="ngModel" [(ngModel)]="equipoCopy.key_colab" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_colab.valid && key_colab.touched" class="invalid-feedback d-block">La key colab no es
-                válida</small>
+                        <div class=" row">
+                            <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                                <label>Integrantes</label>
+                                <input nbInput fullWidth status="danger" [value]="usersText" shape="semi-round" class="text-center" type="text" (click)="dialogEditListUsers(editUsers)" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Proyecto</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="equipoCopy.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_proyecto.valid && key_proyecto.touchedequipoCopy" class="invalid-feedback d-block">La key
-                proyecto no es válida</small>
+                        <div class=" row">
+                            <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
+                                <label>Proyecto</label>
+                                <input nbInput fullWidth status="danger" [value]="equipoCopy.nombre_proyecto" (click)="selectedProyectEdit" shape="semi-round" type="text" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                    <div class="row">
-                        <div class="col">
-                            <button nbButton status="danger" size="medium" type="submit">Editar</button>
+                        <div style="padding: 20px;"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button nbButton status="danger" size="medium" type="submit">Editar</button>
+                            </div>
+                            <div class="col text-right">
+                                <button nbButton status="primary" size="medium" type="button" (click)="dismiss()">Cerrar</button>
+                            </div>
                         </div>
-                        <div class="col text-right">
-                            <button nbButton status="primary" size="medium" type="button" (click)="closeModal()">Cerrar</button>
+                        <div style="padding: 20px;"></div>
+                    </form>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #editUsers let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Colaboradores</nb-card-header>
+                    <nb-list-item *ngFor="let item of user">
+                        <b>{{ item.name }}</b>
+                        <div class="button" style="position: fixed; right: 42%;">
+                            <button nbButton status="info" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
                         </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                </form>
+                    </nb-list-item>
+                    <nb-card-footer style="position: static;">
+                        <div class="text-center">
+                            <button nbButton (click)="dismissEdit()">Cerrar</button>
+                        </div>
+                    </nb-card-footer>
+                </nb-card>
+                <nb-card class="list-card" status="danger" style="max-width: 400px; max-height: 900px; overflow-y: auto; position: fixed; right: 25%;">
+                    <nb-card-header>Colaboradores Seleccionados</nb-card-header>
+                    <nb-card-body>
+                        <nb-list>
+                            <nb-list-item *ngFor="let item of usersList">
+                                {{ item.nombre}}
+                                <div class="button" style="position: fixed; right: 27%;">
+                                    <button nbButton status="danger" (click)="deleteSelectedUsers(item.id_user)"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
+                                </div>
+                            </nb-list-item>
+                        </nb-list>
+                    </nb-card-body>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
+</ng-template>
+
+
+<ng-template #proyectsEdit let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Proyectos</nb-card-header>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of proyecto">
+                            <div class="row">
+                                <b>{{ item.nombre }}</b>
+                                <div style="position: absolute; left: 80%; margin-top: -10px;">
+                                    <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                </div>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="dismiss()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

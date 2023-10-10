@@ -47,6 +47,7 @@ export class EquipoComponent implements OnInit {
   countUsers = 0;
   usersText: string  = "";
   private Modal: any;
+  dialgoEditList: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -69,7 +70,7 @@ export class EquipoComponent implements OnInit {
 
   this._userService.getProyectos().subscribe((response) => {
     this.proyecto = response;
-    console.log(response);
+    //console.log(response);
   });
 
   
@@ -104,13 +105,23 @@ export class EquipoComponent implements OnInit {
 	}
 
   updateEquipo(){
-  this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, this.equipoCopy.key_proyecto, this.equipoCopy.key_colab).subscribe(
+    console.log(this.equipoCopy);
+    const key_colab = this.equipoCopy.id_proyecto.toString();
+  this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, key_colab, this.equipoCopy.id_colaboradores).subscribe(
       response => {
       if(response.status != 'error'){
           this.ngOnInit(); 
           this.clearData(); 
-          this.closeModal();
-          this.alertUpdate = true;
+          //this.closeModal();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Guardado con éxito',
+            showConfirmButton: false,
+            timer: 1200
+          })
+          this.modalTable = false;
+          this.dismiss();
         }
 
       },
@@ -158,17 +169,61 @@ export class EquipoComponent implements OnInit {
     this.open2(dialog);
   }
 
-  openModalUpdate(item) {
+  openModalUpdate(item, dialog: TemplateRef<any>) {
     this.modalUpdate = true;
     this.equipoCopy = {...item};
+    console.log(item);
+    //console.log(this.equipoCopy.nombre_proyecto);
+    this.dialogEdit(dialog);
+    this.usersText = this.equipoCopy.contador_coloboradores + " Integrantes";
+    //console.log("Hay ",this.usersText);
     /*this.id_equipo = id_equipo;
     this.equipo = { ...this.myList.find(item => item.id_equipo ===        id_equipo) };*/
+  }
+
+
+
+  dialogEditListUsers(dialogListUsers: TemplateRef<any>) {
+    this.dialgoEditList = this.dialogService.open(
+      dialogListUsers,
+      { context: 'this is some additional data passed to dialog' }
+    );
+
+    this.idSelectedUser = this.equipoCopy.id_colaboradores;
+
+    this.excluseUsers(this.idSelectedUser);
+    this._userService.findUsers(this.idSelectedUser).subscribe((response) => {
+      this.usersList = response;
+      //console.log("Seleccionados:" ,this.usersList);
+      //console.log(this.idSelectedUser);
+    });
+    
+      
+  }
+
+  selectedProyectEdit(item){
+    this.equipoCopy.id_proyecto = this.idSelectedProyect;
+    this.equipoCopy.nameProyect = item.nombre;
+    this.dismiss();
+  }
+
+  dismiss() {
+    console.log("Se borró");
+    this.idSelectedUser = "";
+    this.usersText = "";    
+    this.recargarTablaUsers();
+    this.ref.close();
+    this.usersList = [];
+  }
+
+  dismissEdit(){
+    this.dialgoEditList.close();
   }
 
   closeModal() {
     this.modalRegister = false;
     this.modalUpdate = false;
-    this.clearData(); 
+//    this.clearData(); 
   }
 
   closeAlert(){
@@ -324,7 +379,7 @@ export class EquipoComponent implements OnInit {
         //console.log(response);
     });
 
-    this.usersText = "Seleccionar"
+    //this.usersText = "Seleccionar"
     
 
   }
@@ -357,9 +412,6 @@ export class EquipoComponent implements OnInit {
     })
   }
 
-  dismiss() {
-    this.ref.close();
-  }
 
   recargarTablaUsers(){
     this._userService.getUsers().subscribe((response) => {
@@ -382,6 +434,13 @@ export class EquipoComponent implements OnInit {
     this.user.splice(index, 1);
    //console.log('Usuario eliminado:', id);
   }
+  }
+
+  dialogEdit(dialogEidt: TemplateRef<any>) {
+    this.ref = this.dialogService.open(
+      dialogEidt,
+      { context: 'this is some additional data passed to dialog' });
+
   }
 
 
