@@ -37,6 +37,12 @@ export class UserService {
     return this._http.get(this.url + 'findUsers', {params: params});
   }
 
+  public findColabs(ids: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('ids', ids);
+    return this._http.get(this.url + 'findColabs', {params: params});
+  }
+
   public findProyect(ids: string): Observable<any>{
     let params = new HttpParams();
     params = params.set('ids', ids);
@@ -47,6 +53,12 @@ export class UserService {
     let params = new HttpParams();
     params = params.set('ids', ids);
     return this._http.get(this.url + 'excludeUsers', {params: params});
+  }
+
+  public excludeColabs(ids: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('ids', ids);
+    return this._http.get(this.url + 'excludeColabs', {params: params});
   }
 
 

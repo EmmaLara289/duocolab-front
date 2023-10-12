@@ -69,7 +69,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th> </th>
+                                <th>Proyecto</th>
+                                <th>Integrantes</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -77,6 +78,7 @@
                             <tr *ngFor="let item of myList">
                                 <td>{{ item.id_equipo }}</td>
                                 <td>{{ item.nombre }}</td>
+                                <td>{{ item.nombre_proyecto}} </td>
                                 <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon> </button> </td>
                                 <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
@@ -128,26 +130,28 @@
             <div class="row">
                 <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
                     <nb-card-header>Colaboradores</nb-card-header>
-                    <nb-list-item *ngFor="let item of user">
-                        <b>{{ item.name }}</b>
-                        <div class="button" style="position: fixed; right: 42%;">
-                            <button nbButton status="info" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of colabs">
+                            <b>{{ item.nombre }}</b>
+                            <div class="button" style="position: absolute; left: 80%;">
+                                <button nbButton status="info" (click)="selectedUsers(item.id_colab)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="ref.close()">Cerrar</button>
+                            </div>
                         </div>
-                    </nb-list-item>
-                    <nb-card-footer style="position: static;">
-                        <div class="text-center">
-                            <button nbButton (click)="ref.close()">Cerrar</button>
-                        </div>
-                    </nb-card-footer>
+                    </nb-card-body>
                 </nb-card>
                 <nb-card class="list-card" status="danger" style="max-width: 400px; max-height: 900px; overflow-y: auto; position: fixed; right: 25%;">
                     <nb-card-header>Colaboradores Seleccionados</nb-card-header>
                     <nb-card-body>
                         <nb-list>
-                            <nb-list-item *ngFor="let item of usersList">
+                            <nb-list-item *ngFor="let item of colabsList">
                                 {{ item.nombre}}
                                 <div class="button" style="position: fixed; right: 27%;">
-                                    <button nbButton status="danger"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
+                                    <button (click)="deleteSelectedUsers(item.id_colab)" nbButton status="danger"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
                                 </div>
                             </nb-list-item>
                         </nb-list>
@@ -176,7 +180,7 @@
                         </nb-list-item>
                         <div style="padding: 20px;">
                             <div class="text-center">
-                                <button nbButton (click)="dismiss()">Cerrar</button>
+                                <button nbButton (click)="ref.close()">Cerrar</button>
                             </div>
                         </div>
                     </nb-card-body>
@@ -221,7 +225,7 @@
                         <div class=" row">
                             <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                                 <label>Proyecto</label>
-                                <input nbInput fullWidth status="danger" [value]="equipoCopy.nombre_proyecto" (click)="selectedProyectEdit" shape="semi-round" type="text" readonly>
+                                <input nbInput fullWidth status="danger" [value]="equipoCopy.nombre_proyecto" class="text-center" (click)="dialogEditProyectos(proyectsEdit)" shape="semi-round" type="text" readonly>
                             </div>
                         </div>
                         <div style="padding: 20px;"></div>
@@ -230,7 +234,7 @@
                                 <button nbButton status="danger" size="medium" type="submit">Editar</button>
                             </div>
                             <div class="col text-right">
-                                <button nbButton status="primary" size="medium" type="button" (click)="dismiss()">Cerrar</button>
+                                <button nbButton status="primary" size="medium" type="button" (click)="closeModalEdit()">Cerrar</button>
                             </div>
                         </div>
                         <div style="padding: 20px;"></div>
@@ -247,26 +251,28 @@
             <div class="row">
                 <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
                     <nb-card-header>Colaboradores</nb-card-header>
-                    <nb-list-item *ngFor="let item of user">
-                        <b>{{ item.name }}</b>
-                        <div class="button" style="position: fixed; right: 42%;">
-                            <button nbButton status="info" (click)="selectedUsers(item.id)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
-                        </div>
-                    </nb-list-item>
-                    <nb-card-footer style="position: static;">
-                        <div class="text-center">
-                            <button nbButton (click)="dismissEdit()">Cerrar</button>
-                        </div>
-                    </nb-card-footer>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of colabs">
+                            <b>{{ item.nombre }}</b>
+                            <div class="button" style="position: absolute; left: 80%;">
+                                <button nbButton status="info" (click)="selectedUsers(item.id_colab)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
+                            </div>
+                        </nb-list-item>
+                        <nb-card-footer style="position: static;">
+                            <div class="text-center">
+                                <button nbButton (click)="dismissEdit()">Cerrar</button>
+                            </div>
+                        </nb-card-footer>
+                    </nb-card-body>
                 </nb-card>
                 <nb-card class="list-card" status="danger" style="max-width: 400px; max-height: 900px; overflow-y: auto; position: fixed; right: 25%;">
                     <nb-card-header>Colaboradores Seleccionados</nb-card-header>
                     <nb-card-body>
                         <nb-list>
-                            <nb-list-item *ngFor="let item of usersList">
+                            <nb-list-item *ngFor="let item of colabsList">
                                 {{ item.nombre}}
                                 <div class="button" style="position: fixed; right: 27%;">
-                                    <button nbButton status="danger" (click)="deleteSelectedUsers(item.id_user)"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
+                                    <button nbButton status="danger" (click)="deleteSelectedUsers(item.id_colab)"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
                                 </div>
                             </nb-list-item>
                         </nb-list>
@@ -289,13 +295,13 @@
                             <div class="row">
                                 <b>{{ item.nombre }}</b>
                                 <div style="position: absolute; left: 80%; margin-top: -10px;">
-                                    <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                    <button nbButton status="danger" (click)="selectedProyectEdit(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
                                 </div>
                             </div>
                         </nb-list-item>
                         <div style="padding: 20px;">
                             <div class="text-center">
-                                <button nbButton (click)="dismiss()">Cerrar</button>
+                                <button nbButton (click)="closeModalEditProyectos()">Cerrar</button>
                             </div>
                         </div>
                     </nb-card-body>

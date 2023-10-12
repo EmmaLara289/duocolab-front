@@ -4,10 +4,9 @@ import { Equipo } from '../../models/equipo';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
-import { NbDialogService } from '@nebular/theme';
 //import { ShowcaseComponent } from '../../services/modal';
-import { NbDialogRef } from '@nebular/theme';
-import { type } from 'os';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
+
 
 @Component({
   selector: 'app-equipo',
@@ -33,14 +32,14 @@ export class EquipoComponent implements OnInit {
   myList2: any;
   modalTable: any;
   integrantes: any;
-  user: any;
+  colabs: any;
   modalUsers = false;
   proyecto: any;
   idSelectedUser = "";
   idSelectedProyect = "";
   nameProyect = "";
   idsText = "";
-  usersList: any;
+  colabsList: any;
   proyectList: any;
   modalList = false;
   dialogProyect = false;
@@ -48,6 +47,10 @@ export class EquipoComponent implements OnInit {
   usersText: string  = "";
   private Modal: any;
   dialgoEditList: any;
+  dialogoEditProyectos: any;
+  modalProyectos: any;
+  modalEdit: any;
+  modalEditProyectos: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -63,14 +66,14 @@ export class EquipoComponent implements OnInit {
       this.myList = response;
     });
 
-  this._userService.getUsers().subscribe((response) => {
-      this.user = response;
+  this._userService.getColaboradores().subscribe((response) => {
+      this.colabs = response;
       //console.log(response);
   });
 
   this._userService.getProyectos().subscribe((response) => {
     this.proyecto = response;
-    //console.log(response);
+    //console.log("Proyectos: ",response);
   });
 
   
@@ -106,8 +109,10 @@ export class EquipoComponent implements OnInit {
 
   updateEquipo(){
     console.log(this.equipoCopy);
-    const key_colab = this.equipoCopy.id_proyecto.toString();
-  this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, key_colab, this.equipoCopy.id_colaboradores).subscribe(
+    const key_proyecto = this.equipoCopy.id_proyecto.toString();
+    this.equipoCopy.id_colaboradores = this.idSelectedUser;
+    console.log(this.idSelectedUser);
+      this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, key_proyecto, this.equipoCopy.id_colaboradores).subscribe(
       response => {
       if(response.status != 'error'){
           this.ngOnInit(); 
@@ -121,7 +126,7 @@ export class EquipoComponent implements OnInit {
             timer: 1200
           })
           this.modalTable = false;
-          this.dismiss();
+          this.closeModalEdit();
         }
 
       },
@@ -175,7 +180,13 @@ export class EquipoComponent implements OnInit {
     console.log(item);
     //console.log(this.equipoCopy.nombre_proyecto);
     this.dialogEdit(dialog);
+    if(this.equipoCopy.contador_coloboradores === 1){
+      this.usersText = "1 Integrante";
+    }else{
     this.usersText = this.equipoCopy.contador_coloboradores + " Integrantes";
+    }
+    this.idSelectedUser = this.equipoCopy.id_colaboradores;
+    console.log(this.idSelectedUser);
     //console.log("Hay ",this.usersText);
     /*this.id_equipo = id_equipo;
     this.equipo = { ...this.myList.find(item => item.id_equipo ===        id_equipo) };*/
@@ -189,12 +200,10 @@ export class EquipoComponent implements OnInit {
       { context: 'this is some additional data passed to dialog' }
     );
 
-    this.idSelectedUser = this.equipoCopy.id_colaboradores;
-
-    this.excluseUsers(this.idSelectedUser);
-    this._userService.findUsers(this.idSelectedUser).subscribe((response) => {
-      this.usersList = response;
-      //console.log("Seleccionados:" ,this.usersList);
+    this.excluseColabs(this.idSelectedUser);
+    this._userService.findColabs(this.idSelectedUser).subscribe((response) => {
+      this.colabsList = response;
+      //console.log("Seleccionados:" ,this.colabsList);
       //console.log(this.idSelectedUser);
     });
     
@@ -202,22 +211,27 @@ export class EquipoComponent implements OnInit {
   }
 
   selectedProyectEdit(item){
-    this.equipoCopy.id_proyecto = this.idSelectedProyect;
-    this.equipoCopy.nameProyect = item.nombre;
-    this.dismiss();
+    console.log(item);
+    this.equipoCopy.id_proyecto = item.id_proyecto;
+    this.equipoCopy.nombre_proyecto = item.nombre;
+    this.closeModalEditProyectos();
   }
 
   dismiss() {
-    console.log("Se borró");
-    this.idSelectedUser = "";
-    this.usersText = "";    
-    this.recargarTablaUsers();
     this.ref.close();
-    this.usersList = [];
+  }
+
+  dismissClear(){
+    this.ref.close();
   }
 
   dismissEdit(){
     this.dialgoEditList.close();
+  }
+
+  dissmissEditProyect(){
+  this.dialogoEditProyectos.close();
+  this.nameProyect = "";
   }
 
   closeModal() {
@@ -254,13 +268,23 @@ export class EquipoComponent implements OnInit {
   }
   
   dialogProyectos(dialog: TemplateRef<any>) {
-    this.ref = this.dialogService.open(
+    this.modalProyectos = this.dialogService.open(
       dialog,
       { context: 'this is some additional data passed to dialog' });
-     }
+  }
 
-  dialogProyectosClose() {
-    this.dialogProyect = false;
+  closeModalProyectos(){
+    this.modalProyectos.close();
+  }
+
+  dialogEditProyectos(dialog: TemplateRef<any>) {
+    this.modalEditProyectos = this.dialogService.open(
+      dialog,
+      { context: 'this is some additional data passed to dialog' });
+  }
+
+  closeModalEditProyectos(){
+    this.modalEditProyectos.close();
   }
 
   dialogUserList(dialog: TemplateRef<any>) {
@@ -300,14 +324,14 @@ export class EquipoComponent implements OnInit {
     //console.log(colabs);
     }
     this.equipo.key_colab = this.idSelectedUser;
-    const index = this.user.findIndex(user => user.id === id);
+    const index = this.colabs.findIndex(colabs => colabs.id_colab === id);
     //
     //console.log(id, 'es de tipo ', typeof(id)); number
     //console.log(index);
     // Si el usuario se encuentra en el array, elimínalo usando splice()
     if (index !== -1) {
-      this.user.splice(index, 1);
-     //console.log('Usuario eliminado:', id);
+      this.colabs.splice(index, 1);
+      console.log('Usuario eliminado:', id);
     }
     //contador de usuarios
     this.countUsers = numerosArray.length;
@@ -317,6 +341,7 @@ export class EquipoComponent implements OnInit {
   }
 
   deleteSelectedUsers(id_user){
+    console.log(id_user, typeof(id_user));
     this.countUsers = this.countUsers - 1;
     if (this.idSelectedUser.includes(',')) {
      // console.log("Hay ",this.idSelectedUser, " integrantes.")
@@ -358,7 +383,7 @@ export class EquipoComponent implements OnInit {
       //this.deleteUserTable(idNumero);
     });
 */
-    this.excluseUsers(this.idSelectedUser);
+    this.excluseColabs(this.idSelectedUser);
     this.team(this.idSelectedUser);
     const numerosArray = this.idSelectedUser.split(',');
     this.countUsers = numerosArray.length;
@@ -372,34 +397,30 @@ export class EquipoComponent implements OnInit {
   } else {
     //console.log("Hay solo uno");
     this.idSelectedUser = "";
-    this.usersList = [];
+    this.colabsList = [];
+    this.usersText = "";
 
-      this._userService.getUsers().subscribe((response) => {
-        this.user = response;
+      this._userService.getColaboradores().subscribe((response) => {
+        this.colabs = response;
         //console.log(response);
     });
 
-    //this.usersText = "Seleccionar"
-    
-
   }
 
-  
-    
   }
 
   selectedProyect(item){
     this.idSelectedProyect = item.id_proyecto;
     this.equipo.key_proyecto = this.idSelectedProyect;
     this.nameProyect = item.nombre;
-    this.dismiss();
+    this.closeModalProyectos();
   }
 
   team(ids: string){
     if(ids !== ""){
-      this._userService.findUsers(ids).subscribe((response) => {
-        this.usersList = response;
-        //console.log("Seleccionados:" ,this.usersList);
+      this._userService.findColabs(ids).subscribe((response) => {
+        this.colabsList = response;
+        //console.log("Seleccionados:" ,this.colabsList);
         //console.log(this.idSelectedUser);
       });
     }
@@ -414,34 +435,46 @@ export class EquipoComponent implements OnInit {
 
 
   recargarTablaUsers(){
-    this._userService.getUsers().subscribe((response) => {
-      this.user = response;
+    this._userService.getColaboradores().subscribe((response) => {
+      this.colabs = response;
       });
   }
 
-  excluseUsers(ids){
-    this._userService.excludeUsers(ids).subscribe((response) =>{
-      this.user = response;
+  excluseColabs(ids){
+    this._userService.excludeColabs(ids).subscribe((response) =>{
+      this.colabs = response;
     })
   }
 
   deleteUserTable(id: number){
-    const index = this.user.findIndex(user => user.id === id);
-    console.log("Aqui se ha borrado el numero:",id ," de " ,this.user);
-    console.log("valor de index: ",index);
+    const index = this.colabs.findIndex(colabs => colabs.id === id);
+    //console.log("Aqui se ha borrado el numero:",id ," de " ,this.user);
+    //console.log("valor de index: ",index);
   // Si el usuario se encuentra en el array, elimínalo usando splice()
   if (index !== -1) {
-    this.user.splice(index, 1);
+    this.colabs.splice(index, 1);
    //console.log('Usuario eliminado:', id);
   }
   }
 
   dialogEdit(dialogEidt: TemplateRef<any>) {
-    this.ref = this.dialogService.open(
+  this.modalEdit = this.dialogService.open(
       dialogEidt,
       { context: 'this is some additional data passed to dialog' });
 
   }
+
+  closeModalEdit(){
+    this.idSelectedUser = "";
+    this.usersText = "";    
+    this.recargarTablaUsers();
+    this.colabsList = [];
+    this.modalEdit.close();
+  }
+
+
+
+  
 
 
 

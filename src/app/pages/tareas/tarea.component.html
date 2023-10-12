@@ -15,83 +15,77 @@
             <nb-card-body>
                 <h6 class="title text-center">Registrar nueva Tarea</h6>
                 <div style="padding: 10px;"></div>
-                <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarTarea()">
-                    <div class="row">
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="nombre">Nombre</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                                <small *ngIf="!nombre.valid && nombre.touched && tarea.nombre !== ''" class="invalid-feedback d-block">
-      El nombre no es válido
-    </small>
-                            </div>
+                <form class="col-md-12" (ngSubmit)="registrarTarea()">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="label">Nombre</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Descripción</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" placeholder="Ingrese la descripción" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.descripcion" required minlength="10">
-                                <small *ngIf="!descripcion.valid && descripcion.touched && tarea.descripcion !== ''" class="invalid-feedback d-block">
-      La descripción no es válida
-    </small>
-                            </div>
+                        <div class="col-md-2">
+                            <label class="label">Epica</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" (click)="openModalEpica(epicas)" [value]="nameEpica" shape="semi-round" type="text" readonly>
+                                <nb-icon nbSuffix icon="archive" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Epica</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_epica" placeholder="Ingrese la key épica" #key_epica="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_epica" required minlength="1">
-                                <small *ngIf="!key_epica.valid && key_epica.touched && tarea.key_epica !== ''" class="invalid-feedback d-block">
-      La key épica no es válida
-    </small>
-                            </div>
+                        <div class="col-md-2">
+                            <label class="label">Sprint</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [value]="nameSprint" (click)="openModalSprints(sprints)" type="text" readonly>
+                                <nb-icon nbSuffix icon="sync" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Sprint</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_sprint" placeholder="Ingrese la key sprint" #key_sprint="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_sprint" required minlength="1">
-                                <small *ngIf="!key_sprint.valid && key_sprint.touched && tarea.key_sprint !== ''" class="invalid-feedback d-block">
-      La key sprint no es válida
-    </small>
-                            </div>
+                        <div class="col-md-2">
+                            <label class="label">Proyecto</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" (click)="openModalProyectos(proyects)" [value]="nameProyect" shape="semi-round" type="text" readonly>
+                                <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Proyecto</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_proyecto" required
-                                    minlength="1">
-                                <small *ngIf="!key_proyecto.valid && key_proyecto.touched && tarea.key_proyecto !== ''" class="invalid-feedback d-block">
-      La key proyecto no es válida
-    </small>
-                            </div>
+                        <div class="col-md-2">
+                            <label class="label">Colaboradores</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [value]="colabsText" type="text" (click)="openModalColaborador(colabsList)" readonly>
+                                <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Colaborador</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_colaborador" placeholder="Ingrese la key colaborador" #key_colaborador="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.key_colaborador"
-                                    required minlength="1">
-                                <small *ngIf="!key_colaborador.valid && key_colaborador.touched && tarea.key_colaborador !== ''" class="invalid-feedback d-block">
-      La key colaborador no es válida
-    </small>
-                            </div>
+                        <div class="col-md-1">
+                            <label class="label">Descripción</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
+                                <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                    </div>
-                    <div style="padding: 10px;"></div>
-                    <div class="text-center">
-                        <button nbButton status="danger" type="submit">Registrar</button>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
+                        </div>
                     </div>
                 </form>
-                <div style="padding: 30px;"></div>
-                <form class="pl-md-5" (ngSubmit)="buscarTareas()">
+
+                <input #autoInput nbInput type="text" (input)="onChange()" placeholder="Enter value" [nbAutocomplete]="auto" />
+
+                <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
+
+                    <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option">
+                        {{ option }}
+                    </nb-option>
+
+                </nb-autocomplete>
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarTareas()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
                                 <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Tareas">
                             </div>
                             <div class="px-md-2">
-                                <button nbButton status="primary" type="submit" size="giant" style="top: -5px;">Buscar</button>
+                                <button nbButton status="primary" type="submit" size="giant" style="top: -5px;"><nb-icon icon="search-outline"></nb-icon></button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +104,7 @@
                                 <tr *ngFor="let item of myList">
                                     <td>{{ item.id_tarea }}</td>
                                     <td>{{ item.nombre }}</td>
-                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button> </td>
+                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(modalUpdate, item)">Editar</button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -128,7 +122,7 @@
                                 <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_tarea }}</td>
                                     <td>{{ item.nombre }}</td>
-                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button> </td>
+                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(modalUpdate, item)">Editar</button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -140,89 +134,208 @@
 </div>
 
 
-<div class="modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style="width: 1200px; height: 700px; background-color: rgb(47, 62, 106); right: 60%; margin-top: 25%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de tarea</h>
-            </div>
-            <div style="padding: 50px;"></div>
-            <div class="modal-body">
-                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateTarea()">
-                    <div class="row">
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="nombre">Nombre</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="tareaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">
-          El nombre no es válido
-        </small>
+<ng-template #modalUpdate let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 800px;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <form class="col-md-10" (ngSubmit)="updateTarea()">
+                            <div class="form-group row">
+                                <div class="col-md-6 px-md-4 text-center">
+                                    <label class="label">Nombre</label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" [value]="update.nombre" shape="semi-round" readonly>
+                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
+                                <div class="col-md-6 px-md-4 text-center">
+                                    <label class="label">Descripción</label>
+                                    <input nbInput fullWidth status="danger" [value]="update.descripcion" shape="semi-round" readonly>
+                                    <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Descripción</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" placeholder="Ingrese la descripción" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tareaCopy.descripcion" required
-                                    minlength="10">
-                                <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block">
-          La descripción no es válida
-        </small>
+                            <div class="form-group row">
+                                <div class="col-md-6 px-md-4 text-center">
+                                    <nb-form-field>
+                                        <label class="label">Epica</label>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" [value]="update.key_epica" readonly>
+                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
+                                <div class="col-md-6 px-md-4 text-center">
+                                    <nb-form-field>
+                                        <label class="label">Sprint</label>
+                                        <input nbInput fullWidth status="danger" [Value]="update.key_sprint" shape="semi-round" readonly>
+                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Epica</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_epica" placeholder="Ingrese la key épica" #key_epica="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tareaCopy.key_epica" required minlength="1">
-                                <small *ngIf="!key_epica.valid && key_epica.touched" class="invalid-feedback d-block">
-          La key épica no es válida
-        </small>
+                            <div class="form-group row">
+                                <div class="col-md-6 px-md-4 text-center">
+                                    <nb-form-field>
+                                        <label class="label">Proyecto</label>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" [value]="update.key_proyecto" readonly>
+                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
+                                <div class="col-md-6 px-md-4 text-center">
+                                    <nb-form-field>
+                                        <label class="label">Colaborador</label>
+                                        <input nbInput fullWidth status="danger" [value]="update.key_colaborador" shape="semi-round" readonly>
+                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Sprint</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_sprint" placeholder="Ingrese la key sprint" #key_sprint="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tareaCopy.key_sprint" required minlength="1">
-                                <small *ngIf="!key_sprint.valid && key_sprint.touched" class="invalid-feedback d-block">
-          La key sprint no es válida
-        </small>
+                            <div style="padding: 20px;"></div>
+                            <div class="row">
+                                <div class="col">
+                                    <button nbButton status="primary" type="submit">Editar</button>
+                                </div>
+                                <div class="col text-right">
+                                    <button nbButton status="danger" type="button" (click)="closeModalUpdate()">Cerrar</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Proyecto</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tareaCopy.key_proyecto" required
-                                    minlength="1">
-                                <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">
-          La key proyecto no es válida
-        </small>
-                            </div>
-                        </div>
-                        <div class="col-md-6 px-md-4 text-center">
-                            <div class="form-group mx-auto">
-                                <label for="form-control">Key Colaborador</label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="key_colaborador" placeholder="Ingrese la key colaborador" #key_colaborador="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tareaCopy.key_colaborador"
-                                    required minlength="1">
-                                <small *ngIf="!key_colaborador.valid && key_colaborador.touched" class="invalid-feedback d-block">
-          La key colaborador no es válida
-        </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                    <div class="row">
-                        <div class="col">
-                            <button nbButton status="primary" type="submit">Editar</button>
-                        </div>
-                        <div class="col text-right">
-                            <button nbButton status="danger" type="button" (click)="closeModal()">Cerrar</button>
-                        </div>
-                    </div>
-                </form>
+                            <div style="padding: 20px;"></div>
+                        </form>
+                    </nb-card-body>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
+</ng-template>
+
+<ng-template #colabsList let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Colaboradores</nb-card-header>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of colaboradorList">
+                            <b>{{ item.nombre }}</b>
+                            <div class="button" style="position: absolute; left: 80%;">
+                                <button nbButton status="info" (click)="selectedColabs(item.id_colab)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="ref.close()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+                <nb-card class="list-card" status="danger" style="max-width: 400px; max-height: 900px; overflow-y: auto; position: fixed; right: 25%;">
+                    <nb-card-header>Colaboradores Seleccionados</nb-card-header>
+                    <nb-card-body>
+                        <nb-list>
+                            <nb-list-item *ngFor="let item of colabsSelected">
+                                {{ item.nombre}}
+                                <div class="button" style="position: fixed; right: 27%;">
+                                    <button (click)="deleteSelectedUsers(item.id_colab)" nbButton status="danger"><nb-icon nbSuffix icon="close" pack="eva"></nb-icon></button>
+                                </div>
+                            </nb-list-item>
+                        </nb-list>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #proyects let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Proyectos</nb-card-header>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of proyectoList">
+                            <div class="row">
+                                <b>{{ item.nombre }}</b>
+                                <div style="position: absolute; left: 80%; margin-top: -10px;">
+                                    <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                </div>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="ref.close()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #sprints let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Sprints</nb-card-header>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of sprintList">
+                            <div class="row">
+                                <b>{{ item.nombre }}</b>
+                                <div style="position: absolute; left: 80%; margin-top: -10px;">
+                                    <button nbButton status="danger" (click)="selectedSprint(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                </div>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="ref.close()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #epicas let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Sprints</nb-card-header>
+                    <nb-card-body>
+                        <nb-list-item *ngFor="let item of epicaList">
+                            <div class="row">
+                                <b>{{ item.nombre }}</b>
+                                <div style="position: absolute; left: 80%; margin-top: -10px;">
+                                    <button nbButton status="danger" (click)="selectedEpica(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                </div>
+                            </div>
+                        </nb-list-item>
+                        <div style="padding: 20px;">
+                            <div class="text-center">
+                                <button nbButton (click)="ref.close()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #description let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Descripción</nb-card-header>
+                    <nb-card-body>
+                        <textarea nbInput fullWidth name="descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="tarea.descripcion" required minlength="10"></textarea>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
