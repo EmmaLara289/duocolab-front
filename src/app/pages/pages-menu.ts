@@ -5,6 +5,26 @@ export const MENU_ITEMS: NbMenuItem[] = [
 
   {
     icon: 'edit-2-outline',
+    title: 'Colaboradores',
+    link: '/pages/colaborador'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Equipos',
+    link: '/pages/equipo'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Proyectos',
+    link: '/pages/proyecto'
+  },
+  {
+    icon: 'edit-2-outline',
+    title: 'Epicas',
+    link: '/pages/epica'
+  },
+  {
+    icon: 'edit-2-outline',
     title: 'Tareas',
     link: '/pages/tarea'
   },
@@ -15,21 +35,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     icon: 'edit-2-outline',
-    title: 'Colaboradores',
-    link: '/pages/colaborador'
-  },
-  {
-    icon: 'edit-2-outline',
-    title: 'Epicas',
-    link: '/pages/epica'
-  },
-  {
-    icon: 'edit-2-outline',
-    title: 'Equipos',
-    link: '/pages/equipo'
-  },
-  {
-    icon: 'edit-2-outline',
     title: 'Estatus Tareas',
     link: '/pages/estatus-tarea'
   },
@@ -37,11 +42,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'edit-2-outline',
     title: 'Prioridades',
     link: '/pages/prioridad'
-  },
-  {
-    icon: 'edit-2-outline',
-    title: 'Proyectos',
-    link: '/pages/proyecto'
   },
   {
     icon: 'edit-2-outline',

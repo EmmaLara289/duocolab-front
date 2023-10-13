@@ -73,11 +73,12 @@
                     <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
                         <table class="table align-items-center table-flush">
                             <table class="table dark-table">
-                                <thead>
+                                <thead style="background-color: #27598F">
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Acciones</th>
+                                        <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -87,14 +88,18 @@
                                         <td>
                                             <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                         </td>
+                                        <td>
+                                            <button *ngIf="item.status === 1" nbButton status="warning" type="button" size="medium">Deshabilitar</button>
+                                            <button *ngIf="item.status !== 1" nbButton status="danger" type="button" size="medium">Deshabilitado</button>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </table>
                     </div>
-                    <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
-                        <table class="table dark-table">
-                            <thead>
+                    <div [class.show]="modalTable " style="display: block; " *ngIf="modalTable " class="table-responsive ">
+                        <table class="table dark-table ">
+                            <thead style="background-color: #27598F ">
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
@@ -102,11 +107,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of myList2">
+                                <tr *ngFor="let item of myList2 ">
                                     <td>{{ item.id_colab }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                        <button nbButton status="danger " type="button " size="medium " (click)="openModalUpdate(item) ">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -120,74 +125,77 @@
 
 
 
-<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style="margin-top: 30%; width: 1400px;background-color: rgb(47, 62, 106); right: 80%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Colaborador</h>
+<div class="modal custom-modal " [class.show]="modalUpdate " style="display: block; " *ngIf="modalUpdate ">
+    <div class="modal-dialog ">
+        <div class="modal-content " style="margin-top: 30%; width: 1400px;background-color: rgb(47, 62, 106); right: 80%; ">
+            <div class="modal-header ">
+                <h style="font-weight: bold; color: rgb(255, 255, 255); ">Edicion de Colaborador</h>
             </div>
-            <div style="padding: 20px;"></div>
-            <div class="modal-body">
-                <form (ngSubmit)="updateColaborador()">
-                    <div style="left: -0%;" class="col-md-8">
-                        <div class="row">
-                            <div class="px-md-1 col-md-4 form-group mx-auto text-center">
-                                <div class="form-group">
+            <div style="padding: 20px; "></div>
+            <div class="modal-body ">
+                <form (ngSubmit)="updateColaborador() ">
+                    <div style="left: -0%; " class="col-md-8 ">
+                        <div class="row ">
+                            <div class="px-md-1 col-md-4 form-group mx-auto text-center ">
+                                <div class="form-group ">
                                     <label>Nombre</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="colaboradorUpdate.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!nombre.valid && nombre.touched " class="invalid-feedback d-block">El nombre no es válido</small>
+                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="text " name="nombre " placeholder="Ingrese el nombre " #nombre="ngModel " [(ngModel)]="colaboradorUpdate.nombre
+                                                " required minlength="5 " [ngModelOptions]="{standalone: true} ">
+                                    <small *ngIf="!nombre.valid && nombre.touched " class="invalid-feedback d-block ">El nombre no es válido</small>
                                 </div>
                             </div>
-                            <div class="px-md-1 col-md-4 form-group mx-auto text-center">
-                                <div class="form-group">
+                            <div class="px-md-1 col-md-4 form-group mx-auto text-center ">
+                                <div class="form-group ">
                                     <label>Teléfono</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="telefono" placeholder="Ingrese el teléfono" #telefono="ngModel" [(ngModel)]="colaboradorCopy.telefono" required minlength="1" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!telefono.valid && telefono.touched " class="invalid-feedback d-block">El teléfono no es válido</small>
+                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="text " name="telefono " placeholder="Ingrese el teléfono " #telefono="ngModel " [(ngModel)]="colaboradorCopy.telefono
+                                                " required minlength="1 " [ngModelOptions]="{standalone: true} ">
+                                    <small *ngIf="!telefono.valid && telefono.touched " class="invalid-feedback d-block ">El teléfono no es válido</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class=" px-md-1 col-md-4 form-group mx-auto text-center">
-                                <div class="form-group">
+                        <div class="row ">
+                            <div class=" px-md-1 col-md-4 form-group mx-auto text-center ">
+                                <div class="form-group ">
                                     <label>GitHub</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="github" placeholder="Ingrese el GitHub" #github="ngModel" [(ngModel)]="colaboradorCopy.github" [ngModelOptions]="{standalone: true}" required minlength="5">
-                                    <small *ngIf="!github.valid && github.touched " class="invalid-feedback d-block">El GitHub no es válido</small>
+                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="text " name="github " placeholder="Ingrese el GitHub " #github="ngModel " [(ngModel)]="colaboradorCopy.github
+                                                " [ngModelOptions]="{standalone: true} " required minlength="5 ">
+                                    <small *ngIf="!github.valid && github.touched " class="invalid-feedback d-block ">El GitHub no es válido</small>
                                 </div>
                             </div>
-                            <div class=" px-md-1 col-md-4 form-group mx-auto text-center">
-                                <div class="form-group">
+                            <div class=" px-md-1 col-md-4 form-group mx-auto text-center ">
+                                <div class="form-group ">
                                     <label>Correo</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="email" name="correo" placeholder="Ingrese el Correo" #correo="ngModel" [(ngModel)]="colaboradorCopy.correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                                        [ngModelOptions]="{standalone: true}" required minlength="5">
-                                    <small *ngIf="!correo.valid && correo.touched " class="invalid-feedback d-block">El correo no es válido</small>
+                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="email " name="correo " placeholder="Ingrese el Correo " #correo="ngModel " [(ngModel)]="colaboradorCopy.correo
+                                                " required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$ " [ngModelOptions]="{standalone: true} " required minlength="5 ">
+                                    <small *ngIf="!correo.valid && correo.touched " class="invalid-feedback d-block ">El correo no es válido</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row justify-content-end">
-                        <nb-card class="text-center" status="danger" style="position: absolute; top: 4%; right: 5%;">
+                    <div class="row justify-content-end ">
+                        <nb-card class="text-center " status="danger " style="position: absolute; top: 4%; right: 5%; ">
                             <nb-card-header>Foto</nb-card-header>
                             <nb-card-body>
-                                <img src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                                <img src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}} " alt="... " style="width: 250;; height: 150px; border-radius: 5%; ">
                             </nb-card-body>
-                            <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="foto($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
+                            <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white; " type="file " accept=".jpeg, .png, .jpg " (change)="foto($event.target.files) " placeholder="Subir Foto " /></nb-card-footer>
                         </nb-card>
                     </div>
-                    <div style="padding: 10px;"></div>
-                    <div class="row">
-                        <div style="position: relative; left: 5%;">
-                            <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Editar</button>
+                    <div style="padding: 10px; "></div>
+                    <div class="row ">
+                        <div style="position: relative; left: 5%; ">
+                            <button nbButton status="danger " type="submit " class="btn btn-fill btn-danger ">Editar</button>
                         </div>
-                        <div style="position: relative; left: 50%;">
-                            <button nbButton status="primary" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                        <div style="position: relative; left: 50%; ">
+                            <button nbButton status="primary " type="button " (click)="closeModal() " class="btn btn-primary ">Cerrar</button>
                         </div>
                     </div>
-                    <div style="padding: 20px;"></div>
+                    <div style="padding: 20px; "></div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 
-<!--<div class="title text-center">!We are Working to make this possible! :)</div>
-<div class="text text-center">Thanks for ur understanding</div>-->
+<!--<div class="title text-center ">!We are Working to make this possible! :)</div>
+<div class="text text-center ">Thanks for ur understanding</div>-->

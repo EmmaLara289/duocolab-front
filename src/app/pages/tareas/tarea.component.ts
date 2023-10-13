@@ -1,14 +1,13 @@
-import { Component, TemplateRef, ViewChild, OnInit } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ElementRef  } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Tarea } from '../../models/tarea';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import { ChangeDetectionStrategy,} from '@angular/core';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: "app-tarea",
@@ -18,11 +17,30 @@ import { ChangeDetectionStrategy,} from '@angular/core';
 export class TareaComponent {
   private ref: NbDialogRef<any>;
 
-  @ViewChild('autoInput') input;
-  options: string[] = []; // Inicializa options como un array de strings vacío
+  @ViewChild('EpicaAuto') autoEpica: ElementRef;
+  @ViewChild('ProyectAuto') autoProyect: ElementRef;
+  @ViewChild('SprintAuto') autoSprint: ElementRef;
+  @ViewChild('EpicasAuto') autosEpica: ElementRef;
+
+  filteredEpicas: Observable<any[]>;
+
+  options: any[] = []; // Inicializa options como un array de strings vacío
   filteredOptions$: Observable<string[]>;
+  
+  optionsProyects: string[] = [];
+  filtredProyects$: Observable<string[]>;
+
+  optionsSprints: string[] = [];
+  filtredSprints$: Observable<string[]>;
+
+  epicaPrueba = [
+    { id: 1, nombre: 'Editor No Funcional' },
+    { id: 2, nombre: 'Don Toños' },
+    // ...otros objetos
+  ];
 
   public identity;
+  selectedOption: any;
   public status: string;
   tareas: any = [];
   text: string = "";
@@ -55,19 +73,33 @@ export class TareaComponent {
   modalEpica: any;
   modalDescription: any;
   update: any;
+  form: FormGroup;
   constructor(
     private _userService: UserService,
     private _router: Router,
     private http: HttpClient,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private fb: FormBuilder,
+
   ) {
     this.tarea = new Tarea("", "", "", "", "", "", "");
     //this.tareaCopy = new Tarea('','','','','','','');
+    
+    this.form = this.fb.group({
+      epica: [''] // FormControl para el input del usuario
+    });
+
+  }
+
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.epicaList.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
 
 
   ngOnInit() {
+    //this.key_epica = new FormControl();
 
     this._userService.getTareas().subscribe((response) => {
       this.myList = response;
@@ -75,44 +107,105 @@ export class TareaComponent {
 
     this._userService.getEpicas().subscribe((response) => {
       this.epicaList = response;
-      this.options = this.epicaList.map(epica => epica.nombre);
-      console.log(this.options)
+      this.filteredEpicas = this.form.get('epica').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
     });
 
     this._userService.getSprints().subscribe((response) => {
       this.sprintList = response;
+      this.optionsSprints = this.sprintList.map(sprint => sprint.nombre);
     });
 
     this._userService.getProyectos().subscribe((response) => {
       this.proyectoList = response;
-    });
+      this.optionsProyects = this.proyectoList.map(proyecto => proyecto.nombre);
+      console.log(response)
+      });
 
     this._userService.getColaboradores().subscribe((response) => {
       this.colaboradorList = response;
     });
-
-    //this.options = []; // Inicializa options como un array vacío
-    //console.log("Las opciones: ", this.options);
-    this.filteredOptions$ = of(this.options);
+    this.filteredOptions$ = this.epicaList;
+    this.filtredProyects$ = of(this.optionsProyects);
+    this.filtredProyects$ = of(this.optionsSprints);
   }
 
-  private filter(value: string): string[] {
+  private filter(value: string, options: any[]): string[] {
     const filterValue = value.toLowerCase();
-    return this.options.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
+    return options
+      .filter(option => option.nombre.toLowerCase().includes(filterValue))
+      .map(option => option.nombre);
   }
-
+  
   getFilteredOptions(value: string): Observable<string[]> {
     return of(value).pipe(
-      map(filterString => this.filter(filterString)),
+      map(filterString => this.filter(filterString, this.epicaList)),
+    );
+  }
+  
+  onChange() {
+    this.filteredOptions$ = this.getFilteredOptions(this.autoEpica.nativeElement.value);
+  }
+  
+  onSelectionChange($event) {
+    const selectedName = $event;
+    const selectedOption = this.epicaList.find(option => option.nombre === selectedName);
+    console.log($event);
+    //this.nameEpica = 
+    //this.tarea.key_sprint = selectedOption.id_epica;
+  }
+
+  onEpicaSelected($event) {
+    const selectedOption = $event;
+    console.log($event);
+    // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
+  }
+
+
+  private filterProyect(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsProyects.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
+  }
+
+  getFilteredOptionsProyect(value: string): Observable<string[]> {
+    return of(value).pipe(
+      map(filterString => this.filterProyect(filterString)),
     );
   }
 
-  onChange() {
-    this.filteredOptions$ = this.getFilteredOptions(this.input.nativeElement.value);
+  onChangeProyect() {
+    this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
   }
 
-  onSelectionChange($event) {
-    this.filteredOptions$ = this.getFilteredOptions($event);
+  onSelectionChangeProyect($event) {
+   //console.log("Si se guardo")
+    this.filtredProyects$ = this.getFilteredOptionsProyect($event);
+    this.tarea.key_proyecto = ($event);
+    console.log(this.tarea.key_proyecto);
+  }
+
+  private filterSprint(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.optionsSprints.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
+  }
+
+  getFilteredOptionsSprint(value: string): Observable<string[]> {
+    return of(value).pipe(
+      map(filterString => this.filterSprint(filterString)),
+    );
+  }
+
+  onChangeSprint() {
+    this.filtredSprints$ = this.getFilteredOptionsSprint(this.autoSprint.nativeElement.value);
+  }
+
+  onSelectionChangeSprint($event) {
+   //console.log("Si se guardo")
+    this.filtredSprints$ = this.getFilteredOptionsSprint($event);
+    //this.tarea.key_proyecto = ($event);
+    //console.log(this.tarea.key_proyecto);
   }
 
   registrarTarea() {

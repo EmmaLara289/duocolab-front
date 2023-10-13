@@ -176,6 +176,7 @@ export class EquipoComponent implements OnInit {
 
   openModalUpdate(item, dialog: TemplateRef<any>) {
     this.modalUpdate = true;
+    this.integrantes = item.integrantes;
     this.equipoCopy = {...item};
     console.log(item);
     //console.log(this.equipoCopy.nombre_proyecto);

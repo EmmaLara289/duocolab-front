@@ -65,7 +65,7 @@
                 <div style="padding: 10px;"></div>
                 <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
                     <table class="table dark-table ">
-                        <thead>
+                        <thead style="background-color: #27598F">
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
@@ -87,7 +87,7 @@
                 </div>
                 <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
                     <table class="table dark-table ">
-                        <thead>
+                        <thead style="background-color: #27598F">
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
@@ -219,7 +219,16 @@
                         <div class=" row">
                             <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                                 <label>Integrantes</label>
-                                <input nbInput fullWidth status="danger" [value]="usersText" shape="semi-round" class="text-center" type="text" (click)="dialogEditListUsers(editUsers)" readonly>
+                                <nb-card-body>
+                                    <nb-list-item class="text-center" *ngFor="let item of integrantes">
+                                        <div class="row">
+                                            {{ item }}
+                                            <div style="position: absolute; left: 50%; margin-top: -10px;">
+                                                <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                            </div>
+                                        </div>
+                                    </nb-list-item>
+                                </nb-card-body>
                             </div>
                         </div>
                         <div class=" row">

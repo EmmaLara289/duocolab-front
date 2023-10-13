@@ -34,7 +34,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     NbFormFieldModule,
     NbIconModule,
     NbListModule,
-    NbAutocompleteModule
+    NbAutocompleteModule,
+    ReactiveFormsModule
     
   ],
   declarations: [

@@ -25,24 +25,38 @@
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
-                            <label class="label">Epica</label>
+                            <label class="label">Proyecto</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" (click)="openModalEpica(epicas)" [value]="nameEpica" shape="semi-round" type="text" readonly>
-                                <nb-icon nbSuffix icon="archive" pack="eva"></nb-icon>
+                                <input nbInput fullWidth status="danger" shape="semi-round" #ProyectAuto type="text" (input)="onChangeProyect()" placeholder="Enter value" [nbAutocomplete]="autoProyect">
+                                <nb-autocomplete #autoProyect (selectedChange)="onSelectionChangeProyect($event)">
+                                    <nb-option *ngFor="let option of filtredProyects$ | async" [value]="option">
+                                        {{ option }}
+                                    </nb-option>
+                                </nb-autocomplete>
+                                <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
                             <label class="label">Sprint</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" [value]="nameSprint" (click)="openModalSprints(sprints)" type="text" readonly>
+                                <input nbInput fullWidth status="danger" shape="semi-round" #SprintAuto type="text" (input)="onChangeSprint()" placeholder="Enter value" [nbAutocomplete]="autoSprint">
+                                <nb-autocomplete #autoSprint (selectedChange)="onSelectionChangeSprint($event)">
+                                    <nb-option *ngFor="let option of filtredSprints$ | async" [value]="option">
+                                        {{ option }}
+                                    </nb-option>
+                                </nb-autocomplete>
                                 <nb-icon nbSuffix icon="sync" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
-                            <label class="label">Proyecto</label>
+                            <label class="label">Epica</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" (click)="openModalProyectos(proyects)" [value]="nameProyect" shape="semi-round" type="text" readonly>
-                                <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('epica')" (input)="onChange()" placeholder="Enter value" [nbAutocomplete]="autoEpica">
+                                <nb-autocomplete #autoEpica>
+                                    <nb-option *ngFor="let option of filteredEpicas | async" [value]="option" (selectedChange)="onEpicaSelected($event)">
+                                        {{ option.nombre }}
+                                    </nb-option>
+                                </nb-autocomplete>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
@@ -64,16 +78,6 @@
                         </div>
                     </div>
                 </form>
-
-                <input #autoInput nbInput type="text" (input)="onChange()" placeholder="Enter value" [nbAutocomplete]="auto" />
-
-                <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
-
-                    <nb-option *ngFor="let option of filteredOptions$ | async" [value]="option">
-                        {{ option }}
-                    </nb-option>
-
-                </nb-autocomplete>
             </nb-card-body>
         </nb-card>
         <nb-card status="danger">
@@ -93,7 +97,7 @@
                 <nb-card-body>
                     <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
                         <table class="table dark-table">
-                            <thead>
+                            <thead style="background-color: #27598F">
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
@@ -111,7 +115,7 @@
                     </div>
                     <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
                         <table class="table dark-table">
-                            <thead>
+                            <thead style="background-color: #27598F">
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>

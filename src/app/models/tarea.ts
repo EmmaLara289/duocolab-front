@@ -7,7 +7,7 @@ export class Tarea {
         public descripcion: string,
         public key_epica: string,
         public key_sprint: any,
-        public key_proyecto: string,
+        public key_proyecto: any,
         public key_colaborador: string,
         
 
