@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Colaborador } from '../../models/colaborador';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { HttpClient } from '@angular/common/http';
 import { global } from '../../services/global';
 
@@ -14,11 +14,12 @@ import { global } from '../../services/global';
   styleUrls: ["./colaborador.component.scss"]
 })
 export class ColaboradorComponent implements OnInit {
+  private ref: NbDialogRef<any>;
+
 	colaborador: Colaborador;
   fotoAlert = true;
   fotoAlertUpdate = true;
   modalRegister = false;
-  modalUpdate = false;
   id_colab: string=null;
 	public identity;
 	public status: string;
@@ -34,10 +35,12 @@ export class ColaboradorComponent implements OnInit {
   getFotoUrlAddress: any;
   colaboradorUpdate: any= [];
   modalTable = false;
+  modalUpdate: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
-  private http: HttpClient
+  private http: HttpClient,
+  private dialogService: NbDialogService,
   ) {
   this.colaborador= new Colaborador('', '','', '','','');
   this.global = global.url;
@@ -74,7 +77,6 @@ export class ColaboradorComponent implements OnInit {
           this.alertUpdate = true;
           this.ngOnInit();
           this.clearData();
-          this.closeModal();
           this.buscarColaboradores();
         }
   
@@ -95,11 +97,17 @@ export class ColaboradorComponent implements OnInit {
 
   openModal() {
   this.modalRegister = true;
+  }
   
+
+  closeModalUpdate() {
+    this.modalUpdate.close();
   }
 
-  openModalUpdate(item){
-    this.modalUpdate = true;
+  openModalUpdate(item, dialog: TemplateRef<any>){
+    this.modalUpdate = this.dialogService.open(dialog, {
+      context: "this is some",
+    });
     this.colaboradorCopy = { ...item };
 
     this.colaboradorUpdate = this.colaboradorCopy;
@@ -107,17 +115,10 @@ export class ColaboradorComponent implements OnInit {
     //this.colaborador = { ...this.myList.find(item => item.id_colab === id_colab) };
     this.fotoAlertUpdate = this.colaboradorCopy.foto;
     this.getFotoUrlAddress = this.global.replace('/api/', '/');
-    console.log(this.getFotoUrlAddress);
+    console.log(this.global);
+    console.log('URL: ',this.getFotoUrlAddress);
     //this.get
     //http://127.0.0.1:8000/storage/colaboradores/50a78bb8fd562d556785e04ba87529de.jpg
-  }
-
-
-
-  closeModal() {
-    this.modalRegister = false;
-    this.modalUpdate = false;
-    this.clearData();
   }
 
   foto(files: FileList){

@@ -86,7 +86,7 @@
                                         <td>{{ item.id_colab }}</td>
                                         <td>{{ item.nombre }}</td>
                                         <td>
-                                            <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                            <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
                                         </td>
                                         <td>
                                             <button *ngIf="item.status === 1" nbButton status="warning" type="button" size="medium">Deshabilitar</button>
@@ -97,9 +97,9 @@
                             </table>
                         </table>
                     </div>
-                    <div [class.show]="modalTable " style="display: block; " *ngIf="modalTable " class="table-responsive ">
-                        <table class="table dark-table ">
-                            <thead style="background-color: #27598F ">
+                    <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
+                        <table class="table dark-table">
+                            <thead style="background-color: #27598F">
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
@@ -107,11 +107,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of myList2 ">
+                                <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_colab }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger " type="button " size="medium " (click)="openModalUpdate(item) ">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
+                                    </td>
+                                    <td>
+                                        <button *ngIf="item.status === 1" nbButton status="warning" type="button" size="medium">Deshabilitar</button>
+                                        <button *ngIf="item.status !== 1" nbButton status="danger" type="button" size="medium">Deshabilitado</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -125,77 +129,67 @@
 
 
 
-<div class="modal custom-modal " [class.show]="modalUpdate " style="display: block; " *ngIf="modalUpdate ">
-    <div class="modal-dialog ">
-        <div class="modal-content " style="margin-top: 30%; width: 1400px;background-color: rgb(47, 62, 106); right: 80%; ">
-            <div class="modal-header ">
-                <h style="font-weight: bold; color: rgb(255, 255, 255); ">Edicion de Colaborador</h>
-            </div>
-            <div style="padding: 20px; "></div>
-            <div class="modal-body ">
-                <form (ngSubmit)="updateColaborador() ">
-                    <div style="left: -0%; " class="col-md-8 ">
-                        <div class="row ">
-                            <div class="px-md-1 col-md-4 form-group mx-auto text-center ">
-                                <div class="form-group ">
+<ng-template #modalUpdate let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10" style="left: 5%;">
+            <div class="row">
+                <nb-card status="danger" style="width: 1200px; height: 500px;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <form (ngSubmit)="updateColaborador()">
+                        <div style="left: 0%; top: 8%;" class="col-md-6">
+                            <div class="form-group">
+                                <div class="col-md-7 form-group">
                                     <label>Nombre</label>
-                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="text " name="nombre " placeholder="Ingrese el nombre " #nombre="ngModel " [(ngModel)]="colaboradorUpdate.nombre
-                                                " required minlength="5 " [ngModelOptions]="{standalone: true} ">
-                                    <small *ngIf="!nombre.valid && nombre.touched " class="invalid-feedback d-block ">El nombre no es válido</small>
+                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="colaboradorUpdate.nombre
+                                               " required minlength="5" [ngModelOptions]="{standalone: true}">
                                 </div>
-                            </div>
-                            <div class="px-md-1 col-md-4 form-group mx-auto text-center ">
-                                <div class="form-group ">
+                                <div class="col-md-7 form-group">
                                     <label>Teléfono</label>
-                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="text " name="telefono " placeholder="Ingrese el teléfono " #telefono="ngModel " [(ngModel)]="colaboradorCopy.telefono
-                                                " required minlength="1 " [ngModelOptions]="{standalone: true} ">
-                                    <small *ngIf="!telefono.valid && telefono.touched " class="invalid-feedback d-block ">El teléfono no es válido</small>
+                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="telefono" placeholder="Ingrese el teléfono" #telefono="ngModel" [(ngModel)]="colaboradorCopy.telefono
+                                               " required minlength="1" [ngModelOptions]="{standalone: true}">
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row ">
-                            <div class=" px-md-1 col-md-4 form-group mx-auto text-center ">
-                                <div class="form-group ">
+                                <div class="col-md-7 form-group">
                                     <label>GitHub</label>
-                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="text " name="github " placeholder="Ingrese el GitHub " #github="ngModel " [(ngModel)]="colaboradorCopy.github
-                                                " [ngModelOptions]="{standalone: true} " required minlength="5 ">
-                                    <small *ngIf="!github.valid && github.touched " class="invalid-feedback d-block ">El GitHub no es válido</small>
+                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="github" placeholder="Ingrese el GitHub" #github="ngModel" [(ngModel)]="colaboradorCopy.github
+                                               " [ngModelOptions]="{standalone: true}" required minlength="5">
+                                </div>
+                                <div class="col-md-7 form-group">
+                                    <div class="form-group">
+                                        <label>Correo</label>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="email" name="correo" placeholder="Ingrese el Correo" #correo="ngModel" [(ngModel)]="colaboradorCopy.correo
+                                               " required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                        <small *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">El correo no es válido</small>
+                                    </div>
                                 </div>
                             </div>
-                            <div class=" px-md-1 col-md-4 form-group mx-auto text-center ">
-                                <div class="form-group ">
-                                    <label>Correo</label>
-                                    <input nbInput fullWidth status="danger " shape="semi-round " class="text-center " type="email " name="correo " placeholder="Ingrese el Correo " #correo="ngModel " [(ngModel)]="colaboradorCopy.correo
-                                                " required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$ " [ngModelOptions]="{standalone: true} " required minlength="5 ">
-                                    <small *ngIf="!correo.valid && correo.touched " class="invalid-feedback d-block ">El correo no es válido</small>
-                                </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <nb-card class="text-center" status="danger" style="position: fixed; top: 34%; right: 30%;">
+                                <nb-card-header>Foto</nb-card-header>
+                                <nb-card-body>
+                                    <img src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                                </nb-card-body>
+                                <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="foto($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
+                            </nb-card>
+                        </div>
+                        <div style="padding: 30px;"></div>
+                        <div class="row">
+                            <div style="position: relative; left: 5%;">
+                                <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Editar</button>
+                            </div>
+                            <div style="position: relative; left: 50%;">
+                                <button nbButton status="primary" type="button" (click)="closeModalUpdate()" class="btn btn-primary">Cerrar</button>
                             </div>
                         </div>
-                    </div>
-                    <div class="row justify-content-end ">
-                        <nb-card class="text-center " status="danger " style="position: absolute; top: 4%; right: 5%; ">
-                            <nb-card-header>Foto</nb-card-header>
-                            <nb-card-body>
-                                <img src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}} " alt="... " style="width: 250;; height: 150px; border-radius: 5%; ">
-                            </nb-card-body>
-                            <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white; " type="file " accept=".jpeg, .png, .jpg " (change)="foto($event.target.files) " placeholder="Subir Foto " /></nb-card-footer>
-                        </nb-card>
-                    </div>
-                    <div style="padding: 10px; "></div>
-                    <div class="row ">
-                        <div style="position: relative; left: 5%; ">
-                            <button nbButton status="danger " type="submit " class="btn btn-fill btn-danger ">Editar</button>
-                        </div>
-                        <div style="position: relative; left: 50%; ">
-                            <button nbButton status="primary " type="button " (click)="closeModal() " class="btn btn-primary ">Cerrar</button>
-                        </div>
-                    </div>
-                    <div style="padding: 20px; "></div>
-                </form>
+                        <div style="padding: 20px;"></div>
+                    </form>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
+</ng-template>
 
-<!--<div class="title text-center ">!We are Working to make this possible! :)</div>
-<div class="text text-center ">Thanks for ur understanding</div>-->
+
+
+<!--<div class="title text-center">!We are Working to make this possible! :)</div>
+<div class="text text-center">Thanks for ur understanding</div>-->

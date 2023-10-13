@@ -99,9 +99,7 @@ export class TareaComponent {
 
 
   ngOnInit() {
-    //this.key_epica = new FormControl();
-
-    this._userService.getTareas().subscribe((response) => {
+        this._userService.getTareas().subscribe((response) => {
       this.myList = response;
     });
 
