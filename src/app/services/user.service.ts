@@ -201,9 +201,33 @@ export class UserService {
      {id_equipo:id_equipo, nombre: nombre, key_proyecto: key_proyecto, key_colab:key_colab});
   }
 
-  public updateColaborador(id_colab:string, nombre:string, telefono:string, foto:string, github:string, correo:string): Observable<any>{
+  public ableColaborador(id_colab:string): Observable<any> {
+    return this._http.post(global.url + 'able_Colaborador',
+     {id_colab:id_colab});
+  }
+
+  public disableColaborador(id_colab:string): Observable<any> {
+    return this._http.post(global.url + 'disable_Colaborador',
+     {id_colab:id_colab});
+  }
+
+ /* public updateColaborador(id_colab:string, nombre:string, telefono:string, foto:any, github:string, correo:string): Observable<any>{
     return this._http.post(global.url + 'updateColaborador',
     {id_colab:id_colab, nombre:nombre, telefono:telefono, foto:foto, github:github, correo:correo});
+  }*/
+
+  public updateColaborador(id_colab:string, nombre:string, telefono:string, foto:any, github:string, correo:string): Observable<any>{
+    const formData = new FormData();
+    formData.append('id_colab', id_colab);
+    formData.append('nombre', nombre);
+    formData.append('telefono', telefono);
+    console.log(typeof(foto))
+    if(typeof(foto) !== "string"){
+      formData.append('foto', foto); // Agrega la foto como archivo al FormData
+    }
+    formData.append('github', github);
+    formData.append('correo', correo);
+    return this._http.post(global.url + 'updateColaborador', formData);
   }
 
   public updateArea(id_area:string, nombre:string): Observable<any>{

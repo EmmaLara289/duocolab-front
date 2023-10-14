@@ -8,28 +8,32 @@
 
 <div class="row">
     <div class="col-md-12">
-        <nb-card>
+        <nb-card style="height: 420px;">
             <nb-card-header>
                 <h5 class="title">Registro de Colaboradores</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar un nuevo Colaborador</h6>
                 <div style="padding: 20px;"></div>
                 <form (ngSubmit)="registrarColaborador()">
                     <div style="left: 4%;" class="col-md-8">
                         <div class="row">
-                            <div style="right: 1%;" class=" px-md-1 col-md-5 form-group mx-auto text-center">
+                            <div style="right: 1%;" class=" px-md-1 col-md-5">
                                 <div class="form-group">
-                                    <label>Nombre</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center mb-4" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="colaborador.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!nombre.valid && nombre.touched && colaborador.nombre !== ''" class="invalid-feedback d-block">El nombre no es válido</small>
-                                    <label>Teléfono</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center mb-4" type="text" name="telefono" placeholder="Ingrese el teléfono" #telefono="ngModel" [(ngModel)]="colaborador.telefono" required minlength="1" [ngModelOptions]="{standalone: true}">
-                                    <small *ngIf="!telefono.valid && telefono.touched && colaborador.telefono !== ''" class="invalid-feedback d-block">El teléfono no es válido</small>
+                                    <label class="label">Nombre del colaborador</label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="colaborador.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                                        <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                    <div style="padding: 10px;"></div>
+                                    <label class="label">Número de Teléfono</label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="telefono" #telefono="ngModel" [(ngModel)]="colaborador.telefono" required minlength="1" [ngModelOptions]="{standalone: true}">
+                                        <nb-icon nbSuffix icon="phone" pack="eva"></nb-icon>
+                                    </nb-form-field>
                                 </div>
                             </div>
                             <div class="row justify-content-end">
-                                <nb-card class="text-center" status="danger" style="position: absolute; top: -2%; right: -40%; background-color: rgb(47, 62, 106);">
+                                <nb-card class="text-center" status="danger" style="position: absolute; top: -10%; right: -40%; background-color: rgb(47, 62, 106);">
                                     <nb-card-header>Foto</nb-card-header>
                                     <nb-card-body>
                                         <img *ngIf="fotoAlert" src="./assets/images/user.png" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
@@ -38,33 +42,39 @@
                                     <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="foto($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
                                 </nb-card>
                             </div>
-                            <div class=" px-md-1 col-md-5 form-group mx-auto text-center">
+                            <div class=" px-md-1 col-md-5 form-group mx-auto">
                                 <div class="form-group">
-                                    <label>GitHub</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center mb-4" type="text" name="github" placeholder="Ingrese el GitHub" #github="ngModel" [(ngModel)]="colaborador.github" [ngModelOptions]="{standalone: true}" required minlength="5">
-                                    <small *ngIf="!github.valid && github.touched && colaborador.github !== ''" class="invalid-feedback d-block">El GitHub no es válido</small>
-                                    <label>Correo</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center mb-4" type="email" name="correo" placeholder="Ingrese el Correo" #correo="ngModel" [(ngModel)]="colaborador.correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                                        [ngModelOptions]="{standalone: true}" required minlength="5">
-                                    <small *ngIf="!correo.valid && correo.touched && colaborador.correo !== ''" class="invalid-feedback d-block">El correo no es válido</small>
+                                    <label class="label">GitHub del Colaborador</label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="github" #github="ngModel" [(ngModel)]="colaborador.github" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                        <nb-icon nbSuffix icon="github" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                    <div style="padding: 10px;"></div>
+                                    <label class="label">Correo</label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" type="email" name="correo" #correo="ngModel" [(ngModel)]="colaborador.correo" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                        <nb-icon nbSuffix icon="email" pack="eva"></nb-icon>
+                                    </nb-form-field>
                                 </div>
                             </div>
                         </div>
-                        <div style="padding: 0px;"></div>
-                        <div style="position: relative; left: 44%;">
-                            <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Registrar</button>
+                        <div class="px-md-1" style="position: relative; left: 42%;">
+                            <button nbButton status="danger" type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
                     </div>
                 </form>
-                <div style="padding: 30px;"></div>
-                <form class="pl-md-5" (ngSubmit)="buscarColaboradores()">
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarColaboradores()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
                                 <input style="width : 600px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="text" name="termino" placeholder="Buscar Colaborador">
                             </div>
                             <div class="px-md-2">
-                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                                <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
                             </div>
                         </div>
                     </div>
@@ -89,8 +99,8 @@
                                             <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
                                         </td>
                                         <td>
-                                            <button *ngIf="item.status === 1" nbButton status="warning" type="button" size="medium">Deshabilitar</button>
-                                            <button *ngIf="item.status !== 1" nbButton status="danger" type="button" size="medium">Deshabilitado</button>
+                                            <button *ngIf="item.status === 1" nbButton status="warning" type="button" (click)="disableColaborador(item)" size="medium">Deshabilitar</button>
+                                            <button *ngIf="item.status !== 1" nbButton status="danger" type="button" (click)="ableColaborador(item)" size="medium">Habilitar</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -103,7 +113,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Acciones</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -114,8 +125,8 @@
                                         <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
                                     </td>
                                     <td>
-                                        <button *ngIf="item.status === 1" nbButton status="warning" type="button" size="medium">Deshabilitar</button>
-                                        <button *ngIf="item.status !== 1" nbButton status="danger" type="button" size="medium">Deshabilitado</button>
+                                        <button *ngIf="item.status === 1" nbButton status="warning" type="button" (click)="disableColaborador(item)" size="medium">Deshabilitar</button>
+                                        <button *ngIf="item.status !== 1" nbButton status="danger" type="button" (click)="ableColaborador(item)" size="medium">Deshabilitado</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -131,58 +142,68 @@
 
 <ng-template #modalUpdate let-data let-ref="dialogRef">
     <div class="row">
-        <div class="col-md-10" style="left: 5%;">
+        <div class="col-md-8" style="left: 15%;">
             <div class="row">
-                <nb-card status="danger" style="width: 1200px; height: 500px;">
+                <nb-card status="danger" style="width: 1200px; height: 520px;">
                     <nb-card-header>Editor</nb-card-header>
-                    <form (ngSubmit)="updateColaborador()">
-                        <div style="left: 0%; top: 8%;" class="col-md-6">
-                            <div class="form-group">
-                                <div class="col-md-7 form-group">
-                                    <label>Nombre</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="colaboradorUpdate.nombre
+                    <nb-card-body>
+                        <form (ngSubmit)="updateColaborador()">
+                            <div style="left: 0%; top: 8%;" class="col-md-6">
+                                <div class="form-group">
+                                    <div class="col-md-8 form-group">
+                                        <label class="label">Nombre del colaborador</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="colaboradorUpdate.nombre
                                                " required minlength="5" [ngModelOptions]="{standalone: true}">
-                                </div>
-                                <div class="col-md-7 form-group">
-                                    <label>Teléfono</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="telefono" placeholder="Ingrese el teléfono" #telefono="ngModel" [(ngModel)]="colaboradorCopy.telefono
-                                               " required minlength="1" [ngModelOptions]="{standalone: true}">
-                                </div>
-                                <div class="col-md-7 form-group">
-                                    <label>GitHub</label>
-                                    <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="github" placeholder="Ingrese el GitHub" #github="ngModel" [(ngModel)]="colaboradorCopy.github
-                                               " [ngModelOptions]="{standalone: true}" required minlength="5">
-                                </div>
-                                <div class="col-md-7 form-group">
-                                    <div class="form-group">
-                                        <label>Correo</label>
-                                        <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="email" name="correo" placeholder="Ingrese el Correo" #correo="ngModel" [(ngModel)]="colaboradorCopy.correo
-                                               " required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngModelOptions]="{standalone: true}" required minlength="5">
-                                        <small *ngIf="!correo.valid && correo.touched" class="invalid-feedback d-block">El correo no es válido</small>
+                                            <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="col-md-8 form-group">
+                                        <label class="label">Número de Teléfono</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="telefono" #telefono="ngModel" [(ngModel)]="colaboradorCopy.telefono" required minlength="1" [ngModelOptions]="{standalone: true}">
+                                            <nb-icon nbSuffix icon="phone" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="col-md-8 form-group">
+                                        <label class="label">GitHub del Colaborador</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="github" #github="ngModel" [(ngModel)]="colaboradorCopy.github" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                            <nb-icon nbSuffix icon="github" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="col-md-8 form-group">
+                                        <label class="label">Correo</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="email" name="correo" #correo="ngModel" [(ngModel)]="colaboradorCopy.correo " required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" [ngModelOptions]="{standalone: true}"
+                                                required minlength="5">
+                                            <nb-icon nbSuffix icon="email" pack="eva"></nb-icon>
+                                        </nb-form-field>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row justify-content-end">
-                            <nb-card class="text-center" status="danger" style="position: fixed; top: 34%; right: 30%;">
-                                <nb-card-header>Foto</nb-card-header>
-                                <nb-card-body>
-                                    <img src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
-                                </nb-card-body>
-                                <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="foto($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
-                            </nb-card>
-                        </div>
-                        <div style="padding: 30px;"></div>
-                        <div class="row">
-                            <div style="position: relative; left: 5%;">
-                                <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Editar</button>
+                            <div class="row justify-content-end">
+                                <nb-card class="text-center" status="danger" style="position: fixed; top: 30%; right: 32%;">
+                                    <nb-card-header>Foto</nb-card-header>
+                                    <nb-card-body>
+
+                                        <img *ngIf="fotoAlertUpdate" src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                                        <img *ngIf="!fotoAlertUpdate" [src]="getFotoUrlUpdate()" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                                    </nb-card-body>
+                                    <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="fotoUpdate($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
+                                </nb-card>
                             </div>
-                            <div style="position: relative; left: 50%;">
-                                <button nbButton status="primary" type="button" (click)="closeModalUpdate()" class="btn btn-primary">Cerrar</button>
+                            <div style="padding: 20px;"></div>
+                            <div class="row">
+                                <div style="position: relative; left: 5%;">
+                                    <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Editar</button>
+                                </div>
+                                <div style="position: relative; left: 73%;">
+                                    <button nbButton status="primary" type="button" (click)="closeModalUpdate()" class="btn btn-primary">Cerrar</button>
+                                </div>
                             </div>
-                        </div>
-                        <div style="padding: 20px;"></div>
-                    </form>
+                        </form>
+                    </nb-card-body>
                 </nb-card>
             </div>
         </div>
