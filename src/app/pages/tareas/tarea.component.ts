@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild, ElementRef  } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Tarea } from '../../models/tarea';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
@@ -23,21 +23,8 @@ export class TareaComponent {
   @ViewChild('EpicasAuto') autosEpica: ElementRef;
 
   filteredEpicas: Observable<any[]>;
-
-  options: any[] = []; // Inicializa options como un array de strings vacío
-  filteredOptions$: Observable<string[]>;
-  
-  optionsProyects: string[] = [];
-  filtredProyects$: Observable<string[]>;
-
-  optionsSprints: string[] = [];
-  filtredSprints$: Observable<string[]>;
-
-  epicaPrueba = [
-    { id: 1, nombre: 'Editor No Funcional' },
-    { id: 2, nombre: 'Don Toños' },
-    // ...otros objetos
-  ];
+  filtredProyects: Observable<string[]>;
+  filtredSprints: Observable<string[]>;
 
   public identity;
   selectedOption: any;
@@ -74,6 +61,8 @@ export class TareaComponent {
   modalDescription: any;
   update: any;
   form: FormGroup;
+  value: any;
+  proyecto: any;
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -86,7 +75,10 @@ export class TareaComponent {
     //this.tareaCopy = new Tarea('','','','','','','');
     
     this.form = this.fb.group({
-      epica: [''] // FormControl para el input del usuario
+      epica: [''],
+      proyecto: [''],
+      sprint: ['']
+      // FormControl para el input del usuario
     });
 
   }
@@ -94,6 +86,16 @@ export class TareaComponent {
   private _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.epicaList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  private _filterP(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.proyectoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  private _filterS(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.sprintList.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
 
@@ -113,21 +115,24 @@ export class TareaComponent {
 
     this._userService.getSprints().subscribe((response) => {
       this.sprintList = response;
-      this.optionsSprints = this.sprintList.map(sprint => sprint.nombre);
+      this.filtredSprints = this.form.get('sprint').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterS(value))
+      );
     });
 
     this._userService.getProyectos().subscribe((response) => {
       this.proyectoList = response;
-      this.optionsProyects = this.proyectoList.map(proyecto => proyecto.nombre);
-      console.log(response)
+      this.filtredProyects = this.form.get('proyecto').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterP(value))
+      );
       });
 
     this._userService.getColaboradores().subscribe((response) => {
       this.colaboradorList = response;
     });
-    this.filteredOptions$ = this.epicaList;
-    this.filtredProyects$ = of(this.optionsProyects);
-    this.filtredProyects$ = of(this.optionsSprints);
+    //this.filteredOptions$ = this.epicaList;
   }
 
   private filter(value: string, options: any[]): string[] {
@@ -137,14 +142,10 @@ export class TareaComponent {
       .map(option => option.nombre);
   }
   
-  getFilteredOptions(value: string): Observable<string[]> {
-    return of(value).pipe(
-      map(filterString => this.filter(filterString, this.epicaList)),
-    );
-  }
-  
-  onChange() {
-    this.filteredOptions$ = this.getFilteredOptions(this.autoEpica.nativeElement.value);
+  onChange($event) {
+    const selectedOption = $event;
+    console.log('el valor: ',$event)
+    
   }
   
   onSelectionChange($event) {
@@ -155,58 +156,62 @@ export class TareaComponent {
     //this.tarea.key_sprint = selectedOption.id_epica;
   }
 
-  onEpicaSelected($event) {
-    const selectedOption = $event;
-    console.log($event);
+  onEpicaSelected(item) {
+    const selectedOption = item;
+    console.log(item);
+    const id = this.epicaList.find(option => option.nombre === item);
+    console.log('ID: ',id);
+    this.tarea.key_epica = id.id_epica;
     // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
-
-  private filterProyect(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.optionsProyects.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
+  onProyectSelected(item) {
+    console.log(item);
+    const id = this.proyectoList.find(option => option.nombre === item);
+    console.log('ID: ',id);
+    this.tarea.key_proyecto = id.id_proyecto;
+    // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
-  getFilteredOptionsProyect(value: string): Observable<string[]> {
-    return of(value).pipe(
-      map(filterString => this.filterProyect(filterString)),
-    );
+  onSprintSelected(item) {
+    console.log(item);
+    const id = this.sprintList.find(option => option.nombre === item);
+    console.log('ID: ',id);
+    this.tarea.key_sprint = id.id_sprint;
+    // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
-  onChangeProyect() {
-    this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
+  onChangeProyect($event) {
+    console.log('el valor: ',$event);
+    //this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
   }
 
   onSelectionChangeProyect($event) {
    //console.log("Si se guardo")
-    this.filtredProyects$ = this.getFilteredOptionsProyect($event);
+    //this.filtredProyects$ = this.getFilteredOptionsProyect($event);
     this.tarea.key_proyecto = ($event);
     console.log(this.tarea.key_proyecto);
   }
 
-  private filterSprint(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.optionsSprints.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
-  }
 
-  getFilteredOptionsSprint(value: string): Observable<string[]> {
-    return of(value).pipe(
-      map(filterString => this.filterSprint(filterString)),
-    );
-  }
-
-  onChangeSprint() {
-    this.filtredSprints$ = this.getFilteredOptionsSprint(this.autoSprint.nativeElement.value);
+  onChangeSprint($event) {
+    //console.log('el valor: ',$event);
+    if($event.data === null){
+      console.log('Vacio');
+      this.tarea.key_sprint = undefined;
+    }
+    //this.filtredSprints = this.getFilteredOptionsSprint(this.autoSprint.nativeElement.value);
   }
 
   onSelectionChangeSprint($event) {
-   //console.log("Si se guardo")
-    this.filtredSprints$ = this.getFilteredOptionsSprint($event);
-    //this.tarea.key_proyecto = ($event);
-    //console.log(this.tarea.key_proyecto);
+    console.log($event)
+    //this.filtredSprints = this.getFilteredOptionsSprint($event);
   }
 
   registrarTarea() {
+    if(this.form.get('sprint').value !== ''){
+      console.log('Vacios');
+    }
     this.tarea.key_colaborador = this.idSelectedColabs;
     this._userService
       .registrarTarea(
@@ -221,8 +226,15 @@ export class TareaComponent {
         (response) => {
           if (response.status != "error") {
             this.ngOnInit();
-            //this.alert = true;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Guardado con éxito',
+              showConfirmButton: false,
+              timer: 1200
+            })
             this.clearData();
+            this.form.reset();
           }
         },
         (error) => {
@@ -248,7 +260,13 @@ export class TareaComponent {
             this.ngOnInit();
             this.alertUpdate = true;
             this.clearData();
-            //this.closeModal();
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'Guardado con éxito',
+              showConfirmButton: false,
+              timer: 1200
+            })
           }
         },
         (error) => {

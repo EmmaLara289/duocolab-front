@@ -21,6 +21,7 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
+import { CustomAutocompleteDirective } from './custom-autocomplete.directive';
 
 @NgModule({
   declarations: [AppComponent],

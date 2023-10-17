@@ -13,36 +13,45 @@
                 <h5 class="title">Registro de Proyectos</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar un nuevo Proyecto</h6>
                 <div style="padding: 10px;"></div>
-                <form class="col-md-10" style="position: relative; left: 8%;" (ngSubmit)="registrarProyecto()">
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Nombre</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && proyecto.nombre !== ''" class="invalid-feedback d-block">El nombre no es válido</small>
+                <form class="col-md-10" (ngSubmit)="registrarProyecto()">
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="label">Nombre</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="proyecto.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                                <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Equipo</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyecto.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_equipo.valid && key_equipo.touched && proyecto.key_equipo !== ''" class="invalid-feedback d-block">La key equipo no es válida</small>
+                        <div class="col-md-2">
+                            <label class="label">Equipo</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChange($event)" [nbAutocomplete]="autoEquipo">
+                                <nb-autocomplete #autoEquipo (selectedChange)="onSelectionChange($event)">
+                                    <nb-option *ngFor="let option of filteredEquipos | async" [value]="option.nombre">
+                                        {{ option.nombre }}
+                                    </nb-option>
+                                </nb-autocomplete>
+                                <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Imagen</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
-                            <small *ngIf="!imagen.valid && imagen.touched && proyecto.imagen !== ''" class="invalid-feedback d-block">La imagen no es válida</small>
+                        <div class="col-md-2">
+                            <label class="label">Imagen</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="imagen" #imagen="ngModel" [(ngModel)]="proyecto.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                                <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Detalles</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
-                            <small *ngIf="!detalles.valid && detalles.touched && proyecto.detalles !== ''" class="invalid-feedback d-block">Los detalles no son válidos</small>
+                        <div class="col-md-2">
+                            <label class="label">Detalles</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                    </div>
-                    <div style="padding: 10px;"></div>
-                    <div class="text-center">
-                        <button nbButton status="danger" type="submit" class="btn btn-fill btn-danger">Registrar</button>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
+                        </div>
                     </div>
                 </form>
                 <div style="padding: 30px;"></div>

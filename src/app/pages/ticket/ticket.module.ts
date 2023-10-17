@@ -9,6 +9,12 @@ import { NbTreeGridModule } from '@nebular/theme';
 import { NbInputModule } from '@nebular/theme';
 import { NbCardModule } from '@nebular/theme';
 import { NbAlertModule } from '@nebular/theme';
+import { NbIconModule } from '@nebular/theme';
+import { NbFormFieldModule } from '@nebular/theme';
+import { NbSearchModule } from '@nebular/theme';
+import { NbDialogModule } from '@nebular/theme';
+import { NbListModule, NbAutocompleteModule } from '@nebular/theme';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -19,7 +25,14 @@ import { NbAlertModule } from '@nebular/theme';
     NbTreeGridModule,
     NbInputModule,
     NbCardModule,
-    NbAlertModule
+    NbAlertModule,
+    NbIconModule,
+    NbFormFieldModule,
+    NbSearchModule,
+    ReactiveFormsModule,
+    NbDialogModule,
+    NbListModule,
+    NbAutocompleteModule,
   ],
   declarations: [
     TicketComponent

@@ -1,9 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
 import { FormsModule } from '@angular/forms';
-/*import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatFormFieldModule } from '@angular/material/form-field';*/
+import { CustomAutocompleteDirective } from '../../custom-autocomplete.directive';
 import { TareaComponent } from './tarea.component';
 import { routing } from './tarea.routing';
 import { 
@@ -16,10 +14,13 @@ import {
   NbAlertModule,
   NbFormFieldModule,
   NbIconModule,
+  NbOptionComponent
 } from '@nebular/theme';
-//import { MatIconModule } from '@angular/material/icon';
-//import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import {NgFor} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @NgModule({
   imports: [
@@ -35,10 +36,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     NbIconModule,
     NbListModule,
     NbAutocompleteModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+MatInputModule,
+MatFormFieldModule,
   ],
   declarations: [
-    TareaComponent
+    TareaComponent,
   ]
 })
 export class TareaModule {}

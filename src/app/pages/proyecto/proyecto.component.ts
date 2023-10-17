@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { Proyecto } from '../../models/proyecto';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
-import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-proyecto',
@@ -12,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ["./proyecto.component.scss"]
 })
 export class ProyectoComponent implements OnInit {
-  @ViewChild('registrarProyectoForm') registrarProyectoForm: NgForm;
+  @ViewChild('EquipoAuto') autoEquipo: ElementRef;
 
 	proyecto : Proyecto;
   proyectoCopy: any;
@@ -28,16 +31,52 @@ export class ProyectoComponent implements OnInit {
   alertUpdate = false;
   myList2: any;
   modalTable: any;
+  form: FormGroup;
+  proyectoList: any;
+  filteredEquipos: Observable<string[]>;
   constructor(
   private _userService: UserService,
   private _router: Router,
-  private http: HttpClient
+  private http: HttpClient,
+  private fb: FormBuilder,
   ) {
-  this.proyecto= new Proyecto('', '','', '','')
+  this.proyecto= new Proyecto('', '','', '','');
+
+  this.form = this.fb.group({
+    equipo: ['']
+  });
+
+  }
+
+  private _filterE(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.proyectoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  onChange($event) {
+    const selectedOption = $event;
+    console.log('el valor: ',$event)
+    
+  }
+  
+  onSelectionChange($event) {
+    const selectedName = $event;
+    const selectedOption = this.proyectoList.find(option => option.nombre === selectedName);
+    console.log($event);
+    //this.nameEpica = 
+    //this.tarea.key_sprint = selectedOption.id_epica;
   }
 
   ngOnInit() {
-  this._userService.getProyectos().subscribe((response) => {
+  this._userService.getEquipos().subscribe((response) => {
+      this.proyectoList = response;
+      this.filteredEquipos = this.form.get('equipo').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterE(value))
+      );
+    });
+
+    this._userService.getProyectos().subscribe((response) => {
       this.myList = response;
     });
   }

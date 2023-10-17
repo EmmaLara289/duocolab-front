@@ -13,48 +13,46 @@
                 <h5 class=" title">Registrar Epica</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar una nueva Epica</h6>
                 <div style="padding: 10px;"></div>
-                <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarEpica()">
-                    <div style="position: relative; left: 25%;">
-                        <div class=" row">
-                            <div class="col-md-6 px-md-4 text-center">
-                                <div class=" form-group">
-                                    <label> Nombre </label>
-                                    <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                                    <small *ngIf="!nombre.valid && nombre.touched && epica.nombre !== ''" class="invalid-feedback d-block"> El nombre no es
-                    válido </small>
-                                </div>
-                            </div>
+                <form class="col-md-10" (ngSubmit)="registrarEpica()">
+                    <div class=" row">
+                        <div class="col-md-2">
+                            <label class="label"> Nombre </label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <nb-icon nbSuffix icon="archive" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class=" row">
-                            <div class="col-md-6 px-md-4 text-center">
-                                <div class=" form-group">
-                                    <label for="form-control"> Proyecto </label>
-                                    <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.proyecto" required minlength="5">
-                                    <small *ngIf="!proyecto.valid && proyecto.touched && epica.proyecto !== ''" class="invalid-feedback d-block"> El proyecto no es
-                    válido </small>
-                                </div>
-                            </div>
+                        <div class="col-md-2">
+                            <label class="label"> Proyecto </label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyect">
+                                <nb-autocomplete #autoProyect (selectedChange)="onProyectSelected($event)">
+                                    <nb-option *ngFor="let option of filtredProyects | async" [value]="option.nombre">
+                                        {{ option.nombre }}
+                                    </nb-option>
+                                </nb-autocomplete>
+                                <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class=" row">
-                            <div class="col-md-6 px-md-4 text-center">
-                                <div class=" form-group">
-                                    <label for="form-control"> Descripción </label>
-                                    <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
-                                    <small *ngIf="!descripcion.valid && descripcion.touched && epica.descripcion !== ''" class="invalid-feedback d-block"> La
-                    descripcion no es válida </small>
-                                </div>
-                            </div>
+                        <div class="col-md-2">
+                            <label class="label"> Descripción </label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epica.descripcion" required minlength="10">
+                                <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                            </nb-form-field>
+                        </div>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
                     </div>
                     <div style="padding: 10px;"></div>
-                    <div class="text-center">
-                        <button nbButton status="danger" type="submit">Registrar</button>
-                    </div>
                 </form>
-                <div style="padding: 30px;"></div>
-                <form class="pl-md-5" (ngSubmit)="buscarEpicas()">
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarEpicas()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">

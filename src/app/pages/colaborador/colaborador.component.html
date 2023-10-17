@@ -93,8 +93,8 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let item of myList">
-                                        <td>{{ item.id_colab }}</td>
-                                        <td>{{ item.nombre }}</td>
+                                        <td>{{ item.data[0].id_colab }}</td>
+                                        <td>{{ item.data[0].nombre }}</td>
                                         <td>
                                             <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
                                         </td>

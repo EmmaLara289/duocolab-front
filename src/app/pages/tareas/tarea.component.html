@@ -20,17 +20,17 @@
                         <div class="col-md-2">
                             <label class="label">Nombre</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
                                 <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
                             <label class="label">Proyecto</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" #ProyectAuto type="text" (input)="onChangeProyect()" placeholder="Enter value" [nbAutocomplete]="autoProyect">
-                                <nb-autocomplete #autoProyect (selectedChange)="onSelectionChangeProyect($event)">
-                                    <nb-option *ngFor="let option of filtredProyects$ | async" [value]="option">
-                                        {{ option }}
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyect">
+                                <nb-autocomplete #autoProyect (selectedChange)="onProyectSelected($event)">
+                                    <nb-option *ngFor="let option of filtredProyects | async" [value]="option.nombre">
+                                        {{ option.nombre }}
                                     </nb-option>
                                 </nb-autocomplete>
                                 <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
@@ -39,10 +39,10 @@
                         <div class="col-md-2">
                             <label class="label">Sprint</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" #SprintAuto type="text" (input)="onChangeSprint()" placeholder="Enter value" [nbAutocomplete]="autoSprint">
-                                <nb-autocomplete #autoSprint (selectedChange)="onSelectionChangeSprint($event)">
-                                    <nb-option *ngFor="let option of filtredSprints$ | async" [value]="option">
-                                        {{ option }}
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('sprint')" #SprintAuto type="text" (input)="onChangeSprint($event)" [nbAutocomplete]="autoSprint">
+                                <nb-autocomplete #autoSprint (selectedChange)="onSprintSelected($event)">
+                                    <nb-option *ngFor="let option of filtredSprints | async" [value]="option.nombre" (selectedChange)="onSelectionChangeSprint($event)">
+                                        {{ option.nombre }}
                                     </nb-option>
                                 </nb-autocomplete>
                                 <nb-icon nbSuffix icon="sync" pack="eva"></nb-icon>
@@ -51,9 +51,9 @@
                         <div class="col-md-2">
                             <label class="label">Epica</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('epica')" (input)="onChange()" placeholder="Enter value" [nbAutocomplete]="autoEpica">
-                                <nb-autocomplete #autoEpica>
-                                    <nb-option *ngFor="let option of filteredEpicas | async" [value]="option" (selectedChange)="onEpicaSelected($event)">
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('epica')" (input)="onChange($event)" [nbAutocomplete]="autoEpica">
+                                <nb-autocomplete #autoEpica (selectedChange)="onEpicaSelected($event)">
+                                    <nb-option *ngFor="let option of filteredEpicas | async" [value]="option.nombre">
                                         {{ option.nombre }}
                                     </nb-option>
                                 </nb-autocomplete>

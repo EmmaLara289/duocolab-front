@@ -1,11 +1,13 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Equipo } from '../../models/equipo';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
-//import { ShowcaseComponent } from '../../services/modal';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -15,6 +17,11 @@ import { NbDialogRef, NbDialogService } from '@nebular/theme';
 })
 
 export class EquipoComponent implements OnInit {
+
+  @ViewChild('ProyectAuto') autoProyect: ElementRef;
+
+  filtredProyects: Observable<string[]>;
+
   private ref: NbDialogRef<any>;
   id_equipo: string = null;
 
@@ -30,7 +37,7 @@ export class EquipoComponent implements OnInit {
   alert = false;
   alertUpdate = false;
   myList2: any;
-  modalTable: any;
+  modalTable = false;
   integrantes: any;
   colabs: any;
   modalUsers = false;
@@ -51,18 +58,43 @@ export class EquipoComponent implements OnInit {
   modalProyectos: any;
   modalEdit: any;
   modalEditProyectos: any;
+  form: FormGroup;
+  proyectoList: any;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private http: HttpClient,
   private dialogService: NbDialogService,
-  
+  private fb: FormBuilder,
   ) { 
   this.equipo = new Equipo('','','','');
+
+  this.form = this.fb.group({
+    proyecto: ['']
+  });
+  }
+
+  private _filterP(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.proyectoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  onChangeProyect($event) {
+    console.log('el valor: ',$event);
+    //this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
+  }
+  
+  onProyectSelected(item) {
+    console.log(item);
+    const id = this.proyectoList.find(option => option.nombre === item);
+    console.log('ID: ',id);
+    this.equipo.key_proyecto = id.id_proyecto;
+    // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
   ngOnInit(){
-  this._userService.getEquipos().subscribe((response) => {
+  this._userService.getPaginationEquipos(this.page).subscribe((response) => {
       this.myList = response;
     });
 
@@ -72,12 +104,15 @@ export class EquipoComponent implements OnInit {
   });
 
   this._userService.getProyectos().subscribe((response) => {
-    this.proyecto = response;
+    this.proyectoList = response;
+    this.filtredProyects = this.form.get('proyecto').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterP(value))
+    );
     //console.log("Proyectos: ",response);
   });
-
-  
   }
+  
 
 
   registrarEquipo(){
@@ -98,6 +133,7 @@ export class EquipoComponent implements OnInit {
           this.nameProyect = "";
           this.usersText = "";
           this.modalTable = false;
+          this.form.reset();
         }
 
       },
@@ -138,13 +174,14 @@ export class EquipoComponent implements OnInit {
   }
 
   buscarEquipos() {
+    this.page = 1;
     if(this.text === ""){
-      this._userService.getEquipos().subscribe((response) => {
+      this._userService.getPaginationEquipos(this.page).subscribe((response) => {
         this.myList = response;
         this.modalTable = false;
       });
     }else{
-    this._userService.findEquipo(this.text).subscribe((response) => {
+    this._userService.findEquipo(this.text, this.page).subscribe((response) => {
       if(response.response !== "No hay coincidencias"){
       this.myList2 = response;
       this.modalTable = true;
@@ -473,8 +510,73 @@ export class EquipoComponent implements OnInit {
     this.modalEdit.close();
   }
 
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findEquipo(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
 
-
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findEquipo(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
   
 
 

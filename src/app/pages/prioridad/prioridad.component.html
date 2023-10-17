@@ -13,29 +13,34 @@
                 <h5 class="title">Registro de Prioridad</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar una nueva Prioridad</h6>
                 <div style="padding: 10px;"></div>
-                <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarPrioridad()">
+                <form class="col-md-10" (ngSubmit)="registrarPrioridad()">
                     <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label> Nombre </label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && prioridad.nombre !== ''" class="invalid-feedback d-block"> El nombre no es válido </small>
+                        <div class="col-md-5">
+                            <label class="label"> Nombre </label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="prioridad.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
+                            </nb-form-field>
+                        </div>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
                     </div>
-                    <div class="text-center">
-                        <button nbButton status="danger" type="submit">Registrar</button>
-                    </div>
+                    <div style="padding: 10px;"></div>
                 </form>
-                <div style="padding: 30px;"></div>
-                <form class="pl-md-5" (ngSubmit)="buscarPrioridades()">
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarPrioridades()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
                                 <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Prioridad">
                             </div>
                             <div class="px-md-2">
-                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                                <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
                             </div>
                         </div>
                     </div>

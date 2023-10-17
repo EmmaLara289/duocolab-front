@@ -13,77 +13,78 @@
                 <h5 class=" title">Registro de Areas</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar una nueva Area</h6>
                 <div style="padding: 10px;"></div>
-                <form style="left: 8%;" class="col-md-10" (ngSubmit)="registrarArea()">
-                    <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Nombre</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && area.nombre !== ''" class="invalid-feedback d-block"> El nombre no es
-                    válido </small>
+                <form class="col-md-10" (ngSubmit)="registrarArea()">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            <label class="label">Nombre del Area</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="area.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <nb-icon nbSuffix icon="award" pack="eva"></nb-icon>
+                            </nb-form-field>
+                        </div>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
                     </div>
-                    <div style="padding: 10px;"></div>
-                    <div class="text-center">
-                        <button nbButton status="danger" type="submit">Registrar</button>
-                    </div>
                 </form>
-                <div style="padding: 30px;"></div>
-                <form class="pl-md-5" (ngSubmit)="buscarAreas()">
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarAreas()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
                                 <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Area">
                             </div>
                             <div class="px-md-2">
-                                <button nbButton status="primary" type="submit" size="giant">Buscar</button>
+                                <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
                             </div>
                         </div>
                     </div>
                 </form>
-                <nb-card-body>
-                    <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
-                        <table class="table dark-table ">
-                            <thead style="background-color: #27598F">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of myList">
-                                    <td>{{ item.id_area }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
-                        <table class="table dark-table ">
-                            <thead style="background-color: #27598F">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of myList2">
-                                    <td>{{ item.id_area }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </nb-card-body>
+                <div style="padding: 10px;"></div>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList">
+                                <td>{{ item.id_area }}</td>
+                                <td>{{ item.nombre }}</td>
+                                <td>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList2">
+                                <td>{{ item.id_area }}</td>
+                                <td>{{ item.nombre }}</td>
+                                <td>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </nb-card-body>
         </nb-card>
     </div>

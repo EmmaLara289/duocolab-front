@@ -91,11 +91,14 @@ export class UserService {
     return this._http.post(global.url + 'createColaborador', formData);
   }
 
-  public findColaborador(text:string):Observable<any>{
+  public findColaborador(text:string, page: number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
-    params = params.set('text', text);
-  }
+      params = params.set('text', text);
+    }
+    if(page !== undefined){
+      params = params.set('page', page)
+    }
   return this._http.get(this.url+ 'searchColaboradores', {params: params});
   }
 
@@ -114,8 +117,16 @@ export class UserService {
 
 
   public registrarTarea(nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string): Observable<any>{
-    return this._http.post(global.url + 'createTarea',
-    {nombre:nombre, descripcion:descripcion, key_epica:key_epica, key_sprint:key_sprint, key_proyecto:key_proyecto, key_colaborador:key_colaborador});
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('descripcion', descripcion);
+    formData.append('key_epica', key_epica);
+    formData.append('key_sprint', key_sprint);
+    formData.append('key_proyecto', key_proyecto);
+    if(key_colaborador){
+      formData.append('key_colaborador', key_colaborador);
+    }
+    return this._http.post(global.url + 'createTarea', formData);
   }
 
   public findTarea(text:string):Observable<any>{
@@ -159,6 +170,12 @@ export class UserService {
     return this._http.get(global.url + 'getEquipos');
   }
 
+  public getPaginationEquipos(page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+  return this._http.get(global.url + 'getEquipos',  {params: params});
+  }
+
   public getColaboradores(): Observable<any>{
     return this._http.get(global.url + 'getColaboradores');
   }
@@ -188,11 +205,15 @@ export class UserService {
     {id_proyecto:id_proyecto, nombre:nombre, key_equipo:key_equipo, imagen:imagen, detalles:detalles});
   }
 
-  public findEquipo(text:string):Observable<any>{
+  public findEquipo(text:string, page:number):Observable<any>{
     let params = new HttpParams();
-    if(text!==''){
-    params = params.set('text', text);
-  }
+    if(text !== ''){
+      params = params.set('text', text);
+    }
+
+    if(page !== undefined){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchEquipos', {params: params});
   }
 

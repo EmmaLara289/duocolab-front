@@ -5,9 +5,16 @@ import { FormsModule } from '@angular/forms';
 import { ProyectoComponent } from './proyecto.component';
 import { routing } from './proyecto.routing';
 import { NbInputModule } from '@nebular/theme';
-import { NbButtonModule } from '@nebular/theme';
-import { NbCardModule } from '@nebular/theme';
-import { NbAlertModule } from '@nebular/theme';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NbAlertModule,
+  NbButtonModule,
+  NbTreeGridModule,
+  NbCardModule,
+  NbFormFieldModule,
+  NbIconModule,
+  NbAutocompleteModule
+
+} from '@nebular/theme';
 
 @NgModule({
   imports: [
@@ -17,7 +24,12 @@ import { NbAlertModule } from '@nebular/theme';
     NbInputModule,
     NbButtonModule,
     NbCardModule,
-    NbAlertModule
+    NbAlertModule,
+    NbTreeGridModule,
+    NbFormFieldModule,
+    NbIconModule,
+    ReactiveFormsModule,
+    NbAutocompleteModule
   ],
   declarations: [
     ProyectoComponent

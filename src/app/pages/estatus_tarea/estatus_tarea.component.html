@@ -13,24 +13,27 @@
                 <h5 class=" title">Registro de Estatus de Tareas</h5>
             </nb-card-header>
             <nb-card-body>
-                <h5 class="title text-center">Registrar un nuevo Estatus de Tareas</h5>
                 <div style="padding: 10px;"></div>
-                <form style="left: 8%;" class="col-md-10" (ngSubmit)="registrarEstatusTarea()">
-                    <div class=" row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label> Nombre </label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="estatustarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched && estatustarea.nombre !== ''" class="invalid-feedback d-block"> El nombre no es
-                    válido </small>
+                <form class="col-md-10" (ngSubmit)="registrarEstatusTarea()">
+                    <div class="form-group row">
+                        <div class="col-md-5">
+                            <label class="label">Nombre del estatus</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="estatustarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                <nb-icon nbSuffix icon="checkmark-square" pack="eva"></nb-icon>
+                            </nb-form-field>
+                        </div>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
                     </div>
                     <div style="padding: 10px;"></div>
-                    <div class="text-center">
-                        <button nbButton status="danger" type="button" type="submit">Registrar</button>
-                    </div>
                 </form>
-                <div style="padding: 30px;"></div>
-                <form class="pl-md-5" (ngSubmit)="buscarEstatusTareas()">
+            </nb-card-body>
+        </nb-card>
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarEstatusTareas()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">

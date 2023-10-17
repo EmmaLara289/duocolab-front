@@ -9,46 +9,56 @@
                 <h5 class="title">Registrar Ticket</h5>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar un nuevo Ticket</h6>
                 <div style="padding: 10px;"></div>
-                <form style="position: relative; left: 8%;" class="col-md-10" (ngSubmit)="registrarTicket()">
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Proyecto</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_proyecto" placeholder="Ingrese la key proyecto" #key_proyecto="ngModel" [(ngModel)]="ticket.key_proyecto" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_proyecto.valid && key_proyecto.touched" class="invalid-feedback d-block">La key proyecto no es válida</small>
+                <form class="col-md-10" (ngSubmit)="registrarTicket()">
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label class="label">Proyecto</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyect">
+                                <nb-autocomplete #autoProyect (selectedChange)="onProyectSelected($event)">
+                                    <nb-option *ngFor="let option of filtredProyects | async" [value]="option.nombre">
+                                        {{ option.nombre }}
+                                    </nb-option>
+                                </nb-autocomplete>
+                                <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Usuario</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_usuario" placeholder="Ingrese la key usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standalone: true}">
+                        <div class="col-md-2">
+                            <label class="label">Key Usuario</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="key_usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standalone: true}">
                             <small *ngIf="!key_usuario.valid && key_usuario.touched" class="invalid-feedback d-block">La Key Usuario no es válido</small>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Título</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="titulo" placeholder="Ingrese el Título" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!titulo.valid && titulo.touched" class="invalid-feedback d-block">El Título no es válido</small>
-                        </div>
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Detalles</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los Detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los Detalles no son válidos</small>
+                        <div class="col-md-4">
+                            <label class="label">Título</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="titulo" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standalone: true}">
+                                <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Prioridad</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_prioridad" placeholder="Ingrese la key Prioridad" #key_prioridad="ngModel" [(ngModel)]="ticket.key_prioridad" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_prioridad.valid && key_prioridad.touched" class="invalid-feedback d-block">La key Prioridad no es válida</small>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="label">Detalles</label>
+                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standalone: true}">
                         </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                    <div style="text-align: center;">
-                        <button nbButton status="danger" type="submit">Registrar</button>
+                        <div class="col-md-2">
+                            <label class="label">Prioridad</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('prioridad')" #PrioridadAuto type="text" (input)="onChangePrioridad($event)" [nbAutocomplete]="autoPrioridad">
+                                <nb-autocomplete #autoPrioridad (selectedChange)="onPrioridadSelected($event)">
+                                    <nb-option *ngFor="let option of filtredPrioridades | async" [value]="option.nombre">
+                                        {{ option.nombre }}
+                                    </nb-option>
+                                </nb-autocomplete>
+                            </nb-form-field>
+                        </div>
+                        <div class="px-md-1" style="position: relative; top: 25px;">
+                            <button nbButton status="danger" fullWidth type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
+                        </div>
                     </div>
                 </form>
-                <div style="padding: 15px;"></div>
+                <div style="padding: 10px;"></div>
             </nb-card-body>
         </nb-card>
     </div>

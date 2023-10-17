@@ -37,6 +37,7 @@ export class ColaboradorComponent implements OnInit {
   modalTable = false;
   modalUpdate: any;
   guardFoto: any;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -137,7 +138,7 @@ export class ColaboradorComponent implements OnInit {
   }
 
   buscarColaboradores() {
-    this._userService.findColaborador(this.text).subscribe((response) => {
+    this._userService.findColaborador(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -282,6 +283,8 @@ export class ColaboradorComponent implements OnInit {
     this.alert = false;
     this.alertUpdate = false;
   }
+
+  next(){}
 
 
 }
