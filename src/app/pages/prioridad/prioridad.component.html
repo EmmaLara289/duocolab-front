@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
-                                <input style="width : 300px;" nbInput status="basic" fullWidth fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Prioridad">
+                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Prioridad">
                             </div>
                             <div class="px-md-2">
                                 <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
@@ -65,6 +65,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                            <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                        </div>
                     </div>
                     <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
                         <table class="table dark-table">
@@ -85,6 +89,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                            <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                        </div>
                     </div>
                 </nb-card-body>
             </nb-card-body>

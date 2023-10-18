@@ -28,7 +28,8 @@ export class EstatusTareaComponent implements OnInit {
   estatustarea: EstatusTarea;
   estatustareaCopy: any;
   myList2: any;
-  modalTable: any;
+  modalTable = false;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -39,7 +40,7 @@ export class EstatusTareaComponent implements OnInit {
   }
 
   ngOnInit(){
-  this._userService.getEstatusTareas().subscribe((response) => {
+  this._userService.getPaginationEstatusTareas(this.page).subscribe((response) => {
       this.myList = response;
     });
   }
@@ -78,7 +79,7 @@ export class EstatusTareaComponent implements OnInit {
   }
 
   buscarEstatusTareas() {
-    this._userService.findEstatusTarea(this.text).subscribe((response) => {
+    this._userService.findEstatusTarea(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -112,5 +113,78 @@ export class EstatusTareaComponent implements OnInit {
     this.alert = false;
     this.alertUpdate = false;
   }
+
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationEstatusTareas(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findEstatusTarea(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationEstatusTareas(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findEstatusTarea(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
+  
 
 }

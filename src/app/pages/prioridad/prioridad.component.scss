@@ -12,3 +12,9 @@
     color: white;
     /* Cambiar el color del texto a blanco en las celdas de datos */
 }
+
+.custom-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

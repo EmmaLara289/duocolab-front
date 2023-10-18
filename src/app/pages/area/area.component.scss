@@ -28,3 +28,9 @@
     max-width: 500px;
     max-height: 500px;
 }
+
+.custom-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

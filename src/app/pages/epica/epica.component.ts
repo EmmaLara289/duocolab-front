@@ -30,7 +30,7 @@ export class EpicaComponent implements OnInit {
   myList: any=[];
   epica: Epica;
   myList2: any;
-  modalTable: any;
+  modalTable = false;
   modalRegister = false;
   id_epica:string=null;
   modalUpdate = false;
@@ -38,6 +38,7 @@ export class EpicaComponent implements OnInit {
   alertUpdate = false;
   epicaCopy: any;
   proyectoList: any;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -70,7 +71,7 @@ export class EpicaComponent implements OnInit {
 
 
   ngOnInit(){
-  this._userService.getEpicas().subscribe((response) => {
+  this._userService.getPaginationEpicas(this.page).subscribe((response) => {
       this.myList = response;
       console.log(this.myList);
     });
@@ -120,7 +121,7 @@ export class EpicaComponent implements OnInit {
   }
 
   buscarEpicas() {
-    this._userService.findEpica(this.text).subscribe((response) => {
+    this._userService.findEpica(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -155,6 +156,78 @@ export class EpicaComponent implements OnInit {
   closeAlert(){
     this.alertUpdate = false;
     this.alert = false;
+  }
+
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationEpicas(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findEpica(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationEpicas(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findEpica(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
   }
 
 }

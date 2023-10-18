@@ -29,18 +29,18 @@ export class PrioridadComponent implements OnInit {
   alertUpdate = false;
   prioridadCopy: any;
   myList2: any;
-  modalTable: any;
+  modalTable = false;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private http: HttpClient
-
   ) { 
   this.prioridad = new Prioridad('','');
   }
 
   ngOnInit(){
-  this._userService.getPrioridades().subscribe((response) => {
+  this._userService.getPaginationPrioridades(this.page).subscribe((response) => {
       this.myList = response;
     });
   }
@@ -82,7 +82,7 @@ export class PrioridadComponent implements OnInit {
   }
 
   buscarPrioridades() {
-    this._userService.findPrioridad(this.text).subscribe((response) => {
+    this._userService.findPrioridad(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -119,5 +119,77 @@ export class PrioridadComponent implements OnInit {
   this.prioridad = new Prioridad('','');
   }
 
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationPrioridades(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findPrioridad(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationPrioridades(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findPrioridad(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
+  
 
 }

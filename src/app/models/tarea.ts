@@ -5,12 +5,11 @@ export class Tarea {
        	public id_tarea,
         public nombre: string,
         public descripcion: string,
-        public key_epica: string,
+        public key_epica: any,
         public key_sprint: any,
         public key_proyecto: any,
-        public key_colaborador: string,
-        
-
+        public key_colaborador: any,
+        public key_area: any,
     ) { }
 
 }

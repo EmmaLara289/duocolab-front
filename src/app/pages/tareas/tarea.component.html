@@ -13,11 +13,10 @@
                 <h3 class="title">Registro de Tareas</h3>
             </nb-card-header>
             <nb-card-body>
-                <h6 class="title text-center">Registrar nueva Tarea</h6>
                 <div style="padding: 10px;"></div>
                 <form class="col-md-12" (ngSubmit)="registrarTarea()">
                     <div class="form-group row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label">Nombre</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="tarea.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
@@ -25,6 +24,18 @@
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
+                            <label class="label">Area</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('area')" #AreaAuto type="text" (input)="onChangeArea($event)" [nbAutocomplete]="autoArea">
+                                <nb-autocomplete #autoArea (selectedChange)="onAreaSelected($event)">
+                                    <nb-option *ngFor="let option of filtredAreas | async" [value]="option.nombre">
+                                        {{ option.nombre }}
+                                    </nb-option>
+                                </nb-autocomplete>
+                                <nb-icon nbSuffix icon="smiling-face" pack="eva"></nb-icon>
+                            </nb-form-field>
+                        </div>
+                        <div class="col-md-3">
                             <label class="label">Proyecto</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyect">
@@ -36,7 +47,7 @@
                                 <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label">Sprint</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('sprint')" #SprintAuto type="text" (input)="onChangeSprint($event)" [nbAutocomplete]="autoSprint">
@@ -48,7 +59,9 @@
                                 <nb-icon nbSuffix icon="sync" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
                             <label class="label">Epica</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('epica')" (input)="onChange($event)" [nbAutocomplete]="autoEpica">
@@ -57,6 +70,7 @@
                                         {{ option.nombre }}
                                     </nb-option>
                                 </nb-autocomplete>
+                                <nb-icon nbSuffix icon="clipboard-outline" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">
@@ -66,7 +80,7 @@
                                 <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-1">
+                        <div class="col-md-2">
                             <label class="label">Descripción</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
@@ -112,6 +126,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                            <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                        </div>
                     </div>
                     <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
                         <table class="table dark-table">
@@ -130,6 +148,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                            <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                        </div>
                     </div>
                 </nb-card-body>
             </nb-card-body>

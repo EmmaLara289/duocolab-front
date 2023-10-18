@@ -68,15 +68,22 @@ export class UserService {
   }
 
   public registrarProyecto(nombre: string, key_equipo: string, imagen: string, detalles:string): Observable<any>{
-    return this._http.post(global.url + 'createProyecto',
-    {nombre:nombre, key_equipo:key_equipo, imagen:imagen, detalles:detalles});
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('key_equipo', key_equipo);
+    formData.append('foto', imagen);
+    formData.append('detalles', detalles);
+    return this._http.post(global.url + 'createProyecto', formData);
   }
 
-  public findProyecto(text:string):Observable<any>{
+  public findProyecto(text:string, page: number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
     params = params.set('text', text);
-  }
+    }
+    if( page !== undefined){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchProyectos', {params: params});
   }
 
@@ -107,33 +114,40 @@ export class UserService {
     {nombre:nombre, proyecto:proyecto, descripcion:descripcion});
   }
 
-  public findEpica(text:string):Observable<any>{
+  public findEpica(text:string, page: number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
-    params = params.set('text', text);
-  }
+      params = params.set('text', text);
+    }
+    if( page !== undefined){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchEpicas', {params: params});
   }
 
 
-  public registrarTarea(nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string): Observable<any>{
+  public registrarTarea(nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string, key_area: string): Observable<any>{
     const formData = new FormData();
     formData.append('nombre', nombre);
     formData.append('descripcion', descripcion);
     formData.append('key_epica', key_epica);
     formData.append('key_sprint', key_sprint);
     formData.append('key_proyecto', key_proyecto);
+    formData.append('key_area', key_area);
     if(key_colaborador){
       formData.append('key_colaborador', key_colaborador);
     }
     return this._http.post(global.url + 'createTarea', formData);
   }
 
-  public findTarea(text:string):Observable<any>{
+  public findTarea(text:string, page: number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
-    params = params.set('text', text);
-  }
+      params = params.set('text', text);
+    }
+    if( page !== undefined ){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchTareas', {params: params});
   }
 
@@ -166,6 +180,14 @@ export class UserService {
     return this._http.get(global.url + 'getProyectos');
   }
 
+  public getPaginationProyectos(page: number): Observable<any>{
+    let params = new HttpParams();
+    if(page !== undefined){
+    params = params.set('page', page);
+    }
+    return this._http.get(global.url + 'getPaginationProyectos', {params: params});
+  }
+
   public getEquipos(): Observable<any>{
     return this._http.get(global.url + 'getEquipos');
   }
@@ -180,12 +202,30 @@ export class UserService {
     return this._http.get(global.url + 'getColaboradores');
   }
 
+  public getPaginationColaboradores(page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    return this._http.get(global.url + 'getPaginationColaboradores', {params: params});
+  }
+
   public getEstatusTareas(): Observable<any>{
     return this._http.get(global.url + 'getEstatusTareas');
   }
 
+  public getPaginationEstatusTareas(page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    return this._http.get(global.url + 'getPaginationEstatusTareas', {params: params});
+  }
+
   public getPrioridades(): Observable<any>{
     return this._http.get(global.url + 'getPrioridades');
+  }
+
+  public getPaginationPrioridades(page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    return this._http.get(global.url + 'getPaginationPrioridades', {params: params});
   }
 
   public getSprints(): Observable<any>{
@@ -196,9 +236,25 @@ export class UserService {
     return this._http.get(global.url + 'getEpicas');
   }
 
+  public getPaginationEpicas(page:number): Observable<any>{
+    let params = new HttpParams();
+    if(page !== undefined){
+      params = params.set('page', page);
+    }
+    return this._http.get(global.url + 'getPaginationEpica', {params: params});
+  }
+
   public getTareas(): Observable<any>{
     return this._http.get(global.url + 'getTareas');
   }  
+
+  public getPaginationTareas(page:number): Observable<any>{
+    let params = new HttpParams();
+    if(page !== undefined){
+      params = params.set('page', page);
+    }
+    return this._http.get(global.url + 'getPaginationTareas', {params: params});
+  }
 
   public updateProyecto(id_proyecto:string, nombre: string, key_equipo: string, imagen: string, detalles:string): Observable<any>{
     return this._http.post(global.url + 'updateProyecto',
@@ -260,11 +316,22 @@ export class UserService {
     return this._http.get(global.url + 'getAreas');
   }
 
-  public findArea(text:string):Observable<any>{
+  public getPaginationAreas(page: number): Observable<any>{
+    let params = new HttpParams();
+    if(page !== undefined){
+    params = params.set('page', page);
+    }
+    return this._http.get(global.url + 'getPaginationAreas', {params: params});
+  }
+
+  public findArea(text:string, page:number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
-    params = params.set('text', text);
-  }
+      params = params.set('text', text);
+    }
+    if( page !== undefined ){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchAreas', {params: params});
   }
 
@@ -273,11 +340,14 @@ export class UserService {
     {id_estatus:id_estatus, nombre:nombre});
   }
 
-  public findEstatusTarea(text:string):Observable<any>{
+  public findEstatusTarea(text:string, page:number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
-    params = params.set('text', text);
-  }
+      params = params.set('text', text);
+    }
+    if( page !== undefined ){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchEstatusTareas', {params: params});
   }
 
@@ -286,11 +356,14 @@ export class UserService {
     {id_prioridad:id_prioridad, nombre:nombre});
   }
 
-  public findPrioridad(text:string):Observable<any>{
+  public findPrioridad(text:string, page:number):Observable<any>{
     let params = new HttpParams();
     if(text!==''){
-    params = params.set('text', text);
-  }
+      params = params.set('text', text);
+    }
+    if( page !== undefined ){
+      params = params.set('page', page);
+    }
   return this._http.get(this.url+ 'searchPrioridades', {params: params});
   }
 

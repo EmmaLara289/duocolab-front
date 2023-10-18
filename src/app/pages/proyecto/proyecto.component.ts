@@ -17,6 +17,8 @@ import { map, startWith } from 'rxjs/operators';
 export class ProyectoComponent implements OnInit {
   @ViewChild('EquipoAuto') autoEquipo: ElementRef;
 
+  fotoAlert = true;
+  keyFoto: any;
 	proyecto : Proyecto;
   proyectoCopy: any;
   myList: any= [];
@@ -30,10 +32,11 @@ export class ProyectoComponent implements OnInit {
   alert = false;
   alertUpdate = false;
   myList2: any;
-  modalTable: any;
+  modalTable = false;
   form: FormGroup;
-  proyectoList: any;
+  equipoList: any;
   filteredEquipos: Observable<string[]>;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -50,7 +53,7 @@ export class ProyectoComponent implements OnInit {
 
   private _filterE(value: string): any[] {
     const filterValue = value.toLowerCase();
-    return this.proyectoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+    return this.equipoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
   onChange($event) {
@@ -61,22 +64,21 @@ export class ProyectoComponent implements OnInit {
   
   onSelectionChange($event) {
     const selectedName = $event;
-    const selectedOption = this.proyectoList.find(option => option.nombre === selectedName);
-    console.log($event);
-    //this.nameEpica = 
-    //this.tarea.key_sprint = selectedOption.id_epica;
+    const id = this.equipoList.find(option => option.nombre === selectedName);
+    console.log(id);
+    this.proyecto.key_equipo = id.id_equipo;
   }
 
   ngOnInit() {
   this._userService.getEquipos().subscribe((response) => {
-      this.proyectoList = response;
+      this.equipoList = response;
       this.filteredEquipos = this.form.get('equipo').valueChanges.pipe(
         startWith(''),
         map(value => this._filterE(value))
       );
     });
 
-    this._userService.getProyectos().subscribe((response) => {
+    this._userService.getPaginationProyectos(this.page).subscribe((response) => {
       this.myList = response;
     });
   }
@@ -118,7 +120,8 @@ export class ProyectoComponent implements OnInit {
   }
 
   buscarProyectos() {
-    this._userService.findProyecto(this.text).subscribe((response) => {
+    this.page = 1;
+    this._userService.findProyecto(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -155,5 +158,126 @@ openModalUpdate(item){
     this.proyecto= new Proyecto('', '','', '','');
   }
 
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationProyectos(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page--;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findProyecto(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page--;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationProyectos(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page--;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findProyecto(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page--;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
+
+  foto(files: FileList){
+    this.handleFileInput(files);
+    this.handleFileInputURL(files);
+  }
+  
+  handleFileInput(files: FileList) {
+    this.proyecto.imagen = files.item(0);
+    console.log(this.proyecto.imagen);
+    this.fotoAlert = false;
+  }
+
+  handleFileInputURL(files: FileList) {
+    const file = files.item(0);
+  
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        const dataUrl = e.target.result as string;
+  
+        // Generar una clave única para identificar la imagen en localStorage
+        const uniqueKey = 'foto_' + new Date().getTime();
+  
+        // Guardar la URL de datos en localStorage
+        localStorage.setItem(uniqueKey, dataUrl);
+  
+        // Almacena la clave única en tu objeto colaborador
+        this.keyFoto = uniqueKey;
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+
+  getFotoUrl() {
+    // Obtén la clave única almacenada en this.colaborador.fotoKey
+    const uniqueKey = this.keyFoto;
+  
+    if (uniqueKey) {
+      // Obtén la URL de datos desde localStorage
+      const dataUrl = localStorage.getItem(uniqueKey);
+  
+      // Devuelve la URL de datos
+      return dataUrl;
+    }
+  
+    // Si no hay clave única, devuelve una URL de imagen predeterminada o una URL vacía según tu necesidad
+    return 'URL_de_imagen_predeterminada.jpg'; // Cambia esto según tu caso
+  }
 
 }

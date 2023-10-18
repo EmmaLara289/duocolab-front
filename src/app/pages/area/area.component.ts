@@ -28,6 +28,7 @@ export class AreaComponent implements OnInit {
   myList: any=[];
   alert = false;
   alertUpdate = false;
+  page = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -37,7 +38,7 @@ export class AreaComponent implements OnInit {
   }
 
   ngOnInit(){
-  this._userService.getAreas().subscribe((response) => {
+  this._userService.getPaginationAreas(this.page).subscribe((response) => {
       this.myList = response;
     });
   }
@@ -84,7 +85,7 @@ export class AreaComponent implements OnInit {
   }
 
   buscarAreas() {
-    this._userService.findArea(this.text).subscribe((response) => {
+    this._userService.findArea(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -110,5 +111,78 @@ export class AreaComponent implements OnInit {
     this.modalUpdate = false;
     this.area= new Area('', '');
   }
+
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationAreas(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findArea(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationAreas(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findArea(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
+  
 
 }

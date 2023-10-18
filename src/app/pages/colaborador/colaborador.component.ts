@@ -49,7 +49,7 @@ export class ColaboradorComponent implements OnInit {
   }
 
   ngOnInit(){
-  this._userService.getColaboradores().subscribe((response) => {
+  this._userService.getPaginationColaboradores(this.page).subscribe((response) => {
       this.myList = response;
     });
   }
@@ -138,6 +138,7 @@ export class ColaboradorComponent implements OnInit {
   }
 
   buscarColaboradores() {
+    //this.page = 1;
     this._userService.findColaborador(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
@@ -284,7 +285,82 @@ export class ColaboradorComponent implements OnInit {
     this.alertUpdate = false;
   }
 
-  next(){}
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+      this._userService.getPaginationColaboradores(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findColaborador(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+
+    if(this.page > 1)
+    {
+      this.page --;
+      if(this.modalTable === false)
+      {
+      this._userService.getPaginationColaboradores(this.page).subscribe((response) => 
+      {
+        if(response.length !== 0)
+        {
+          this.myList = response;
+        }else
+          {
+            Swal.fire(
+              {
+              position: 'top-end',
+              icon: 'error',
+              title: 'No hay más resultados',
+              showConfirmButton: false,
+              timer: 1200
+              })
+          }
+      });
+    }else{
+      this._userService.findColaborador(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
 
 
 }

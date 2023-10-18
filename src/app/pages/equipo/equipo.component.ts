@@ -517,6 +517,7 @@ export class EquipoComponent implements OnInit {
       if(response.length !== 0){
         this.myList = response;
       }else{
+        this.page --;
         Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -531,6 +532,7 @@ export class EquipoComponent implements OnInit {
       if(response.length !== 0){
         this.myList2 = response;
       }else{
+        this.page --;
         Swal.fire({
           position: 'top-end',
           icon: 'error',
@@ -551,6 +553,7 @@ export class EquipoComponent implements OnInit {
         if(response.length !== 0){
           this.myList = response;
         }else{
+          this.page --;
           Swal.fire({
             position: 'top-end',
             icon: 'error',
@@ -565,6 +568,7 @@ export class EquipoComponent implements OnInit {
         if(response.length !== 0){
           this.myList2 = response;
         }else{
+          this.page --;
           Swal.fire({
             position: 'top-end',
             icon: 'error',

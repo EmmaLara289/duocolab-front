@@ -20,11 +20,13 @@ export class TareaComponent {
   @ViewChild('EpicaAuto') autoEpica: ElementRef;
   @ViewChild('ProyectAuto') autoProyect: ElementRef;
   @ViewChild('SprintAuto') autoSprint: ElementRef;
+  @ViewChild('AreatAuto') autoArea: ElementRef;
   @ViewChild('EpicasAuto') autosEpica: ElementRef;
 
   filteredEpicas: Observable<any[]>;
   filtredProyects: Observable<string[]>;
   filtredSprints: Observable<string[]>;
+  filtredAreas: Observable<string[]>;
 
   public identity;
   selectedOption: any;
@@ -63,6 +65,8 @@ export class TareaComponent {
   form: FormGroup;
   value: any;
   proyecto: any;
+  page = 1;
+  areasList: any;
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -71,13 +75,14 @@ export class TareaComponent {
     private fb: FormBuilder,
 
   ) {
-    this.tarea = new Tarea("", "", "", "", "", "", "");
+    this.tarea = new Tarea("", "", "", "", "", "", "", "");
     //this.tareaCopy = new Tarea('','','','','','','');
     
     this.form = this.fb.group({
       epica: [''],
       proyecto: [''],
-      sprint: ['']
+      sprint: [''],
+      area: ['']
       // FormControl para el input del usuario
     });
 
@@ -98,10 +103,13 @@ export class TareaComponent {
     return this.sprintList.filter(option => option.nombre.toLowerCase().includes(filterValue));
   }
 
-
+  private _filterA(value: string): any[]{
+    const filterValue = value.toLowerCase();
+    return this.areasList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
 
   ngOnInit() {
-        this._userService.getTareas().subscribe((response) => {
+        this._userService.getPaginationTareas(this.page).subscribe((response) => {
       this.myList = response;
     });
 
@@ -132,7 +140,14 @@ export class TareaComponent {
     this._userService.getColaboradores().subscribe((response) => {
       this.colaboradorList = response;
     });
-    //this.filteredOptions$ = this.epicaList;
+    
+    this._userService.getAreas().subscribe((response) => {
+      this.areasList = response;
+      this.filtredAreas = this.form.get('area').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterA(value))
+      );
+    });
   }
 
   private filter(value: string, options: any[]): string[] {
@@ -181,6 +196,11 @@ export class TareaComponent {
     // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
+  onAreaSelected(item){
+    const id = this.areasList.find(option => option.nombre === item);
+    this.tarea.key_area = id.id_area;
+  }
+
   onChangeProyect($event) {
     console.log('el valor: ',$event);
     //this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
@@ -208,6 +228,24 @@ export class TareaComponent {
     //this.filtredSprints = this.getFilteredOptionsSprint($event);
   }
 
+  onChangeArea($event) {
+    //console.log('el valor: ',$event);
+    if($event.data === null){
+      console.log('Vacio');
+      this.tarea.key_area = undefined;
+    }
+    //this.filtredSprints = this.getFilteredOptionsSprint(this.autoSprint.nativeElement.value);
+  }
+
+  onSelectionChangeArea($event) {
+    console.log($event)
+    //this.filtredSprints = this.getFilteredOptionsSprint($event);
+  }
+
+
+
+
+
   registrarTarea() {
     if(this.form.get('sprint').value !== ''){
       console.log('Vacios');
@@ -220,7 +258,8 @@ export class TareaComponent {
         this.tarea.key_epica,
         this.tarea.key_sprint,
         this.tarea.key_proyecto,
-        this.tarea.key_colaborador
+        this.tarea.key_colaborador,
+        this.tarea.key_area,
       )
       .subscribe(
         (response) => {
@@ -277,7 +316,7 @@ export class TareaComponent {
   }
 
   buscarTareas() {
-    this._userService.findTarea(this.text).subscribe((response) => {
+    this._userService.findTarea(this.text, this.page).subscribe((response) => {
       this.myList2 = response;
       this.modalTable = true;
       console.log(response);
@@ -290,8 +329,8 @@ export class TareaComponent {
   }
 
   clearData() {
-    this.tarea = new Tarea("", "", "", "", "", "", "");
-    this.tareaCopy = new Tarea("", "", "", "", "", "", "");
+    this.tarea = new Tarea("", "", "", "", "", "", "", "");
+    this.tareaCopy = new Tarea("", "", "", "", "", "", "", "");
   }
 
   openModalUpdate(dialog: TemplateRef<any>, item) {
@@ -475,4 +514,77 @@ export class TareaComponent {
     this.nameEpica = item.nombre;
     this.closeModalEpicas();
   }
+
+  next(){
+    this.page ++;
+    if(this.modalTable === false){
+    this._userService.getPaginationTareas(this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }else{
+    this._userService.findTarea(this.text, this.page).subscribe((response) => {
+      if(response.length !== 0){
+        this.myList2 = response;
+      }else{
+        this.page --;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        })
+      }
+    });
+  }
+  }
+
+  preview(){
+    if(this.page > 1){
+      this.page --;
+      if(this.modalTable === false){
+      this._userService.getPaginationTareas(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      this._userService.findTarea(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }
+  }
+  }
+
 }
