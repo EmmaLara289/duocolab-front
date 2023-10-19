@@ -32,7 +32,8 @@ export class EquipoComponent implements OnInit {
   equipo: Equipo;
   equipoCopy: any;
   equipos: any=[];
-  text: string= "";
+  text: string = "";
+  textModal: string = "";
   myList: any=[];
   alert = false;
   alertUpdate = false;
@@ -98,7 +99,7 @@ export class EquipoComponent implements OnInit {
       this.myList = response;
     });
 
-  this._userService.getColaboradores().subscribe((response) => {
+  this._userService.getPaginationColaboradores(this.page).subscribe((response) => {
       this.colabs = response;
       //console.log(response);
   });
@@ -119,7 +120,8 @@ export class EquipoComponent implements OnInit {
   this._userService.registrarEquipo(this.equipo.nombre, this.equipo.key_proyecto, this.equipo.key_colab).subscribe(
       response => {
       if(response.status != 'error'){
-          this.ngOnInit();
+          //this.ngOnInit();
+          this.reloadPage();
           this.clearData();
           Swal.fire({
             position: 'top-end',
@@ -151,7 +153,8 @@ export class EquipoComponent implements OnInit {
       this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, key_proyecto, this.equipoCopy.id_colaboradores).subscribe(
       response => {
       if(response.status != 'error'){
-          this.ngOnInit(); 
+          //this.ngOnInit(); 
+          this.reloadPage();
           this.clearData(); 
           //this.closeModal();
           Swal.fire({
@@ -161,7 +164,6 @@ export class EquipoComponent implements OnInit {
             showConfirmButton: false,
             timer: 1200
           })
-          this.modalTable = false;
           this.closeModalEdit();
         }
 
@@ -214,15 +216,11 @@ export class EquipoComponent implements OnInit {
   openModalUpdate(item, dialog: TemplateRef<any>) {
     this.modalUpdate = true;
     this.integrantes = item.integrantes;
+    //this.loadMemberStatus(item.id_equipo);
     this.equipoCopy = {...item};
     console.log(item);
     //console.log(this.equipoCopy.nombre_proyecto);
     this.dialogEdit(dialog);
-    if(this.equipoCopy.contador_coloboradores === 1){
-      this.usersText = "1 Integrante";
-    }else{
-    this.usersText = this.equipoCopy.contador_coloboradores + " Integrantes";
-    }
     this.idSelectedUser = this.equipoCopy.id_colaboradores;
     console.log(this.idSelectedUser);
     //console.log("Hay ",this.usersText);
@@ -508,6 +506,7 @@ export class EquipoComponent implements OnInit {
     this.recargarTablaUsers();
     this.colabsList = [];
     this.modalEdit.close();
+    this.integrantes = [];
   }
 
   next(){
@@ -543,6 +542,20 @@ export class EquipoComponent implements OnInit {
       }
     });
   }
+  }
+
+  reloadPage(){
+    if(this.modalTable === false){
+      this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+        this.myList = response;
+        this.modalTable = false;
+      });
+    }else{
+      this._userService.findEquipo(this.text, this.page).subscribe((response) => {
+        this.myList2 = response;
+        this.modalTable = true;
+      });
+    }
   }
 
   preview(){
@@ -581,7 +594,63 @@ export class EquipoComponent implements OnInit {
     }
   }
   }
+
+  disableColab(item){
+    console.log('id_equipo: ',this.equipoCopy.id_equipo, ', key_colab: ',item.id);
+    this._userService.disableMember(this.equipoCopy.id_equipo, item.id).subscribe((response) => {
+      this.loadMemberStatus(this.equipoCopy.id_equipo);
+    });
+
+  }
+
+  ableColab(item){
+    this._userService.ableMember(this.equipoCopy.id_equipo, item.id).subscribe((response) => {
+      this.loadMemberStatus(this.equipoCopy.id_equipo);
+    });
+  }
   
+  loadMemberStatus(id_equipo){
+    this._userService.getEquipoStatus(id_equipo).subscribe((response) => {
+      console.log(response);
+      this.integrantes = response.integrantes;
+    })
+  }
+
+  searchColab(){
+  this.page = 1;
+    this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
+        this.colabs = response;
+    });
+  }
+
+  nextModal(){
+    this.page ++;
+    this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.colabs = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+    });
+  }
+
+  previewModal(){
+    if(this.page > 1){
+      this.page --;
+      this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.colabs = response;
+        }
+      });
+    }
+  }
 
 
 

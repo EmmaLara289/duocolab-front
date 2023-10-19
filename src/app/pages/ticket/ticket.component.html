@@ -12,7 +12,7 @@
                 <div style="padding: 10px;"></div>
                 <form class="col-md-10" (ngSubmit)="registrarTicket()">
                     <div class="form-group row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="label">Proyecto</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyect">
@@ -24,28 +24,24 @@
                                 <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
-                            <label class="label">Key Usuario</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="key_usuario" #key_usuario="ngModel" [(ngModel)]="ticket.key_usuario" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_usuario.valid && key_usuario.touched" class="invalid-feedback d-block">La Key Usuario no es válido</small>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <label class="label">Título</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="titulo" #titulo="ngModel" [(ngModel)]="ticket.titulo" required minlength="5" [ngModelOptions]="{standalone: true}">
                                 <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                    </div>
-                    <div class="form-group row">
                         <div class="col-md-2">
-                            <label class="label">Detalles</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="detalles" #detalles="ngModel" [(ngModel)]="ticket.detalles" required minlength="5" [ngModelOptions]="{standalone: true}">
+                            <label class="label">Descripción</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
+                                <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                            </nb-form-field>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label">Prioridad</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('prioridad')" #PrioridadAuto type="text" (input)="onChangePrioridad($event)" [nbAutocomplete]="autoPrioridad">
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('prioridades')" #PrioridadAuto type="text" (input)="onChangePrioridad($event)" [nbAutocomplete]="autoPrioridad">
                                 <nb-autocomplete #autoPrioridad (selectedChange)="onPrioridadSelected($event)">
                                     <nb-option *ngFor="let option of filtredPrioridades | async" [value]="option.nombre">
                                         {{ option.nombre }}
@@ -63,3 +59,18 @@
         </nb-card>
     </div>
 </div>
+
+<ng-template #description let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Descripción</nb-card-header>
+                    <nb-card-body>
+                        <textarea nbInput fullWidth name="descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="ticket.detalles" required minlength="10"></textarea>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

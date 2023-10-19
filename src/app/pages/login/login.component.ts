@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     this.ChekUser.login = JSON.parse(localStorage.getItem('login'));
     //console.log()
     if(this.ChekUser.login === true){
-      this._router.navigate(['/pages/tarea']);
+      this._router.navigate(['/pages/colaborador']);
     }
   }
 
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
               showConfirmButton: false,
               timer: 1200
             });
-            this._router.navigate(['/pages/tarea']);
+            this._router.navigate(['/pages/colaborador']);
           }else if(response.user.key_role == 2){
             Swal.fire({
               position: 'center',
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
               showConfirmButton: false,
               timer: 1200
             });
-            this._router.navigate(['/pages/tarea']);
+            this._router.navigate(['/pages/colaborador']);
           }else if(response.user.key_role == 3){
             Swal.fire({
               position: 'center',

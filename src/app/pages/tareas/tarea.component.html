@@ -239,16 +239,32 @@
                 <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
                     <nb-card-header>Colaboradores</nb-card-header>
                     <nb-card-body>
+                        <form class="pl-md-4" (ngSubmit)="searchColab()">
+                            <div class="row">
+                                <div class="row align-items-center">
+                                    <div class="px-md-2">
+                                        <input nbInput fullWidth shape="semi-round" style="width : 400px;" fieldSize="medium" type="text" [(ngModel)]="textModal" name="textModal" placeholder="Buscar Colaborador">
+                                    </div>
+                                    <div class="px-md-2">
+                                        <button nbButton status="primary" type="submit" size="medium"><nb-icon icon="search-outline"></nb-icon></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div style="padding: 20px;"></div>
                         <nb-list-item *ngFor="let item of colaboradorList">
                             <b>{{ item.nombre }}</b>
                             <div class="button" style="position: absolute; left: 80%;">
                                 <button nbButton status="info" (click)="selectedColabs(item.id_colab)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
                             </div>
                         </nb-list-item>
-                        <div style="padding: 20px;">
+                        <div style="padding: 20px;"></div>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="previewModal()">Anterior</button>
                             <div class="text-center">
-                                <button nbButton (click)="ref.close()">Cerrar</button>
+                                <button nbButton shape="semi-round" status="danger" (click)="ref.close()">Cerrar</button>
                             </div>
+                            <button nbButton shape="semi-round" status="info" (click)="nextModal()">Siguiente</button>
                         </div>
                     </nb-card-body>
                 </nb-card>

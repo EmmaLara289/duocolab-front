@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Ticket } from '../../models/ticket';
 import { UserService } from '../../services/user.service';
@@ -7,12 +7,15 @@ import { Observable } from 'rxjs';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
+import { CheckUser } from '../../services/checkUser';
 
 @Component({
   selector: 'app-ticket',
   templateUrl: './ticket.component.html'
 })
 export class TicketComponent implements OnInit {
+  private ref: NbDialogRef<any>;
+
   @ViewChild('ProyectAuto') autoProyect: ElementRef;
   @ViewChild('PrioridadAuto') autoPrioridad: ElementRef;
 
@@ -26,10 +29,13 @@ export class TicketComponent implements OnInit {
   form: FormGroup;
   proyectoList: any;
   prioridadList: any;
+  modalDescription: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private fb: FormBuilder,
+  private dialogService: NbDialogService,
+  private CheckUser: CheckUser
   ) {
   this.ticket= new Ticket('','','','','');
 
@@ -40,6 +46,10 @@ export class TicketComponent implements OnInit {
   }
 
   ngOnInit(){
+    this.CheckUser.userData = JSON.parse(localStorage.getItem('userData'));
+    console.log(this.CheckUser.userData);
+    this.ticket.key_usuario = this.CheckUser.userData.id;
+
     this._userService.getProyectos().subscribe((response) => {
       this.proyectoList = response;
       this.filtredProyects = this.form.get('proyecto').valueChanges.pipe(
@@ -102,6 +112,7 @@ export class TicketComponent implements OnInit {
         this.ngOnInit();
         this.alert = true;
         this.ticket= new Ticket('','','','','');
+        this.form.reset();
         }
         
       },
@@ -110,5 +121,11 @@ export class TicketComponent implements OnInit {
       	}
    	);
 	}
+
+  openModalDescription(dialog: TemplateRef<any>) {
+    this.modalDescription = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+  }
 
 }

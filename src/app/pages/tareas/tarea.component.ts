@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -67,6 +67,7 @@ export class TareaComponent {
   proyecto: any;
   page = 1;
   areasList: any;
+  textModal = "";
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -137,7 +138,7 @@ export class TareaComponent {
       );
       });
 
-    this._userService.getColaboradores().subscribe((response) => {
+    this._userService.getPaginationColaboradores(this.page).subscribe((response) => {
       this.colaboradorList = response;
     });
     
@@ -586,5 +587,41 @@ export class TareaComponent {
     }
   }
   }
+
+  searchColab(){
+    this.page = 1;
+      this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
+          this.colaboradorList = response;
+      });
+    }
+
+    nextModal(){
+      this.page ++;
+      this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
+          if(response.length !== 0){
+            this.colaboradorList = response;
+          }else{
+            this.page --;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'No hay más resultados',
+              showConfirmButton: false,
+              timer: 1200
+            })
+          }
+      });
+    }
+  
+    previewModal(){
+      if(this.page > 1){
+        this.page --;
+        this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+          if(response.length !== 0){
+            this.colaboradorList = response;
+          }
+        });
+      }
+    }
 
 }

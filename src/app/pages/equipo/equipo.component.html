@@ -82,7 +82,6 @@
                                 <td>{{ item.nombre }}</td>
                                 <td>{{ item.nombre_proyecto}} </td>
                                 <td><button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
-
                                 <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
                         </tbody>
@@ -108,7 +107,7 @@
                                 <td>{{ item.id_equipo }}</td>
                                 <td>{{ item.nombre }}</td>
                                 <td>{{ item.nombre_proyecto}} </td>
-                                <td> <button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon> </button> </td>
+                                <td><button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
                                 <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
                             </tr>
                         </tbody>
@@ -127,7 +126,7 @@
     <nb-card status="danger" style="width: 400px;">
         <nb-card-header>Integrantes del Equipo</nb-card-header>
         <nb-list-item class="text-center" *ngFor="let item of integrantes">
-            {{ item }}
+            {{ item.nombre }}
         </nb-list-item>
         <nb-card-footer>
             <div class="text-center">
@@ -144,16 +143,32 @@
                 <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
                     <nb-card-header>Colaboradores</nb-card-header>
                     <nb-card-body>
+                        <form class="pl-md-4" (ngSubmit)="searchColab()">
+                            <div class="row">
+                                <div class="row align-items-center">
+                                    <div class="px-md-2">
+                                        <input nbInput fullWidth shape="semi-round" style="width : 400px;" fieldSize="medium" type="text" [(ngModel)]="textModal" name="textModal" placeholder="Buscar Colaborador">
+                                    </div>
+                                    <div class="px-md-2">
+                                        <button nbButton status="primary" type="submit" size="medium"><nb-icon icon="search-outline"></nb-icon></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div style="padding: 20px;"></div>
                         <nb-list-item *ngFor="let item of colabs">
                             <b>{{ item.nombre }}</b>
                             <div class="button" style="position: absolute; left: 80%;">
                                 <button nbButton status="info" (click)="selectedUsers(item.id_colab)"><nb-icon nbSuffix icon="person-add" pack="eva"></nb-icon></button>
                             </div>
                         </nb-list-item>
-                        <div style="padding: 20px;">
+                        <div style="padding: 20px;"></div>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="previewModal()">Anterior</button>
                             <div class="text-center">
-                                <button nbButton (click)="ref.close()">Cerrar</button>
+                                <button nbButton shape="semi-round" status="danger" (click)="ref.close()">Cerrar</button>
                             </div>
+                            <button nbButton shape="semi-round" status="info" (click)="nextModal()">Siguiente</button>
                         </div>
                     </nb-card-body>
                 </nb-card>
@@ -220,7 +235,7 @@
             <nb-card status="danger" style="width: 800px;">
                 <nb-card-header>Editor</nb-card-header>
                 <nb-card-body>
-                    <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateEquipo()">
+                    <form class="col-md-10" style="left: 8%;">
                         <div class=" row">
                             <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                                 <label>Nombre</label>
@@ -235,9 +250,10 @@
                                 <nb-card-body>
                                     <nb-list-item class="text-center" *ngFor="let item of integrantes">
                                         <div class="row">
-                                            {{ item }}
+                                            {{ item.nombre }}
                                             <div style="position: absolute; left: 50%; margin-top: -10px;">
-                                                <button nbButton status="danger" (click)="selectedProyect(item)"><nb-icon nbSuffix icon="checkmark" pack="eva"></nb-icon></button>
+                                                <button *ngIf=" item.status !== 0" nbButton status="success" (click)="disableColab(item)"><nb-icon icon="checkmark" pack="eva" type="button"></nb-icon></button>
+                                                <button *ngIf=" item.status === 0" nbButton status="danger" (click)="ableColab(item)"><nb-icon icon="alert-triangle" pack="eva" type="button"></nb-icon></button>
                                             </div>
                                         </div>
                                     </nb-list-item>
@@ -247,13 +263,14 @@
                         <div class=" row">
                             <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                                 <label>Proyecto</label>
-                                <input nbInput fullWidth status="danger" [value]="equipoCopy.nombre_proyecto" class="text-center" (click)="dialogEditProyectos(proyectsEdit)" shape="semi-round" type="text" readonly>
+                                <input nbInput fullWidth status="danger" [value]="equipoCopy.nombre_proyecto" class="text-center" shape="semi-round" type="text" readonly>
                             </div>
+                            <!--(click)="dialogEditProyectos(proyectsEdit)"-->
                         </div>
                         <div style="padding: 20px;"></div>
                         <div class="row">
                             <div class="col">
-                                <button nbButton status="danger" size="medium" type="submit">Editar</button>
+                                <button nbButton status="danger" size="medium" (click)="updateEquipo()">Editar</button>
                             </div>
                             <div class="col text-right">
                                 <button nbButton status="primary" size="medium" type="button" (click)="closeModalEdit()">Cerrar</button>

@@ -109,6 +109,17 @@ export class UserService {
   return this._http.get(this.url+ 'searchColaboradores', {params: params});
   }
 
+  public findAllColaborador(text:string, page: number):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+      params = params.set('text', text);
+    }
+    if(page !== undefined){
+      params = params.set('page', page)
+    }
+  return this._http.get(this.url+ 'searchAllColaboradores', {params: params});
+  }
+
   public registrarEpica(nombre:string, proyecto: string, descripcion:string): Observable<any>{
     return this._http.post(global.url + 'createEpica',
     {nombre:nombre, proyecto:proyecto, descripcion:descripcion});
@@ -149,6 +160,22 @@ export class UserService {
       params = params.set('page', page);
     }
   return this._http.get(this.url+ 'searchTareas', {params: params});
+  }
+
+  
+  public ableMember(id_equipo:number, key_colab: number): Observable<any>{
+    return this._http.post(global.url + 'ableMember',
+    {id_equipo:id_equipo, key_colab:key_colab});
+  }
+
+  public disableMember(id_equipo:number, key_colab: number): Observable<any>{
+    return this._http.post(global.url + 'disableMember',
+    {id_equipo:id_equipo, key_colab:key_colab});
+  }
+
+  public getEquipoStatus(id_equipo:number): Observable<any>{
+    return this._http.post(global.url + 'equipoStatus',
+    {id_equipo:id_equipo});
   }
 
   public registrarEstatusTarea(nombre:string): Observable<any>{
@@ -195,7 +222,7 @@ export class UserService {
   public getPaginationEquipos(page: number): Observable<any>{
     let params = new HttpParams();
     params = params.set('page', page);
-  return this._http.get(global.url + 'getEquipos',  {params: params});
+    return this._http.get(global.url + 'getPaginationEquipos', {params: params});
   }
 
   public getColaboradores(): Observable<any>{
