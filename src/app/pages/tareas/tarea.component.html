@@ -50,7 +50,7 @@
                         <div class="col-md-3">
                             <label class="label">Sprint</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('sprint')" #SprintAuto type="text" (input)="onChangeSprint($event)" [nbAutocomplete]="autoSprint">
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('sprint')" #SprintAuto type="text" (input)="onChangeSprint($event)" [nbAutocomplete]="autoSprint" [placeholder]="placeHolderSprint">
                                 <nb-autocomplete #autoSprint (selectedChange)="onSprintSelected($event)">
                                     <nb-option *ngFor="let option of filtredSprints | async" [value]="option.nombre" (selectedChange)="onSelectionChangeSprint($event)">
                                         {{ option.nombre }}
@@ -64,7 +64,7 @@
                         <div class="col-md-3">
                             <label class="label">Epica</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('epica')" (input)="onChange($event)" [nbAutocomplete]="autoEpica">
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('epica')" (input)="onChange($event)" [nbAutocomplete]="autoEpica" [placeholder]="placeHolderEpica">
                                 <nb-autocomplete #autoEpica (selectedChange)="onEpicaSelected($event)">
                                     <nb-option *ngFor="let option of filteredEpicas | async" [value]="option.nombre">
                                         {{ option.nombre }}
@@ -239,14 +239,14 @@
                 <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
                     <nb-card-header>Colaboradores</nb-card-header>
                     <nb-card-body>
-                        <form class="pl-md-4" (ngSubmit)="searchColab()">
+                        <form class="pl-md-4">
                             <div class="row">
                                 <div class="row align-items-center">
                                     <div class="px-md-2">
                                         <input nbInput fullWidth shape="semi-round" style="width : 400px;" fieldSize="medium" type="text" [(ngModel)]="textModal" name="textModal" placeholder="Buscar Colaborador">
                                     </div>
                                     <div class="px-md-2">
-                                        <button nbButton status="primary" type="submit" size="medium"><nb-icon icon="search-outline"></nb-icon></button>
+                                        <button nbButton status="primary" size="medium" (click)="searchColab()"><nb-icon icon="search-outline"></nb-icon></button>
                                     </div>
                                 </div>
                             </div>

@@ -48,6 +48,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Ticket',
     link: '/pages/ticket'
   },
+  {
+    icon: 'edit-2-outline',
+    title: 'Estatus de Tickets',
+    link: '/pages/ticketStatus'
+  },
 ]
 /*
 let MENU_ITEMS: NbMenuItem[];

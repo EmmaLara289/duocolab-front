@@ -52,7 +52,7 @@ export class TareaComponent {
   countColabs = 0;
   colabsText = "";
   modalColab: any;
-  colabsSelected: any;
+  colabsSelected = [];
   modalProyect: any;
   idSelectedProyect = "";
   nameProyect = "";
@@ -66,8 +66,11 @@ export class TareaComponent {
   value: any;
   proyecto: any;
   page = 1;
+  pageModal = 1;
   areasList: any;
   textModal = "";
+  placeHolderSprint = "Seleccione un Proyecto";
+  placeHolderEpica = "Seleccione un Proyecto";
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -112,22 +115,6 @@ export class TareaComponent {
   ngOnInit() {
         this._userService.getPaginationTareas(this.page).subscribe((response) => {
       this.myList = response;
-    });
-
-    this._userService.getEpicas().subscribe((response) => {
-      this.epicaList = response;
-      this.filteredEpicas = this.form.get('epica').valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value))
-      );
-    });
-
-    this._userService.getSprints().subscribe((response) => {
-      this.sprintList = response;
-      this.filtredSprints = this.form.get('sprint').valueChanges.pipe(
-        startWith(''),
-        map(value => this._filterS(value))
-      );
     });
 
     this._userService.getProyectos().subscribe((response) => {
@@ -186,6 +173,25 @@ export class TareaComponent {
     const id = this.proyectoList.find(option => option.nombre === item);
     console.log('ID: ',id);
     this.tarea.key_proyecto = id.id_proyecto;
+
+    this._userService.sprintProyect(this.tarea.key_proyecto).subscribe((response) => {
+      this.sprintList = response;
+      this.filtredSprints = this.form.get('sprint').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterS(value))
+      );
+    });
+
+    this._userService.epicaProyect(this.tarea.key_proyecto).subscribe((response) => {
+      this.epicaList = response;
+      this.filteredEpicas = this.form.get('epica').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+    });
+
+    this.placeHolderSprint = "";
+    this.placeHolderEpica = "";
     // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
@@ -272,9 +278,10 @@ export class TareaComponent {
               title: 'Guardado con éxito',
               showConfirmButton: false,
               timer: 1200
-            })
+            });
             this.clearData();
             this.form.reset();
+            this.colabsText = "";
           }
         },
         (error) => {
@@ -466,7 +473,7 @@ export class TareaComponent {
 
       // Volver a unir los números en una cadena, separados por comas
       this.idSelectedColabs = numeros.join(",");
-      this.excluseColabs(this.idSelectedColabs);
+      this.excludeColabs(this.idSelectedColabs);
       this.team(this.idSelectedColabs);
       const numerosArray = this.idSelectedColabs.split(",");
       this.countColabs = numerosArray.length;
@@ -482,15 +489,15 @@ export class TareaComponent {
       this.colabsText = "";
       this.colabsSelected = [];
 
-      this._userService.getColaboradores().subscribe((response) => {
+      this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
         this.colaboradorList = response;
         //console.log(response);
       });
     }
   }
 
-  excluseColabs(ids) {
-    this._userService.excludeColabs(ids).subscribe((response) => {
+  excludeColabs(ids) {
+    this._userService.excludeColabs(ids, this.pageModal).subscribe((response) => {
       this.colaboradorList = response;
     });
   }
@@ -589,38 +596,47 @@ export class TareaComponent {
   }
 
   searchColab(){
-    this.page = 1;
-      this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
+    this.pageModal = 1;
+      this._userService.findExcludeColaborador(this.textModal, this.pageModal, this.idSelectedColabs).subscribe((response) => {
           this.colaboradorList = response;
       });
     }
 
     nextModal(){
-      this.page ++;
-      this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
-          if(response.length !== 0){
-            this.colaboradorList = response;
-          }else{
-            this.page --;
-            Swal.fire({
-              position: 'top-end',
-              icon: 'error',
-              title: 'No hay más resultados',
-              showConfirmButton: false,
-              timer: 1200
-            })
-          }
-      });
-    }
+      this.pageModal ++;
+      if( this.colabsSelected.length === 0 ){
+        this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
+            if(response.length !== 0){
+              this.colaboradorList = response;
+            }else{
+              this.pageModal --;
+              Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'No hay más resultados',
+                showConfirmButton: false,
+                timer: 1200
+              })
+            }
+        });
+      }else{
+        this.excludeColabs(this.idSelectedColabs);
+      }
   
+    }
+
     previewModal(){
-      if(this.page > 1){
-        this.page --;
-        this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+      if(this.pageModal > 1){
+        this.pageModal --;
+        if( this.colabsSelected.length === 0 ){
+        this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
           if(response.length !== 0){
             this.colaboradorList = response;
           }
         });
+      }else{
+        this.excludeColabs(this.idSelectedColabs);
+      }
       }
     }
 

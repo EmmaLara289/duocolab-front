@@ -38,7 +38,7 @@
                         <div class="col-md-2">
                             <label class="label">Detalles</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
                                 <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
@@ -176,3 +176,18 @@
         </div>
     </div>
 </div>
+
+<ng-template #description let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Descripción</nb-card-header>
+                    <nb-card-body>
+                        <textarea nbInput fullWidth name="detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5"></textarea>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

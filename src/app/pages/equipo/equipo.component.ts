@@ -47,7 +47,7 @@ export class EquipoComponent implements OnInit {
   idSelectedProyect = "";
   nameProyect = "";
   idsText = "";
-  colabsList: any;
+  colabsList = [];
   proyectList: any;
   modalList = false;
   dialogProyect = false;
@@ -62,6 +62,7 @@ export class EquipoComponent implements OnInit {
   form: FormGroup;
   proyectoList: any;
   page = 1;
+  pageModal = 1;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -117,7 +118,7 @@ export class EquipoComponent implements OnInit {
 
 
   registrarEquipo(){
-  this._userService.registrarEquipo(this.equipo.nombre, this.equipo.key_proyecto, this.equipo.key_colab).subscribe(
+  this._userService.registrarEquipo(this.equipo.nombre, /*this.equipo.key_proyecto */ this.equipo.key_colab).subscribe(
       response => {
       if(response.status != 'error'){
           //this.ngOnInit();
@@ -129,13 +130,16 @@ export class EquipoComponent implements OnInit {
             title: 'Guardado con éxito',
             showConfirmButton: false,
             timer: 1200
-          })
+          });
           this.idSelectedProyect = "";
           this.idSelectedUser = "";
           this.nameProyect = "";
           this.usersText = "";
           this.modalTable = false;
           this.form.reset();
+          this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+            this.myList = response;
+          });
         }
 
       },
@@ -150,7 +154,7 @@ export class EquipoComponent implements OnInit {
     const key_proyecto = this.equipoCopy.id_proyecto.toString();
     this.equipoCopy.id_colaboradores = this.idSelectedUser;
     console.log(this.idSelectedUser);
-      this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, key_proyecto, this.equipoCopy.id_colaboradores).subscribe(
+      this._userService.updateEquipo(this.equipoCopy.id_equipo, this.equipoCopy.nombre, key_proyecto/*, this.equipoCopy.id_colaboradores*/).subscribe(
       response => {
       if(response.status != 'error'){
           //this.ngOnInit(); 
@@ -236,7 +240,7 @@ export class EquipoComponent implements OnInit {
       { context: 'this is some additional data passed to dialog' }
     );
 
-    this.excluseColabs(this.idSelectedUser);
+    this.excludeColabs(this.idSelectedUser);
     this._userService.findColabs(this.idSelectedUser).subscribe((response) => {
       this.colabsList = response;
       //console.log("Seleccionados:" ,this.colabsList);
@@ -331,6 +335,7 @@ export class EquipoComponent implements OnInit {
   }
 
   selectedUsers(id){
+    console.log(this.idSelectedUser);
     const numerosArray = this.idSelectedUser.split(',');
     //console.log(numerosArray.length);
     if(numerosArray.length === 1){
@@ -377,6 +382,7 @@ export class EquipoComponent implements OnInit {
   }
 
   deleteSelectedUsers(id_user){
+    console.log(this.idSelectedUser);
     console.log(id_user, typeof(id_user));
     this.countUsers = this.countUsers - 1;
     if (this.idSelectedUser.includes(',')) {
@@ -419,7 +425,7 @@ export class EquipoComponent implements OnInit {
       //this.deleteUserTable(idNumero);
     });
 */
-    this.excluseColabs(this.idSelectedUser);
+    this.excludeColabs(this.idSelectedUser);
     this.team(this.idSelectedUser);
     const numerosArray = this.idSelectedUser.split(',');
     this.countUsers = numerosArray.length;
@@ -430,13 +436,13 @@ export class EquipoComponent implements OnInit {
     this.usersText = this.countUsers + " Integrantes";
     }
 
-  } else {
+  }else {
     //console.log("Hay solo uno");
     this.idSelectedUser = "";
-    this.colabsList = [];
     this.usersText = "";
+    this.colabsList = [];
 
-      this._userService.getColaboradores().subscribe((response) => {
+      this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
         this.colabs = response;
         //console.log(response);
     });
@@ -476,8 +482,8 @@ export class EquipoComponent implements OnInit {
       });
   }
 
-  excluseColabs(ids){
-    this._userService.excludeColabs(ids).subscribe((response) =>{
+  excludeColabs(ids){
+    this._userService.findExcludeColaborador(this.textModal, this.pageModal, ids).subscribe((response) =>{
       this.colabs = response;
     })
   }
@@ -617,38 +623,54 @@ export class EquipoComponent implements OnInit {
   }
 
   searchColab(){
-  this.page = 1;
-    this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
+  this.pageModal = 1;
+    this._userService.findColaborador(this.textModal, this.pageModal).subscribe((response) => {
         this.colabs = response;
     });
   }
 
-  nextModal(){
-    this.page ++;
-    this._userService.findColaborador(this.textModal, this.page).subscribe((response) => {
-        if(response.length !== 0){
+  ModalsearchColab(){
+    this.pageModal = 1;
+      this._userService.findExcludeColaborador(this.textModal, this.pageModal, this.idSelectedUser).subscribe((response) => {
           this.colabs = response;
-        }else{
-          this.page --;
-          Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            title: 'No hay más resultados',
-            showConfirmButton: false,
-            timer: 1200
-          })
-        }
-    });
+      });
+  }
+
+  nextModal(){
+    this.pageModal ++;
+    if( this.colabsList.length === 0 ){
+      this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
+          if(response.length !== 0){
+            this.colabs = response;
+          }else{
+            this.pageModal --;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'No hay más resultados',
+              showConfirmButton: false,
+              timer: 1200
+            })
+          }
+      });
+    }else{
+      this.excludeColabs(this.idSelectedUser);
+    }
+
   }
 
   previewModal(){
-    if(this.page > 1){
-      this.page --;
-      this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+    if(this.pageModal > 1){
+      this.pageModal --;
+      if( this.colabsList.length === 0 ){
+      this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
         if(response.length !== 0){
           this.colabs = response;
         }
       });
+    }else{
+      this.excludeColabs(this.idSelectedUser);
+    }
     }
   }
 

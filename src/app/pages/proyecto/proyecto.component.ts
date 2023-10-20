@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Proyecto } from '../../models/proyecto';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
@@ -37,11 +38,13 @@ export class ProyectoComponent implements OnInit {
   equipoList: any;
   filteredEquipos: Observable<string[]>;
   page = 1;
+  modalDescription: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private http: HttpClient,
   private fb: FormBuilder,
+  private dialogService: NbDialogService,
   ) {
   this.proyecto= new Proyecto('', '','', '','');
 
@@ -278,6 +281,12 @@ openModalUpdate(item){
   
     // Si no hay clave única, devuelve una URL de imagen predeterminada o una URL vacía según tu necesidad
     return 'URL_de_imagen_predeterminada.jpg'; // Cambia esto según tu caso
+  }
+
+  openModalDescription(dialog: TemplateRef<any>) {
+    this.modalDescription = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
   }
 
 }

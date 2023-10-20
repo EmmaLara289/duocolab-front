@@ -67,6 +67,12 @@ const routes: Routes = [{
         canActivate: [AuthGuard],
     },
     {
+      path: 'ticketStatus',
+      loadChildren: () => import('./ticket-status/ticketStatus.module')
+        .then(m => m.TicketStatusModule),
+        canActivate: [AuthGuard],
+    },
+    {
       path: '**',
       component: NotFoundComponent,
     },

@@ -1,0 +1,39 @@
+/* CSS personalizado para cambiar el color del texto en una tabla de fondo oscuro */
+
+.dark-table {
+    color: white;
+    /* Cambiar el color del texto a blanco */
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+
+/* Aplicar el estilo a las celdas de datos en la tabla */
+
+.dark-table td {
+    color: white;
+    /* Cambiar el color del texto a blanco en las celdas de datos */
+}
+
+.modal-container {
+    width: 900px;
+    height: 700px;
+    background-color: rgb(47, 62, 106);
+    right: 40%;
+    bottom: 40%;
+    position: relative;
+}
+
+.custom-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}

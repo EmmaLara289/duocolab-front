@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Epica } from '../../models/epica';
 import { UserService } from '../../services/user.service';
@@ -39,12 +39,13 @@ export class EpicaComponent implements OnInit {
   epicaCopy: any;
   proyectoList: any;
   page = 1;
+  modalDescription: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
   private http: HttpClient,
   private fb: FormBuilder,
-
+  private dialogService: NbDialogService,
   ) { 
   this.epica = new Epica('','','','');
 
@@ -91,8 +92,15 @@ export class EpicaComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alert = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.clearData();
+        this.form.reset();
         }
 
       },
@@ -228,6 +236,12 @@ export class EpicaComponent implements OnInit {
       });
     }
   }
+  }
+
+  openModalDescription(dialog: TemplateRef<any>) {
+    this.modalDescription = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
   }
 
 }
