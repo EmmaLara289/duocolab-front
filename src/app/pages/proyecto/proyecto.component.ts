@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-
+import { global } from '../../services/global';
 
 @Component({
   selector: 'app-proyecto',
@@ -39,6 +39,10 @@ export class ProyectoComponent implements OnInit {
   filteredEquipos: Observable<string[]>;
   page = 1;
   modalDescription: any;
+  url: any;
+  getFotoUrlAddress: any;
+  modalImagen: any;
+  image: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -47,6 +51,7 @@ export class ProyectoComponent implements OnInit {
   private dialogService: NbDialogService,
   ) {
   this.proyecto= new Proyecto('', '','', '','');
+  this.url = global.url;
 
   this.form = this.fb.group({
     equipo: ['']
@@ -91,9 +96,17 @@ export class ProyectoComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alert = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'No hay más resultados',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.clearData();
         this.closeModal();
+        this.form.reset();
+        this.fotoAlert = true;
         }
 
       },
@@ -287,6 +300,21 @@ openModalUpdate(item){
     this.modalDescription = this.dialogService.open(dialog, {
       context: "this is some additional data passed to dialog",
     });
+  }
+
+  getImagen(dialog: TemplateRef<any>, item) {
+    this.modalImagen = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+    console.log(item.imagen);
+    this.image = item.imagen;
+    this.getFotoUrlAddress = this.url.replace('/api/', '/');
+    console.log(this.getFotoUrlAddress);
+    //http://127.0.0.1:8000/storage/proyectos/50a78bb8fd562d556785e04ba87529de.jpg
+  }
+
+  closeImagen(){
+    this.modalImagen.close();
   }
 
 }

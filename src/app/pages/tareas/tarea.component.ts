@@ -71,6 +71,7 @@ export class TareaComponent {
   textModal = "";
   placeHolderSprint = "Seleccione un Proyecto";
   placeHolderEpica = "Seleccione un Proyecto";
+  placeHolderColab = "Seleccione un Proyecto";
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -124,10 +125,6 @@ export class TareaComponent {
         map(value => this._filterP(value))
       );
       });
-
-    this._userService.getPaginationColaboradores(this.page).subscribe((response) => {
-      this.colaboradorList = response;
-    });
     
     this._userService.getAreas().subscribe((response) => {
       this.areasList = response;
@@ -190,8 +187,14 @@ export class TareaComponent {
       );
     });
 
+    
+    this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
+      this.colaboradorList = response;
+    });
+
     this.placeHolderSprint = "";
     this.placeHolderEpica = "";
+    this.placeHolderColab = "";
     // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
@@ -489,15 +492,14 @@ export class TareaComponent {
       this.colabsText = "";
       this.colabsSelected = [];
 
-      this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
+      this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
         this.colaboradorList = response;
-        //console.log(response);
       });
     }
   }
 
   excludeColabs(ids) {
-    this._userService.excludeColabs(ids, this.pageModal).subscribe((response) => {
+    this._userService.excludeColabsFix(ids, this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
       this.colaboradorList = response;
     });
   }
@@ -597,7 +599,7 @@ export class TareaComponent {
 
   searchColab(){
     this.pageModal = 1;
-      this._userService.findExcludeColaborador(this.textModal, this.pageModal, this.idSelectedColabs).subscribe((response) => {
+      this._userService.findExcludeProyectColaborador(this.textModal, this.pageModal, this.idSelectedColabs, this.tarea.key_proyecto).subscribe((response) => {
           this.colaboradorList = response;
       });
     }
@@ -605,7 +607,7 @@ export class TareaComponent {
     nextModal(){
       this.pageModal ++;
       if( this.colabsSelected.length === 0 ){
-        this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
+        this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
             if(response.length !== 0){
               this.colaboradorList = response;
             }else{
@@ -629,7 +631,7 @@ export class TareaComponent {
       if(this.pageModal > 1){
         this.pageModal --;
         if( this.colabsSelected.length === 0 ){
-        this._userService.getPaginationColaboradores(this.pageModal).subscribe((response) => {
+        this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
           if(response.length !== 0){
             this.colaboradorList = response;
           }

@@ -71,6 +71,17 @@ export class UserService {
     return this._http.get(this.url + 'excludeColabs', {params: params});
   }
 
+  public excludeColabsFix(ids: string, page: number, key_proyecto: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('ids', ids);
+    if( page < 1){
+      page = 1;
+    }
+    params = params.set('page', page);
+    params = params.set('key_proyecto', key_proyecto);
+    return this._http.get(this.url + 'excludeColabsFix', {params: params});
+  }
+
 
   public registrarEquipo(nombre: string, key_colab:string): Observable<any> {
     return this._http.post(global.url + 'createEquipo',
@@ -144,6 +155,23 @@ export class UserService {
   return this._http.get(this.url+ 'searchExcludeColaboradores', {params: params});
   }
 
+  public findExcludeProyectColaborador(text:string, page: number, ids: string, key_proyecto: number):Observable<any>{
+    let params = new HttpParams();
+    if(text!==''){
+      params = params.set('text', text);
+    }
+    if(page !== undefined){
+      params = params.set('page', page)
+    }
+    if(ids !== undefined){
+      params = params.set('ids', ids);
+    }
+    if( key_proyecto !== undefined ){
+      params = params.set('key_proyecto', key_proyecto);
+    }
+  return this._http.get(this.url+ 'searchExcludeProyectColaboradores', {params: params});
+  }
+  
   public registrarEpica(nombre:string, proyecto: string, descripcion:string): Observable<any>{
     return this._http.post(global.url + 'createEpica',
     {nombre:nombre, proyecto:proyecto, descripcion:descripcion});
@@ -304,6 +332,13 @@ export class UserService {
     let params = new HttpParams();
     params = params.set('key_proyecto', key_proyecto);
     return this._http.get(global.url + 'epicaProyect', {params: params});
+  }
+
+  public colabsProyect(page:number, key_proyecto: number):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_proyecto', key_proyecto);
+    params = params.set('page', page);
+    return this._http.get(global.url + 'colabsProyecto', {params: params});
   }
 
   public getEpicas(): Observable<any>{

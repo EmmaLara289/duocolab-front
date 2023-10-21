@@ -80,6 +80,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Equipo</th>
+                                    <th> </th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -87,6 +89,8 @@
                                 <tr *ngFor="let item of myList">
                                     <td>{{ item.id_proyecto }}</td>
                                     <td>{{ item.nombre }}</td>
+                                    <td>{{ item.nombre_equipo }}</td>
+                                    <td> <button nbButton status="primary" type="button" size="medium"><nb-icon nbSuffix icon="image" pack="eva" (click)="getImagen(imagen, item)"></nb-icon></button> </td>
                                     <td>
                                         <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
                                     </td>
@@ -185,6 +189,21 @@
                     <nb-card-header>Descripción</nb-card-header>
                     <nb-card-body>
                         <textarea nbInput fullWidth name="detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5"></textarea>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #imagen let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card class="text-center" status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Foto</nb-card-header>
+                    <nb-card-body>
+                        <img src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
                     </nb-card-body>
                 </nb-card>
             </div>
