@@ -16,14 +16,14 @@
                 <div style="padding: 10px;"></div>
                 <form class="col-md-10" (ngSubmit)="registrarEpica()">
                     <div class=" row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label"> Nombre </label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="epica.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
                                 <nb-icon nbSuffix icon="archive" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label"> Proyecto </label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyect">
@@ -35,7 +35,7 @@
                                 <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label"> Descripción </label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" (click)="openModalDescription(description)" readonly>
@@ -71,6 +71,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Proyecto</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -78,8 +79,9 @@
                                 <tr *ngFor="let item of myList">
                                     <td>{{ item.id_epica }}</td>
                                     <td>{{ item.nombre }}</td>
+                                    <td>{{ item.proyecto }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -95,6 +97,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Proyecto</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -102,8 +105,9 @@
                                 <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_epica }}</td>
                                     <td>{{ item.nombre }}</td>
+                                    <td>{{ item.proyecto }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -119,60 +123,60 @@
     </div>
 </div>
 
-<div class="modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 30%; width: 1200px; height: 600px; background-color: rgb(47, 62, 106); right: 55%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Epica</h>
-            </div>
-            <div style="padding: 30px;"></div>
-            <div class="modal-body">
-                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateEpica()">
-                    <div class=" row">
-                        <div class="col-md-6 px-md-4 text-center mx-auto">
-                            <div class=" form-group">
-                                <label> Nombre </label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epicaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es
-                válido </small>
+<ng-template #modalUpdate let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 800px; max-height: 800px;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <form class="col-md-12" (ngSubmit)="updateEpica()">
+                            <div class="row">
+                                <div class="px-md-4 col-md-6 form-group">
+                                    <label class="label"> Nombre </label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="epicaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                        <nb-icon nbSuffix icon="archive" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
+                                <div class="px-md-4 col-md-6">
+                                    <label class="label"> Descripción </label>
+                                    <nb-form-field>
+                                        <textarea nbInput fullWidth status="danger" rows="6" shape="semi-round" type="text" name="descripcion" #descripcion="ngModel" [(ngModel)]="epicaCopy.descripcion" [ngModelOptions]="{standalone: true}" required minlength="5"></textarea>
+                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class=" row">
-                        <div class="col-md-6 px-md-4 text-center mx-auto">
-                            <div class=" form-group">
-                                <label for="form-control"> Proyecto </label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="proyecto" placeholder="Ingrese el proyecto" #proyecto="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epicaCopy.proyecto" required minlength="5">
-                                <small *ngIf="!proyecto.valid && proyecto.touched" class="invalid-feedback d-block"> El proyecto no es
-                válido </small>
+                            <div class="row">
+                                <div class="px-md-4 col-md-6 form-group" style="position: absolute; top: 80px;">
+                                    <label class="label"> Proyecto </label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyectoModal')" #ProyectModalAuto type="text" (input)="onChangeModalProyect($event)" [nbAutocomplete]="autoProyectModal">
+                                        <nb-autocomplete #autoProyectModal (selectedChange)="onProyectModalSelected($event)">
+                                            <nb-option *ngFor="let option of filtredProyectsModal | async" [value]="option.nombre">
+                                                {{ option.nombre }}
+                                            </nb-option>
+                                        </nb-autocomplete>
+                                        <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class=" row">
-                        <div class="col-md-6 px-md-4 text-center mx-auto">
-                            <div class=" form-group">
-                                <label for="form-control"> Descripción </label>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" name="descripcion" placeholder="Ingrese la descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="epicaCopy.descripcion" required
-                                    minlength="10">
-                                <small *ngIf="!descripcion.valid && descripcion.touched" class="invalid-feedback d-block"> La
-                descripcion no es válida </small>
+                            <div style="padding: 20px;"></div>
+                            <div class="row" style="position: relative;">
+                                <div class="col" style="margin-bottom: 20px;">
+                                    <button nbButton status="danger" size="medium" type="submit">Editar</button>
+                                </div>
+                                <div class="col text-right" style="margin-bottom: 20px;">
+                                    <button nbButton status="primary" size="medium" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                    <div class="row">
-                        <div class="col">
-                            <button nbButton status="danger" size="medium" type="submit" class="btn btn-fill btn-danger">Editar</button>
-                        </div>
-                        <div class="col text-right">
-                            <button nbButton status="primary" size="medium" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                        </div>
-                    </div>
-                </form>
+                        </form>
+                    </nb-card-body>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
+</ng-template>
 
 <ng-template #description let-data let-ref="dialogRef">
     <div class="row">

@@ -204,7 +204,7 @@ export class ColaboradorComponent implements OnInit {
         const uniqueKey = 'foto_' + new Date().getTime();
   
         // Guardar la URL de datos en localStorage
-        localStorage.setItem(uniqueKey, dataUrl);
+        sessionStorage.setItem(uniqueKey, dataUrl);
   
         // Almacena la clave única en tu objeto colaborador
         this.keyFoto = uniqueKey;
@@ -233,7 +233,7 @@ export class ColaboradorComponent implements OnInit {
         const uniqueKey = 'foto_' + new Date().getTime();
   
         // Guardar la URL de datos en localStorage
-        localStorage.setItem(uniqueKey, dataUrl);
+        sessionStorage.setItem(uniqueKey, dataUrl);
   
         // Almacena la clave única en tu objeto colaborador
         this.keyFoto = uniqueKey;
@@ -249,7 +249,7 @@ export class ColaboradorComponent implements OnInit {
   
     if (uniqueKey) {
       // Obtén la URL de datos desde localStorage
-      const dataUrl = localStorage.getItem(uniqueKey);
+      const dataUrl = sessionStorage.getItem(uniqueKey);
   
       // Devuelve la URL de datos
       return dataUrl;
@@ -265,7 +265,7 @@ export class ColaboradorComponent implements OnInit {
   
     if (uniqueKey) {
       // Obtén la URL de datos desde localStorage
-      const dataUrl = localStorage.getItem(uniqueKey);
+      const dataUrl = sessionStorage.getItem(uniqueKey);
   
       // Devuelve la URL de datos
       return dataUrl;
@@ -278,6 +278,8 @@ export class ColaboradorComponent implements OnInit {
   clearData(){
   this.colaborador= new Colaborador('', '','', '','','');
   this.fotoAlert = true;
+  this.fotoAlertUpdate = true;
+  this.keyFoto = "";
   }  
 
   closeAlert(){

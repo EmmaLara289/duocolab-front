@@ -20,7 +20,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class EpicaComponent implements OnInit {
   
   @ViewChild('ProyectAuto') autoProyect: ElementRef;
+  @ViewChild('ProyectModalAuto') autoProyectModal: ElementRef;
   filtredProyects: Observable<string[]>;
+  filtredProyectsModal: Observable<string[]>;
   form: FormGroup;
 
   public identity;
@@ -33,7 +35,7 @@ export class EpicaComponent implements OnInit {
   modalTable = false;
   modalRegister = false;
   id_epica:string=null;
-  modalUpdate = false;
+  modalUpdate: any;
   alert = false;
   alertUpdate = false;
   epicaCopy: any;
@@ -50,7 +52,8 @@ export class EpicaComponent implements OnInit {
   this.epica = new Epica('','','','');
 
   this.form = this.fb.group({
-    proyecto: ['']
+    proyecto: [''],
+    proyectoModal: ['']
   });
   }
 
@@ -70,6 +73,21 @@ export class EpicaComponent implements OnInit {
     // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
+  private _filterPM(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.proyectoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  onChangeModalProyect($event) {
+    console.log('el valor: ',$event);
+    //this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
+  }
+  
+  onProyectModalSelected(item) {
+    console.log(item);
+    this.epicaCopy.proyecto = item;
+    // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
+  }
 
   ngOnInit(){
   this._userService.getPaginationEpicas(this.page).subscribe((response) => {
@@ -82,6 +100,10 @@ export class EpicaComponent implements OnInit {
       this.filtredProyects = this.form.get('proyecto').valueChanges.pipe(
         startWith(''),
         map(value => this._filterP(value))
+      );
+      this.filtredProyectsModal = this.form.get('proyectoModal').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterPM(value))
       );
       //console.log("Proyectos: ",response);
     });
@@ -114,8 +136,14 @@ export class EpicaComponent implements OnInit {
   this._userService.updateEpica(this.epicaCopy.id_epica, this.epicaCopy.nombre, this.epicaCopy.proyecto, this.epicaCopy.descripcion).subscribe(
       response => {
       if(response.status != 'error'){
-        this.ngOnInit();
-        this.alertUpdate = true;
+        this.reload();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.clearData();
         this.closeModal();
         }
@@ -141,19 +169,23 @@ export class EpicaComponent implements OnInit {
   
   }
 
-  openModalUpdate(item) {
+  openModalUpdate(item, dialog: TemplateRef<any>) {
+    this.form.patchValue({
+      proyectoModal: item.proyecto // Asigna el valor predeterminado a equipoModal
+    });
     this.modalUpdate = true;
     this.epicaCopy = {...item};
-    /*this.id_epica = id_epica;
-    this.epica = { ...this.myList.find(item => item.id_epica === id_epica) };
-    console.log(this.id_epica);*/
+    this.modalUpdateDialog(dialog);
   }
 
-
+  modalUpdateDialog(dialog: TemplateRef<any>){
+    this.modalUpdate = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });  
+  }
 
   closeModal() {
-    this.modalRegister = false;
-    this.modalUpdate = false;
+    this.modalUpdate.close();
     this.clearData();
   }
 
@@ -242,6 +274,19 @@ export class EpicaComponent implements OnInit {
     this.modalDescription = this.dialogService.open(dialog, {
       context: "this is some additional data passed to dialog",
     });
+  }
+
+  reload(){
+    if(this.modalTable === false){
+      this._userService.getPaginationEpicas(this.page).subscribe((response) => {
+        this.myList = response;
+        console.log(this.myList);
+      });
+    }else{
+      this._userService.findEpica(this.text, this.page).subscribe((response) => {
+        this.myList2 = response;
+      });
+    }
   }
 
 }

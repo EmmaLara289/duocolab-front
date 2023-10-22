@@ -96,6 +96,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logOut(){
+    //Para eliminar todos los datos del localStorage
+    localStorage.clear();
     localStorage.removeItem('userData');
     localStorage.removeItem('login');
     window.location.href = window.location.href;

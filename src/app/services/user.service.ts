@@ -365,9 +365,21 @@ export class UserService {
     return this._http.get(global.url + 'getPaginationTareas', {params: params});
   }
 
+/*
   public updateProyecto(id_proyecto:string, nombre: string, key_equipo: string, imagen: string, detalles:string): Observable<any>{
     return this._http.post(global.url + 'updateProyecto',
     {id_proyecto:id_proyecto, nombre:nombre, key_equipo:key_equipo, imagen:imagen, detalles:detalles});
+  }
+*/
+
+  public updateProyecto(id_proyecto:string, nombre: string, key_equipo: string, imagen: string, detalles:string): Observable<any>{
+    const formData = new FormData();
+    formData.append('id_proyecto', id_proyecto);
+    formData.append('nombre', nombre);
+    formData.append('key_equipo', key_equipo);
+    formData.append('foto', imagen);
+    formData.append('detalles', detalles);
+    return this._http.post(global.url + 'updateProyecto', formData);
   }
 
   public findEquipo(text:string, page:number):Observable<any>{

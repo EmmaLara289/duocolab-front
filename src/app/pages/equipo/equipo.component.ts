@@ -98,6 +98,7 @@ export class EquipoComponent implements OnInit {
   ngOnInit(){
   this._userService.getPaginationEquipos(this.page).subscribe((response) => {
       this.myList = response;
+      console.log(response);
     });
 
   this._userService.getPaginationColaboradores(this.page).subscribe((response) => {
@@ -158,7 +159,7 @@ export class EquipoComponent implements OnInit {
       response => {
       if(response.status != 'error'){
           //this.ngOnInit(); 
-          this.reloadPage();
+          this.reloadPageModal();
           this.clearData(); 
           //this.closeModal();
           Swal.fire({
@@ -213,7 +214,6 @@ export class EquipoComponent implements OnInit {
     this.integrantes = item.integrantes;
     //console.log(this.integrantes);
     //console.log(this.user);
-
     this.open2(dialog);
   }
 
@@ -507,12 +507,8 @@ export class EquipoComponent implements OnInit {
   }
 
   closeModalEdit(){
-    this.idSelectedUser = "";
-    this.usersText = "";    
-    this.recargarTablaUsers();
-    this.colabsList = [];
     this.modalEdit.close();
-    this.integrantes = [];
+    this.equipoCopy = [];
   }
 
   next(){
@@ -551,17 +547,18 @@ export class EquipoComponent implements OnInit {
   }
 
   reloadPage(){
-    if(this.modalTable === false){
-      this._userService.getPaginationEquipos(this.page).subscribe((response) => {
+    console.log('reload');
+    this._userService.getPaginationEquipos(this.page).subscribe((response) => {
         this.myList = response;
-        this.modalTable = false;
-      });
-    }else{
-      this._userService.findEquipo(this.text, this.page).subscribe((response) => {
-        this.myList2 = response;
-        this.modalTable = true;
-      });
-    }
+        this.integrantes = response.integrantes;
+    })
+  }
+
+  reloadPageModal(){
+    this._userService.findEquipo(this.text, this.page).subscribe((response) => {
+      this.myList2 = response;
+      this.integrantes = response.integrantes;
+    })
   }
 
   preview(){
@@ -602,19 +599,30 @@ export class EquipoComponent implements OnInit {
   }
 
   disableColab(item){
-    console.log('id_equipo: ',this.equipoCopy.id_equipo, ', key_colab: ',item.id);
     this._userService.disableMember(this.equipoCopy.id_equipo, item.id).subscribe((response) => {
+      console.log('able');
       this.loadMemberStatus(this.equipoCopy.id_equipo);
+      if(this.modalTable === false){
+        this.reloadPage();
+      }else{
+        this.reloadPageModal();
+      }
     });
-
   }
 
   ableColab(item){
+    //this.reloadPage();
     this._userService.ableMember(this.equipoCopy.id_equipo, item.id).subscribe((response) => {
+      console.log('able')
       this.loadMemberStatus(this.equipoCopy.id_equipo);
+      if(this.modalTable === false){
+        this.reloadPage();
+      }else{
+        this.reloadPageModal();
+      }
     });
   }
-  
+
   loadMemberStatus(id_equipo){
     this._userService.getEquipoStatus(id_equipo).subscribe((response) => {
       console.log(response);

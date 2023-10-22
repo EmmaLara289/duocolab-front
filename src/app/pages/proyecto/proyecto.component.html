@@ -26,7 +26,7 @@
                         <div class="col-md-3">
                             <label class="label">Equipo</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChange($event)" [nbAutocomplete]="autoEquipo">
+                                <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('equipo')" #EquipoAuto type="text" (input)="onChange($event)" [nbAutocomplete]="autoEquipo">
                                 <nb-autocomplete #autoEquipo (selectedChange)="onSelectionChange($event)">
                                     <nb-option *ngFor="let option of filteredEquipos | async" [value]="option.nombre">
                                         {{ option.nombre }}
@@ -35,15 +35,8 @@
                                 <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
-                            <label class="label">Detalles</label>
-                            <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
-                                <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                            </nb-form-field>
-                        </div>
                         <div class="row justify-content-end">
-                            <nb-card class="text-center" status="danger" style="position: absolute; top: -10%; right: -10%; background-color: rgb(47, 62, 106);">
+                            <nb-card class="text-center" status="danger" style="position: absolute; top: -0%; right: -0%; background-color: rgb(47, 62, 106);">
                                 <nb-card-header>Foto</nb-card-header>
                                 <nb-card-body>
                                     <img *ngIf="fotoAlert" src="./assets/images/proyect.jpg" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
@@ -52,8 +45,17 @@
                                 <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="foto($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
                             </nb-card>
                         </div>
-                        <div class="px-md-1" style="position: relative; top: 25px; right: -50px;">
-                            <button nbButton status="danger" type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
+                        <div class="px-md-1" style="position: relative; top: 100px; right: -750px;">
+                            <button nbButton status="danger" type="submit" size="giant"><nb-icon icon="plus-outline"></nb-icon></button>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-2">
+                            <label class="label">Detalles</label>
+                            <nb-form-field>
+                                <textarea nbInput fullWidth status="danger" shape="semi-round" type="text" name="detalles" #detalles="ngModel" [(ngModel)]="proyecto.detalles" [ngModelOptions]="{standalone: true}" required minlength="5" style="width: 800px; height: 160px;"></textarea>
+                            </nb-form-field>
+                            <!-- <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> -->
                         </div>
                     </div>
                 </form>
@@ -90,9 +92,9 @@
                                     <td>{{ item.id_proyecto }}</td>
                                     <td>{{ item.nombre }}</td>
                                     <td>{{ item.nombre_equipo }}</td>
-                                    <td> <button nbButton status="primary" type="button" size="medium"><nb-icon nbSuffix icon="image" pack="eva" (click)="getImagen(imagen, item)"></nb-icon></button> </td>
+                                    <td> <button nbButton status="primary" type="button" size="medium" (click)="getImagen(imagen, item)"><nb-icon nbSuffix icon="image" pack="eva"></nb-icon></button> </td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -108,6 +110,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Equipo</th>
+                                    <th> </th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -115,8 +119,10 @@
                                 <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_proyecto }}</td>
                                     <td>{{ item.nombre }}</td>
+                                    <td>{{ item.nombre_equipo }}</td>
+                                    <td> <button nbButton status="primary" type="button" size="medium" (click)="getImagen(imagen, item)"><nb-icon nbSuffix icon="image" pack="eva"></nb-icon></button> </td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -132,54 +138,76 @@
     </div>
 </div>
 
-<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style=" margin-top: 50%; width: 1200px; background-color: rgb(47, 62, 106); right: 60%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Proyectos</h>
-            </div>
-            <div style="padding: 20px;"></div>
-            <div class="modal-body">
-                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateProyecto()">
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Nombre</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="proyectoCopy.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es válido</small>
-                        </div>
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Key Equipo</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="key_equipo" placeholder="Ingrese la key equipo" #key_equipo="ngModel" [(ngModel)]="proyectoCopy.key_equipo" required minlength="1" [ngModelOptions]="{standalone: true}">
-                            <small *ngIf="!key_equipo.valid && key_equipo.touched" class="invalid-feedback d-block">La key equipo no es válida</small>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Imagen</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" placeholder="Ingrese la imagen" #imagen="ngModel" [(ngModel)]="proyectoCopy.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
-                            <small *ngIf="!imagen.valid && imagen.touched" class="invalid-feedback d-block">La imagen no es válida</small>
-                        </div>
-                        <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
-                            <label>Detalles</label>
-                            <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="detalles" placeholder="Ingrese los detalles" #detalles="ngModel" [(ngModel)]="proyectoCopy.detalles" [ngModelOptions]="{standalone: true}" required minlength="5">
-                            <small *ngIf="!detalles.valid && detalles.touched" class="invalid-feedback d-block">Los detalles no son válidos</small>
-                        </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                    <div class="row">
-                        <div class="col">
-                            <button nbButton status="danger" size="medium" type="submit" class="btn btn-fill btn-danger">Editar</button>
-                        </div>
-                        <div class="col text-right">
-                            <button nbButton status="primary" size="medium" type="button" (click)="closeModal()">Cerrar</button>
-                        </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                </form>
+<ng-template #modalUpdate let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 1200px; height: 520px;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <form class="col-md-12" (ngSubmit)="updateProyecto()">
+                            <div class="px-md-4 col-md-6 form-group">
+                                <label class="label">Nombre</label>
+                                <nb-form-field>
+                                    <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="proyectoCopy.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
+                                    <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                                </nb-form-field>
+                            </div>
+                            <div class="px-md-4 col-md-6 form-group">
+                                <label class="label">Equipo</label>
+                                <nb-form-field>
+                                    <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('equipoModal')" #EquipoModalAuto type="text" (input)="onChangeModal($event)" [nbAutocomplete]="autoEquipoModal">
+                                    <nb-autocomplete #autoEquipoModal (selectedChange)="onSelectionModalChange($event)">
+                                        <nb-option *ngFor="let option of filteredEquiposModal | async" [value]="option.nombre">
+                                            {{ option.nombre }}
+                                        </nb-option>
+                                    </nb-autocomplete>
+                                    <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
+                                </nb-form-field>
+                            </div>
+                            <div class="row justify-content-end">
+                                <nb-card class="text-center" status="danger" style="position: fixed; top: 30%; right: 32%;">
+                                    <nb-card-header>Foto</nb-card-header>
+                                    <nb-card-body>
+                                        <img *ngIf="fotoAlertUpdate" src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                                        <img *ngIf="!fotoAlertUpdate" [src]="getFotoUrlUpdate()" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                                    </nb-card-body>
+                                    <nb-card-footer><input style="font-weight: bold; font-size: 15px; color: white;" type="file" accept=".jpeg, .png, .jpg" (change)="fotoUpdate($event.target.files)" placeholder="Subir Foto" /></nb-card-footer>
+                                </nb-card>
+                            </div>
+                            <!--
+                                <div class="col-md-3">
+                                    <label class="label">Imagen</label>
+                                    <nb-form-field>
+                                        <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="imagen" #imagen="ngModel" [(ngModel)]="proyectoCopy.imagen" [ngModelOptions]="{standalone: true}" required minlength="1">
+                                        <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
+                                -->
+                            <div class="px-md-4 col-md-6 form-group">
+                                <label class="label">Detalles</label>
+                                <nb-form-field>
+                                    <textarea nbInput fullWidth status="danger" rows="4" shape="semi-round" type="text" name="detalles" #detalles="ngModel" [(ngModel)]="proyectoCopy.detalles" [ngModelOptions]="{standalone: true}" required minlength="5"></textarea>
+                                    <nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon>
+                                </nb-form-field>
+                            </div>
+                            <div style="padding: 20px;"></div>
+                            <div class="row">
+                                <div class="col" style="margin-bottom: 20px;">
+                                    <button nbButton status="danger" size="medium" type="submit">Editar</button>
+                                </div>
+                                <!--<nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>-->
+                                <div class="col text-right" style="margin-bottom: 20px;">
+                                    <button nbButton status="primary" size="medium" type="button" (click)="closeModal()">Cerrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </nb-card-body>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
+</ng-template>
 
 <ng-template #description let-data let-ref="dialogRef">
     <div class="row">
@@ -200,11 +228,23 @@
     <div class="row">
         <div class="col-md-10">
             <div class="row">
-                <nb-card class="text-center" status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
                     <nb-card-header>Foto</nb-card-header>
                     <nb-card-body>
-                        <img src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                        <div class="row">
+                            <img src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                            <div class="pl-md-3">
+                                <textarea nbInput status="danger" shape="semi-round" type="text" [value]="detalles_proyecto" readonly></textarea>
+                            </div>
+                        </div>
                     </nb-card-body>
+                    <!--
+                    <nb-card-footer>
+                        <div class="col text-right">
+                            <button nbButton status="primary" size="medium" type="button" (click)="closeImagen()">Cerrar</button>
+                        </div>
+                    </nb-card-footer>
+                    -->
                 </nb-card>
             </div>
         </div>

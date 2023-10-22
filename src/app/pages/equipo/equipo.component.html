@@ -16,14 +16,14 @@
                 <div style="padding: 10px;"></div>
                 <form class="col-md-12" (ngSubmit)="registrarEquipo()">
                     <div class="form-group row">
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label">Nombre del equipo</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="equipo.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
                                 <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <label class="label">Integrantes</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="dialogUsers(users)" [value]="usersText" readonly>
@@ -108,7 +108,7 @@
                                 <td>{{ item.nombre }}</td>
                                 <!--<td>{{ item.nombre_proyecto}} </td>-->
                                 <td><button nbButton status="info" (click)="selectEquipo(item, dialog)"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
-                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon> </button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item,dialogModalEdit)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon></button> </td>
                             </tr>
                         </tbody>
                     </table>

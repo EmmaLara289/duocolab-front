@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="px-md-1" style="position: relative; left: 42%;">
-                            <button nbButton status="danger" type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
+                            <button nbButton status="danger" type="submit" size="giant"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
                     </div>
                 </form>
@@ -194,7 +194,6 @@
                                 <nb-card class="text-center" status="danger" style="position: fixed; top: 30%; right: 32%;">
                                     <nb-card-header>Foto</nb-card-header>
                                     <nb-card-body>
-
                                         <img *ngIf="fotoAlertUpdate" src="{{this.getFotoUrlAddress}}storage/colaboradores/{{this.colaboradorUpdate.foto}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
                                         <img *ngIf="!fotoAlertUpdate" [src]="getFotoUrlUpdate()" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
                                     </nb-card-body>

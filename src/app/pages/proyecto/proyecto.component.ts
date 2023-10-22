@@ -17,14 +17,18 @@ import { global } from '../../services/global';
 })
 export class ProyectoComponent implements OnInit {
   @ViewChild('EquipoAuto') autoEquipo: ElementRef;
+  @ViewChild('EquipoModalAuto') autoEquipoModal: ElementRef;
+  filteredEquipos: Observable<string[]>;
+  filteredEquiposModal: Observable<string[]>;
 
   fotoAlert = true;
+  fotoAlertUpdate = true;
   keyFoto: any;
 	proyecto : Proyecto;
   proyectoCopy: any;
   myList: any= [];
   modalRegister = false;
-  modalUpdate = false;
+  modalUpdate : any;
   text: string = '';
   proyectos: any= [];
 	public identity;
@@ -36,13 +40,13 @@ export class ProyectoComponent implements OnInit {
   modalTable = false;
   form: FormGroup;
   equipoList: any;
-  filteredEquipos: Observable<string[]>;
   page = 1;
   modalDescription: any;
   url: any;
   getFotoUrlAddress: any;
   modalImagen: any;
   image: any;
+  detalles_proyecto: string = "";
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -54,7 +58,8 @@ export class ProyectoComponent implements OnInit {
   this.url = global.url;
 
   this.form = this.fb.group({
-    equipo: ['']
+    equipo: [''],
+    equipoModal: ['']
   });
 
   }
@@ -69,12 +74,29 @@ export class ProyectoComponent implements OnInit {
     console.log('el valor: ',$event)
     
   }
-  
+
   onSelectionChange($event) {
     const selectedName = $event;
     const id = this.equipoList.find(option => option.nombre === selectedName);
     console.log(id);
     this.proyecto.key_equipo = id.id_equipo;
+  }
+  
+  private _filterEM(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.equipoList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  onChangeModal($event) {
+    const selectedOption = $event;
+    console.log('el valor: ',$event);
+  }
+
+  onSelectionModalChange($event) {
+    const selectedName = $event;
+    const id = this.equipoList.find(option => option.nombre === selectedName);
+    console.log(id);
+    this.proyectoCopy.key_equipo = id.id_equipo;
   }
 
   ngOnInit() {
@@ -83,6 +105,10 @@ export class ProyectoComponent implements OnInit {
       this.filteredEquipos = this.form.get('equipo').valueChanges.pipe(
         startWith(''),
         map(value => this._filterE(value))
+      );
+      this.filteredEquiposModal = this.form.get('equipoModal').valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterEM(value))
       );
     });
 
@@ -98,8 +124,8 @@ export class ProyectoComponent implements OnInit {
         this.ngOnInit();
         Swal.fire({
           position: 'top-end',
-          icon: 'error',
-          title: 'No hay más resultados',
+          icon: 'success',
+          title: 'Guardado con éxito',
           showConfirmButton: false,
           timer: 1200
         });
@@ -121,8 +147,14 @@ export class ProyectoComponent implements OnInit {
   this._userService.updateProyecto(this.proyectoCopy.id_proyecto, this.proyectoCopy.nombre, this.proyectoCopy.key_equipo, this.proyectoCopy.imagen, this.proyectoCopy.detalles).subscribe(
       response => {
       if(response.status != 'error'){
-        this.ngOnInit();
-        this.alertUpdate = true;
+        this.reload();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.clearData();
         this.closeModal();
         }
@@ -149,20 +181,30 @@ export class ProyectoComponent implements OnInit {
   
   }
 
-openModalUpdate(item){
-  this.modalUpdate = true;
-  this.proyectoCopy = {...item};
-  /*this.id_proyecto = id_proyecto;
-  this.proyecto = { ...this.myList.find(item => item.id_proyecto === id_proyecto) };
-  console.log(this.id_proyecto);*/
-}
+  openModalUpdate(item, dialog: TemplateRef<any>) {
+    //this.modalUpdate = true;
+    //this..equipoModal = item.nombre_equipo;
+    this.form.patchValue({
+      equipoModal: item.nombre_equipo // Asigna el valor predeterminado a equipoModal
+    });
+    
+    this.proyectoCopy = {...item};
+    this.modalUpdateDialog(dialog);
+    this.getImagenUpdate(item);
+  }
+
+  modalUpdateDialog(dialog: TemplateRef<any>){
+    this.modalUpdate = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });  
+  }
 
 
 
   closeModal() {
-    this.modalRegister = false;
-    this.modalUpdate = false;
+    this.modalUpdate.close();
     this.clearData();
+    this.form.reset();
   }
 
   closeAlert(){
@@ -172,6 +214,9 @@ openModalUpdate(item){
 
   clearData(){
     this.proyecto= new Proyecto('', '','', '','');
+    this.keyFoto = "";
+    this.fotoAlertUpdate = true;
+    this.fotoAlert = true;
   }
 
   next(){
@@ -270,7 +315,7 @@ openModalUpdate(item){
         const uniqueKey = 'foto_' + new Date().getTime();
   
         // Guardar la URL de datos en localStorage
-        localStorage.setItem(uniqueKey, dataUrl);
+        sessionStorage.setItem(uniqueKey, dataUrl);
   
         // Almacena la clave única en tu objeto colaborador
         this.keyFoto = uniqueKey;
@@ -280,13 +325,63 @@ openModalUpdate(item){
     }
   }
 
+  fotoUpdate(files: FileList){
+    this.handleFileInputUpdate(files);
+    this.handleFileInputURLUpdate(files);
+  }
+  
+  handleFileInputUpdate(files: FileList) {
+    this.proyectoCopy.imagen = files.item(0);
+    console.log(this.proyectoCopy.imagen);
+    this.fotoAlertUpdate = false;
+  }
+
+  handleFileInputURLUpdate(files: FileList) {
+    const file = files.item(0);
+
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        const dataUrl = e.target.result as string;
+  
+        // Generar una clave única para identificar la imagen en localStorage
+        const uniqueKey = 'foto_' + new Date().getTime();
+  
+        // Guardar la URL de datos en localStorage
+        sessionStorage.setItem(uniqueKey, dataUrl);
+  
+        // Almacena la clave única en tu objeto colaborador
+        this.keyFoto = uniqueKey;
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  getFotoUrlUpdate() {
+    // Obtén la clave única almacenada en this.colaborador.fotoKey
+    const uniqueKey = this.keyFoto;
+  
+    if (uniqueKey) {
+      // Obtén la URL de datos desde localStorage
+      const dataUrl = sessionStorage.getItem(uniqueKey);
+  
+      // Devuelve la URL de datos
+      return dataUrl;
+    }
+  
+    // Si no hay clave única, devuelve una URL de imagen predeterminada o una URL vacía según tu necesidad
+    return 'URL_de_imagen_predeterminada.jpg'; // Cambia esto según tu caso
+  }
+
   getFotoUrl() {
     // Obtén la clave única almacenada en this.colaborador.fotoKey
     const uniqueKey = this.keyFoto;
   
     if (uniqueKey) {
       // Obtén la URL de datos desde localStorage
-      const dataUrl = localStorage.getItem(uniqueKey);
+      const dataUrl = sessionStorage.getItem(uniqueKey);
   
       // Devuelve la URL de datos
       return dataUrl;
@@ -303,18 +398,48 @@ openModalUpdate(item){
   }
 
   getImagen(dialog: TemplateRef<any>, item) {
-    this.modalImagen = this.dialogService.open(dialog, {
-      context: "this is some additional data passed to dialog",
-    });
-    console.log(item.imagen);
+    this.modalImage(dialog);
     this.image = item.imagen;
+    this.detalles_proyecto = item.detalles;
+    //this.detalles_proyecto = JSON.stringify(this.detalles_proyecto);
+    console.log(this.detalles_proyecto, typeof(this.detalles_proyecto));
     this.getFotoUrlAddress = this.url.replace('/api/', '/');
     console.log(this.getFotoUrlAddress);
     //http://127.0.0.1:8000/storage/proyectos/50a78bb8fd562d556785e04ba87529de.jpg
   }
 
+  getImagenUpdate(item) {
+    this.image = item.imagen;
+    this.detalles_proyecto = item.detalles;
+    //this.detalles_proyecto = JSON.stringify(this.detalles_proyecto);
+    console.log(this.detalles_proyecto, typeof(this.detalles_proyecto));
+    this.getFotoUrlAddress = this.url.replace('/api/', '/');
+    console.log(this.getFotoUrlAddress);
+    //http://127.0.0.1:8000/storage/proyectos/50a78bb8fd562d556785e04ba87529de.jpg
+  }
+
+  modalImage(dialog: TemplateRef<any>){
+    this.modalImagen = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+  }
+
   closeImagen(){
     this.modalImagen.close();
+  }
+
+  reload(){
+    if(this.modalTable === false){
+      this._userService.getPaginationProyectos(this.page).subscribe((response) => {
+        this.myList = response;
+      });
+    }else{
+      this._userService.findProyecto(this.text, this.page).subscribe((response) => {
+        this.myList2 = response;
+        this.modalTable = true;
+        console.log(response);
+      });
+    }
   }
 
 }
