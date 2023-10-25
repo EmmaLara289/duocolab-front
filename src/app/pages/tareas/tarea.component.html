@@ -8,9 +8,9 @@
 
 <div class="row">
     <div class="col-md-12">
-        <nb-card>
+        <nb-card status="danger">
             <nb-card-header>
-                <h3 class="title">Registro de Tareas</h3>
+                <h5 class="title">Registro de Tareas</h5>
             </nb-card-header>
             <nb-card-body>
                 <div style="padding: 10px;"></div>
@@ -115,14 +115,24 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Epica</th>
+                                    <th>Sprint</th>
+                                    <th>Proyecto</th>
+                                    <th>Integrantes</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of myList">
                                     <td>{{ item.id_tarea }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(modalUpdate, item)">Editar</button> </td>
+                                    <td>{{ item.tarea_nombre }}</td>
+                                    <td>{{item.tareas_descripcion}} </td>
+                                    <td>{{item.epica_nombre}} </td>
+                                    <td>{{item.sprint_nombre}}</td>
+                                    <td>{{item.proyecto_nombre}}</td>
+                                    <td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
+                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -137,14 +147,24 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Epica</th>
+                                    <th>Sprint</th>
+                                    <th>Proyecto</th>
+                                    <th>Integrantes</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_tarea }}</td>
-                                    <td>{{ item.nombre }}</td>
-                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(modalUpdate, item)">Editar</button> </td>
+                                    <td>{{ item.tarea_nombre }}</td>
+                                    <td>{{item.tareas_descripcion}} </td>
+                                    <td>{{item.epica_nombre}} </td>
+                                    <td>{{item.sprint_nombre}}</td>
+                                    <td>{{item.proyecto_nombre}}</td>
+                                    <td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
+                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -164,54 +184,65 @@
     <div class="row">
         <div class="col-md-10">
             <div class="row">
-                <nb-card status="danger" style="width: 800px;">
+                <nb-card status="danger" style="width: 1000px; height: 620px;">
                     <nb-card-header>Editor</nb-card-header>
                     <nb-card-body>
-                        <form class="col-md-10" (ngSubmit)="updateTarea()">
-                            <div class="form-group row">
-                                <div class="col-md-6 px-md-4 text-center">
-                                    <label class="label">Nombre</label>
-                                    <nb-form-field>
-                                        <input nbInput fullWidth status="danger" [value]="update.nombre" shape="semi-round" readonly>
-                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                    </nb-form-field>
-                                </div>
-                                <div class="col-md-6 px-md-4 text-center">
-                                    <label class="label">Descripción</label>
-                                    <input nbInput fullWidth status="danger" [value]="update.descripcion" shape="semi-round" readonly>
-                                    <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-6 px-md-4 text-center">
-                                    <nb-form-field>
-                                        <label class="label">Epica</label>
-                                        <input nbInput fullWidth status="danger" shape="semi-round" [value]="update.key_epica" readonly>
-                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                    </nb-form-field>
-                                </div>
-                                <div class="col-md-6 px-md-4 text-center">
-                                    <nb-form-field>
+                        <form class="col-md-10 text-align" style="left: 8%;" (ngSubmit)="updateTarea()">
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <div class="form-group">
+                                        <label class="label">Nombre</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.tarea_nombre">
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="label">Sprint</label>
-                                        <input nbInput fullWidth status="danger" [Value]="update.key_sprint" shape="semi-round" readonly>
-                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                    </nb-form-field>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.sprint_nombre">
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Epica</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.epica_nombre">
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <label class="label">Colaborador</label>
+                                    <nb-card-body>
+                                        <nb-list-item class="text-center" *ngFor="let item of integrantes">
+                                            <div class="row">
+                                                {{ item.nombre }}
+                                                <div style="position: absolute; left: 50%; margin-top: -10px;">
+                                                    <button *ngIf=" item.status !== 0" nbButton status="success" (click)="disableColab(item)"><nb-icon icon="checkmark" pack="eva" type="button"></nb-icon></button>
+                                                    <button *ngIf=" item.status === 0" nbButton status="danger" (click)="ableColab(item)"><nb-icon icon="alert-triangle" pack="eva" type="button"></nb-icon></button>
+                                                </div>
+                                            </div>
+                                        </nb-list-item>
+                                    </nb-card-body>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-6 px-md-4 text-center">
-                                    <nb-form-field>
+                            <div class="row">
+                                <div class="col-md-6 text-center">
+                                    <div class="form-group">
                                         <label class="label">Proyecto</label>
-                                        <input nbInput fullWidth status="danger" shape="semi-round" [value]="update.key_proyecto" readonly>
-                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                    </nb-form-field>
-                                </div>
-                                <div class="col-md-6 px-md-4 text-center">
-                                    <nb-form-field>
-                                        <label class="label">Colaborador</label>
-                                        <input nbInput fullWidth status="danger" [value]="update.key_colaborador" shape="semi-round" readonly>
-                                        <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                    </nb-form-field>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.proyecto_nombre">
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Descripción</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round">
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
                                 </div>
                             </div>
                             <div style="padding: 20px;"></div>
@@ -223,7 +254,6 @@
                                     <button nbButton status="danger" type="button" (click)="closeModalUpdate()">Cerrar</button>
                                 </div>
                             </div>
-                            <div style="padding: 20px;"></div>
                         </form>
                     </nb-card-body>
                 </nb-card>

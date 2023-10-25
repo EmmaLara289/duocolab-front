@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Prioridad } from '../../models/prioridad';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
-declare var jQuery: any;
-declare var $: any;
-import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'app-prioridad',
@@ -21,7 +19,7 @@ export class PrioridadComponent implements OnInit {
   prioridad: Prioridad;
   prioridades: any=[];
   modalRegister = false;
-  modalUpdate = false;
+  modalName: any;
   text: string = '';
   myList: any=[];
   isOpen = false;
@@ -34,7 +32,8 @@ export class PrioridadComponent implements OnInit {
   constructor(
   private _userService: UserService,
   private _router: Router,
-  private http: HttpClient
+  private http: HttpClient,
+  private dialogService: NbDialogService,
   ) { 
   this.prioridad = new Prioridad('','');
   }
@@ -50,7 +49,14 @@ export class PrioridadComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alert = true;
+        //this.alert = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.clearData();
         this.closeModal();
         }
@@ -68,7 +74,14 @@ export class PrioridadComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alertUpdate = true;
+        //this.alertUpdate = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.clearData();
         this.closeModal();
         }
@@ -95,19 +108,25 @@ export class PrioridadComponent implements OnInit {
   
   }
 
-  openModalUpdate(item) {
-    this.modalUpdate = true;
+  openModalUpdate(item, dialog: TemplateRef<any>) {
+    //this.modalUpdate = true;
+    this.modalUpdate(dialog);
     this.prioridadCopy = {...item};
     /*this.id_prioridad = id_prioridad;
     this.prioridad = { ...this.myList.find(item => item.id_prioridad ===id_prioridad) };
     console.log(this.id_prioridad);*/
   }
 
-
+  modalUpdate(dialog: TemplateRef<any>) {
+    this.modalName = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+  }
 
   closeModal() {
+    this.modalName.close();
     this.modalRegister = false;
-    this.modalUpdate = false;
+    //this.modalUpdate = false;
   }
   
   closeAlert(){

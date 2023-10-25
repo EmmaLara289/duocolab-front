@@ -8,7 +8,7 @@
 
 <div class=" row">
     <div class=" col-md-12">
-        <nb-card>
+        <nb-card status="danger">
             <nb-card-header>
                 <h5 class=" title">Registro de Areas</h5>
             </nb-card-header>
@@ -59,7 +59,7 @@
                                 <td>{{ item.id_area }}</td>
                                 <td>{{ item.nombre }}</td>
                                 <td>
-                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, update)">Editar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -83,7 +83,7 @@
                                 <td>{{ item.id_area }}</td>
                                 <td>{{ item.nombre }}</td>
                                 <td>
-                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item)">Editar</button>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, update)">Editar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -98,38 +98,36 @@
     </div>
 </div>
 
-
-
-<div class="modal custom-modal" [class.show]="modalUpdate" style="display: block;" *ngIf="modalUpdate">
-    <div class="modal-dialog">
-        <div class="modal-content" style="margin-top: 50%; width: 800px; background-color: rgb(47, 62, 106); right: 30%;">
-            <div class="modal-header">
-                <h style="font-weight: bold; color: rgb(255, 255, 255);">Edicion de Area</h>
-            </div>
-            <div style="padding: 20px;"></div>
-            <div class="modal-body">
-                <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateArea()">
-                    <div class="row">
-                        <div class="px-md-1 col-md-8 form-group mx-auto text-center">
-                            <div class="form-group">
-                                <label>Nombre</label>
-                                <input nbInput status="danger" class="text-center" fullWidth shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="areaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
-                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block"> El nombre no es válido </small>
+<ng-template #update let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <form class="col-md-10" style="left: 8%;" (ngSubmit)="updateArea()">
+                            <div class="row">
+                                <div class="col-md-10 form-group mx-auto">
+                                    <label class="label">Nombre del Area</label>
+                                    <nb-form-field>
+                                        <input nbInput status="danger" class="text-center" fullWidth shape="semi-round" type="text" name="nombre" placeholder="Ingrese el nombre" #nombre="ngModel" [(ngModel)]="areaCopy.nombre" required minlength="5" [ngModelOptions]="{standasalone: true}">
+                                        <nb-icon nbSuffix icon="award" pack="eva"></nb-icon>
+                                    </nb-form-field>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                    <div class="row">
-                        <div class="col">
-                            <button nbButton status="danger" type="submit">Editar</button>
-                        </div>
-                        <div class="col text-right">
-                            <button nbButton status="primary" type="button" (click)="closeModal()" class="btn btn-primary">Cerrar</button>
-                        </div>
-                    </div>
-                    <div style="padding: 20px;"></div>
-                </form>
+                            <div style="padding: 20px;"></div>
+                            <div class="row">
+                                <div class="col">
+                                    <button nbButton status="danger" type="submit">Editar</button>
+                                </div>
+                                <div class="col text-right">
+                                    <button nbButton status="primary" type="button" (click)="closeModal()">Cerrar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </nb-card-body>
+                </nb-card>
             </div>
         </div>
     </div>
-</div>
+</ng-template>

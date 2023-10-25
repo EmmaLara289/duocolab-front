@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Area } from '../../models/area';
 import { UserService } from '../../services/user.service';
@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 declare var jQuery: any;
 declare var $: any;
 import { NgForm } from '@angular/forms';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -19,7 +20,6 @@ export class AreaComponent implements OnInit {
   id_area:string=null;
   areas: any=[];
   modalRegister = false;
-  modalUpdate = false;
   modalTable = false;
   myList2 : any;
   text: string = '';
@@ -29,10 +29,12 @@ export class AreaComponent implements OnInit {
   alert = false;
   alertUpdate = false;
   page = 1;
+  modalName: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
-  private http: HttpClient
+  private http: HttpClient,
+  private dialogService: NbDialogService,
   ) {
   this.area= new Area('', '')
   }
@@ -50,7 +52,14 @@ export class AreaComponent implements OnInit {
           this.status = 'success';
           this.closeModal();
           this.ngOnInit();
-          this.alert = true;
+          //this.alert = true;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Guardado con éxito',
+            showConfirmButton: false,
+            timer: 1200
+          });
         }
         
       },
@@ -68,7 +77,14 @@ export class AreaComponent implements OnInit {
         this.status = 'success';
         this.closeModal();
         this.ngOnInit();
-        this.alertUpdate = true;
+        //this.alertUpdate = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         }
         
       },
@@ -96,19 +112,23 @@ export class AreaComponent implements OnInit {
   this.modalRegister = true;
   }
 
-  openModalUpdate(item){
-    this.modalUpdate = true;
+  openModalUpdate(item, dialog: TemplateRef<any>){
+    //this.modalUpdate = true;
     this.areaCopy = {...item}
+    this.modalUpdate(dialog);
     /*this.id_area = id_area;
     this.area = { ...this.myList.find(item => item.id_area === id_area) };
     console.log(this.id_area);*/
   }
-
-
+  
+  modalUpdate(dialog: TemplateRef<any>) {
+    this.modalName = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+  }
 
   closeModal() {
-    this.modalRegister = false;
-    this.modalUpdate = false;
+    this.modalName.close();
     this.area= new Area('', '');
   }
 
@@ -183,6 +203,6 @@ export class AreaComponent implements OnInit {
     }
   }
   }
-  
+ 
 
 }

@@ -39,7 +39,7 @@ export class TareaComponent {
   tarea: Tarea;
   modalRegister = false;
   id_tarea: string = null;
-  modalUpdate: any;
+  modalUpdateDialog: any;
   alertUpdate = false;
   alert = false;
   tareaCopy: any;
@@ -72,6 +72,7 @@ export class TareaComponent {
   placeHolderSprint = "Seleccione un Proyecto";
   placeHolderEpica = "Seleccione un Proyecto";
   placeHolderColab = "Seleccione un Proyecto";
+  integrantes: any;
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -261,6 +262,7 @@ export class TareaComponent {
       console.log('Vacios');
     }
     this.tarea.key_colaborador = this.idSelectedColabs;
+    console.log(this.tarea.key_colaborador);
     this._userService
       .registrarTarea(
         this.tarea.nombre,
@@ -341,19 +343,25 @@ export class TareaComponent {
 
   clearData() {
     this.tarea = new Tarea("", "", "", "", "", "", "", "");
-    this.tareaCopy = new Tarea("", "", "", "", "", "", "", "");
+    //this.tareaCopy = new Tarea("", "", "", "", "", "", "", "");
   }
 
-  openModalUpdate(dialog: TemplateRef<any>, item) {
-    this.modalUpdate = this.dialogService.open(dialog, {
-      context: "this is some",
+  openModalUpdate(item, dialog: TemplateRef<any>) {
+    this.modalUpdate(dialog);
+    this.tareaCopy = {...item};
+    console.log(item.sprint_nombre);
+    console.log(item.colaboradores);
+    this.integrantes = item.colaboradores;
+  }
+
+  modalUpdate(dialog: TemplateRef<any>){
+    this.modalUpdateDialog = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
     });
-    this.update = item;
-    console.log(item);
   }
 
   closeModalUpdate() {
-    this.modalUpdate.close();
+    this.modalUpdateDialog.close();
   }
 
   openModalColaborador(dialog: TemplateRef<any>) {
@@ -604,42 +612,44 @@ export class TareaComponent {
       });
     }
 
-    nextModal(){
-      this.pageModal ++;
-      if( this.colabsSelected.length === 0 ){
-        this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
-            if(response.length !== 0){
-              this.colaboradorList = response;
-            }else{
-              this.pageModal --;
-              Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'No hay más resultados',
-                showConfirmButton: false,
-                timer: 1200
-              })
-            }
-        });
-      }else{
-        this.excludeColabs(this.idSelectedColabs);
-      }
-  
-    }
-
-    previewModal(){
-      if(this.pageModal > 1){
-        this.pageModal --;
-        if( this.colabsSelected.length === 0 ){
-        this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
+  nextModal(){
+    this.pageModal ++;
+    if( this.colabsSelected.length === 0 ){
+      this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
           if(response.length !== 0){
             this.colaboradorList = response;
+          }else{
+            this.pageModal --;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'No hay más resultados',
+              showConfirmButton: false,
+              timer: 1200
+            })
           }
-        });
-      }else{
-        this.excludeColabs(this.idSelectedColabs);
-      }
-      }
+      });
+    }else{
+      this.excludeColabs(this.idSelectedColabs);
     }
 
+  }
+
+  previewModal(){
+    if(this.pageModal > 1){
+      this.pageModal --;
+      if( this.colabsSelected.length === 0 ){
+      this._userService.colabsProyect(this.pageModal, this.tarea.key_proyecto).subscribe((response) => {
+        if(response.length !== 0){
+          this.colaboradorList = response;
+        }
+      });
+    }else{
+      this.excludeColabs(this.idSelectedColabs);
+    }
+    }
+  }
+  
+
+  
 }

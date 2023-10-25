@@ -240,8 +240,6 @@
                             <div class=" px-md-4 col-md-6 form-group mx-auto text-center">
                                 <label>Nombre</label>
                                 <input nbInput fullWidth status="danger" shape="semi-round" class="text-center" type="text" name="nombre" placeholder="Ingresa el nombre" #nombre="ngModel" [(ngModel)]="equipoCopy.nombre" required minlength="5" [ngModelOptions]="{standalone: true}">
-                                <small *ngIf="!nombre.valid && nombre.touched" class="invalid-feedback d-block">El nombre no es
-                válido</small>
                             </div>
                         </div>
                         <div class=" row">

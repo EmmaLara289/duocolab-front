@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { EstatusTarea } from '../../models/estatus_tarea';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
-declare var jQuery: any;
-declare var $: any;
-import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { NbDialogRef, NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'app-estatus_tarea',
@@ -19,7 +17,6 @@ export class EstatusTareaComponent implements OnInit {
   modalRegister = false;
   alert = false;
   alertUpdate = false;
-  modalUpdate = false;
   id_estatus:string=null;
   public status: string;
   estatus: any=[];
@@ -30,11 +27,12 @@ export class EstatusTareaComponent implements OnInit {
   myList2: any;
   modalTable = false;
   page = 1;
+  modalName: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
-  private http: HttpClient
-
+  private http: HttpClient,
+ private dialogService: NbDialogService
   ) { 
   this.estatustarea = new EstatusTarea('','');
   }
@@ -50,7 +48,14 @@ export class EstatusTareaComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alert = true;
+        //this.alert = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.closeModal();
         }
 
@@ -67,7 +72,14 @@ export class EstatusTareaComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alertUpdate = true;
+        //this.alertUpdate = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
         this.closeModal();
         }
 
@@ -91,17 +103,25 @@ export class EstatusTareaComponent implements OnInit {
   
   }
 
-  openModalUpdate(item){
-  this.modalUpdate = true;
+  openModalUpdate(item, dialog: TemplateRef<any>){
+  //this.modalUpdate = true;
   this.estatustareaCopy = {...item};
+  this.modalUpdate(dialog);
   /*this.id_estatus = id_estatus;
   this.estatustarea = { ...this.myList.find(item => item.id_estatus === id_estatus) };
   console.log(this.id_estatus);*/
   }
 
-  closeModal() {
-    this.modalRegister = false;
-    this.modalUpdate = false;
+  modalUpdate(dialog: TemplateRef<any>) {
+    this.modalName = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+  }
+
+  closeModal(){
+    //this.modalRegister = false;
+    //this.modalUpdate = false;
+    this.modalName.close();
     this.clearData();
   }
 

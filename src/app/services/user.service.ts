@@ -197,8 +197,10 @@ export class UserService {
     formData.append('key_sprint', key_sprint);
     formData.append('key_proyecto', key_proyecto);
     formData.append('key_area', key_area);
-    if(key_colaborador){
+    if(key_colaborador !== ""){
       formData.append('key_colaborador', key_colaborador);
+    }else{
+      formData.append('key_colaborador', "0");
     }
     return this._http.post(global.url + 'createTarea', formData);
   }
