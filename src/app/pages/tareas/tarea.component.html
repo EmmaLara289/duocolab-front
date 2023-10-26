@@ -184,71 +184,71 @@
     <div class="row">
         <div class="col-md-10">
             <div class="row">
-                <nb-card status="danger" style="width: 1000px; height: 620px;">
+                <nb-card status="danger" style="width: 1000px; height: 620px; max-height: 720px;">
                     <nb-card-header>Editor</nb-card-header>
                     <nb-card-body>
-                        <form class="col-md-10 text-align" style="left: 8%;" (ngSubmit)="updateTarea()">
+                        <form class="col-md-10 text-align" style="left: 8%;">
                             <div class="row">
                                 <div class="col-md-6 text-center">
                                     <div class="form-group">
                                         <label class="label">Nombre</label>
                                         <nb-form-field>
-                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.tarea_nombre">
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.tarea_nombre" readonly>
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Proyecto</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.proyecto_nombre" readonly>
                                             <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                                         </nb-form-field>
                                     </div>
                                     <div class="form-group">
                                         <label class="label">Sprint</label>
                                         <nb-form-field>
-                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.sprint_nombre">
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.sprint_nombre" readonly>
                                             <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                                         </nb-form-field>
                                     </div>
                                     <div class="form-group">
                                         <label class="label">Epica</label>
                                         <nb-form-field>
-                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.epica_nombre">
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.epica_nombre" readonly>
                                             <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                                         </nb-form-field>
                                     </div>
                                 </div>
                                 <div class="col-md-6 text-center">
-                                    <label class="label">Colaborador</label>
-                                    <nb-card-body>
-                                        <nb-list-item class="text-center" *ngFor="let item of integrantes">
-                                            <div class="row">
-                                                {{ item.nombre }}
-                                                <div style="position: absolute; left: 50%; margin-top: -10px;">
-                                                    <button *ngIf=" item.status !== 0" nbButton status="success" (click)="disableColab(item)"><nb-icon icon="checkmark" pack="eva" type="button"></nb-icon></button>
-                                                    <button *ngIf=" item.status === 0" nbButton status="danger" (click)="ableColab(item)"><nb-icon icon="alert-triangle" pack="eva" type="button"></nb-icon></button>
+                                    <div class="form-group">
+                                        <label class="label">Colaborador</label>
+                                        <nb-card-body>
+                                            <nb-list-item class="text-center" *ngFor="let item of integrantes">
+                                                <b>{{ item.nombre }}</b>
+                                                <div class="button" style="position: absolute; right: 30%;">
+                                                    <button *ngIf=" item.status !== 0" nbButton status="success" (click)="disableMember(item.id_colab)"><nb-icon icon="checkmark" pack="eva" type="button"></nb-icon></button>
+                                                    <button *ngIf=" item.status === 0" nbButton status="danger" (click)="ableMember(item.id_colab)"><nb-icon icon="alert-triangle" pack="eva" type="button"></nb-icon></button>
                                                 </div>
-                                            </div>
-                                        </nb-list-item>
-                                    </nb-card-body>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6 text-center">
-                                    <div class="form-group">
-                                        <label class="label">Proyecto</label>
-                                        <nb-form-field>
-                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.proyecto_nombre">
-                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                        </nb-form-field>
+                                            </nb-list-item>
+                                        </nb-card-body>
                                     </div>
                                     <div class="form-group">
-                                        <label class="label">Descripción</label>
-                                        <nb-form-field>
-                                            <input nbInput fullWidth status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round">
-                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                        </nb-form-field>
+                                        <div class="col-md-6 text-center">
+                                            <div class="form-group">
+                                                <label class="label">Descripción</label>
+                                                <nb-form-field>
+                                                    <input nbInput fullWidth status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round">
+                                                    <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                                </nb-form-field>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div style="padding: 20px;"></div>
                             <div class="row">
                                 <div class="col">
-                                    <button nbButton status="primary" type="submit">Editar</button>
+                                    <button nbButton status="primary" type="submit" (click)="updateTarea()">Editar</button>
                                 </div>
                                 <div class="col text-right">
                                     <button nbButton status="danger" type="button" (click)="closeModalUpdate()">Cerrar</button>

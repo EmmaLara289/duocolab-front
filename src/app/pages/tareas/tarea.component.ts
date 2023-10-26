@@ -115,7 +115,7 @@ export class TareaComponent {
   }
 
   ngOnInit() {
-        this._userService.getPaginationTareas(this.page).subscribe((response) => {
+    this._userService.getPaginationTareas(this.page).subscribe((response) => {
       this.myList = response;
     });
 
@@ -252,10 +252,6 @@ export class TareaComponent {
     console.log($event)
     //this.filtredSprints = this.getFilteredOptionsSprint($event);
   }
-
-
-
-
 
   registrarTarea() {
     if(this.form.get('sprint').value !== ''){
@@ -650,6 +646,41 @@ export class TareaComponent {
     }
   }
   
+  disableMember(item){
+    this._userService.disableMemberTarea(this.tareaCopy.id_tarea, item).subscribe((response)=>{
+      this.loadStatus();
+    });
+    if(this.modalTable === false){
+      this._userService.getPaginationTareas(this.page).subscribe((response) => {
+        this.myList = response;
+      });
+    }else{
+      this._userService.findTarea(this.text, this.page).subscribe((response) => {
+        this.myList2 = response;
+      });
+    }
+  }
 
+  ableMember(item){
+    this._userService.ableMemberTarea(this.tareaCopy.id_tarea, item).subscribe((response)=>{
+      this.loadStatus();
+    });
+    if(this.modalTable === false){
+      this._userService.getPaginationTareas(this.page).subscribe((response) => {
+        this.myList = response;
+      });
+    }else{
+      this._userService.findTarea(this.text, this.page).subscribe((response) => {
+        this.myList2 = response;
+      });
+    }
+  }
+
+  loadStatus(){
+  this._userService.tareaStatus(this.tareaCopy.id_tarea).subscribe((response) => {
+    this.integrantes = response.colaboradores;
+    console.log(response);
+  });
+  }
   
 }

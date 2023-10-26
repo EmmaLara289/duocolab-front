@@ -222,9 +222,29 @@ export class UserService {
     {id_equipo:id_equipo, key_colab:key_colab});
   }
 
-  public disableMember(id_equipo:number, key_colab: number): Observable<any>{
-    return this._http.post(global.url + 'disableMember',
-    {id_equipo:id_equipo, key_colab:key_colab});
+  public disableMember(id_tarea:number, key_colab: number): Observable<any>{
+    return this._http.post(global.url + 'disable_Colaborador_Tarea',
+    {id_tarea:id_tarea, key_colab:key_colab});
+  }
+
+  public ableMemberTarea(id_tarea:number, key_colab: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_tarea', id_tarea)
+    params = params.set('key_colab', key_colab)
+    return this._http.get(global.url + 'able_Colaborador_Tarea', {params: params});
+  }
+
+  public disableMemberTarea(id_tarea:number, key_colab: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_tarea', id_tarea)
+    params = params.set('key_colab', key_colab)
+    return this._http.get(global.url + 'disable_Colaborador_Tarea', {params: params});
+  }
+
+  public tareaStatus(id_tarea: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_tarea', id_tarea);
+    return this._http.get(global.url + 'tarea_status', {params: params});
   }
 
   public getEquipoStatus(id_equipo:number): Observable<any>{
