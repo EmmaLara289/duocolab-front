@@ -304,6 +304,10 @@ export class UserService {
     return this._http.get(global.url + 'getEquipos');
   }
 
+  public getExcludeEquipos(): Observable<any>{
+    return this._http.get(global.url + 'getExcludeEquipos');
+  }
+
   public getPaginationEquipos(page: number): Observable<any>{
     let params = new HttpParams();
     params = params.set('page', page);

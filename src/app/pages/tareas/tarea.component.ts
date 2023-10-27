@@ -346,7 +346,7 @@ export class TareaComponent {
     this.modalUpdate(dialog);
     this.tareaCopy = {...item};
     console.log(item.sprint_nombre);
-    console.log(item.colaboradores);
+    console.log('Lista: ', item.colaboradores);
     this.integrantes = item.colaboradores;
   }
 
@@ -678,8 +678,9 @@ export class TareaComponent {
 
   loadStatus(){
   this._userService.tareaStatus(this.tareaCopy.id_tarea).subscribe((response) => {
-    this.integrantes = response.colaboradores;
-    console.log(response);
+    this.integrantes = response[0].colaboradores;
+    console.log('Lista: ', response.colaboradores);
+    console.log(response[0].colaboradores);
   });
   }
   

@@ -100,7 +100,7 @@ export class ProyectoComponent implements OnInit {
   }
 
   ngOnInit() {
-  this._userService.getEquipos().subscribe((response) => {
+  this._userService.getExcludeEquipos().subscribe((response) => {
       this.equipoList = response;
       this.filteredEquipos = this.form.get('equipo').valueChanges.pipe(
         startWith(''),

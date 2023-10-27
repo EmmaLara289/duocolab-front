@@ -184,16 +184,16 @@
     <div class="row">
         <div class="col-md-10">
             <div class="row">
-                <nb-card status="danger" style="width: 1000px; height: 620px; max-height: 720px;">
+                <nb-card status="danger" style="width: 1000px; max-height: 920px;">
                     <nb-card-header>Editor</nb-card-header>
                     <nb-card-body>
                         <form class="col-md-10 text-align" style="left: 8%;">
                             <div class="row">
-                                <div class="col-md-6 text-center">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="label">Nombre</label>
                                         <nb-form-field>
-                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.tarea_nombre" readonly>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.tarea_nombre">
                                             <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                                         </nb-form-field>
                                     </div>
@@ -221,29 +221,24 @@
                                 </div>
                                 <div class="col-md-6 text-center">
                                     <div class="form-group">
-                                        <label class="label">Colaborador</label>
+                                        <label class="label">Colaboradores</label>
+                                        <div style="padding: 1px;"></div>
                                         <nb-card-body>
                                             <nb-list-item class="text-center" *ngFor="let item of integrantes">
                                                 <b>{{ item.nombre }}</b>
-                                                <div class="button" style="position: absolute; right: 30%;">
+                                                <div class="button" style="position: absolute; left: 300%;">
                                                     <button *ngIf=" item.status !== 0" nbButton status="success" (click)="disableMember(item.id_colab)"><nb-icon icon="checkmark" pack="eva" type="button"></nb-icon></button>
                                                     <button *ngIf=" item.status === 0" nbButton status="danger" (click)="ableMember(item.id_colab)"><nb-icon icon="alert-triangle" pack="eva" type="button"></nb-icon></button>
                                                 </div>
                                             </nb-list-item>
                                         </nb-card-body>
                                     </div>
-                                    <div class="form-group">
-                                        <div class="col-md-6 text-center">
-                                            <div class="form-group">
-                                                <label class="label">Descripción</label>
-                                                <nb-form-field>
-                                                    <input nbInput fullWidth status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round">
-                                                    <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
-                                                </nb-form-field>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
+                            </div>
+                            <div style="padding: 5px;"></div>
+                            <div class="row">
+                                <label class="label">Descripción</label>
+                                <textarea nbInput fullWidth rows="3" status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round"></textarea>
                             </div>
                             <div style="padding: 20px;"></div>
                             <div class="row">
