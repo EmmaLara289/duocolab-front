@@ -1,0 +1,63 @@
+<section class="content" *ngIf="authorized">
+    <div class="container-fluid">
+
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="ngxTableHeader">
+                                    <ul class="header-buttons-left ml-0 mb-0">
+                                        <li class="dropdown">
+                                            <h2>
+                                                <strong>Control de acceso</strong>
+                                            </h2>
+                                        </li>
+                                        <li class="dropdown m-l-20">
+                                            <label for="search-input"><i
+                                                    class="material-icons search-icon">search</i></label>
+                                            <input placeholder="Buscar" type="text" class="browser-default search-field"
+                                                (keyup)='filterDatatable($event)' aria-label="Search box">
+                                        </li>
+                                    </ul>
+                            
+                                </div>
+                                <ngx-datatable #table class="material" [rows]="data" [sortType]="'multi'"
+                                    [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" rowHeight="auto"
+                                    [scrollbarH]="true" [limit]="10">
+                                    <ngx-datatable-column [sortable]="false" name="ID USUARIO" prop="id_user" [maxWidth]="150"></ngx-datatable-column>
+                                    <ngx-datatable-column [sortable]="false" name="NOMBRE" prop="name"></ngx-datatable-column>
+                                    <ngx-datatable-column [sortable]="false" name="CORREO" prop="email"></ngx-datatable-column>
+                                    <ngx-datatable-column [sortable]="false" name="ACCION" [maxWidth]="150">
+                          
+                                        <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            <button (click)="editAccessibility(row.id_user)"
+                                                matTooltip="Editar accesibilidad" matTooltipPosition="above"
+                                                matTooltipShowDelay="0" mat-icon-button color="primary">
+                                                <mat-icon>vpn_key</mat-icon>
+                                            </button>
+
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                </ngx-datatable>
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<div class="limiter" *ngIf="!authorized">
+    <app-denied-access-shared></app-denied-access-shared>
+  </div>

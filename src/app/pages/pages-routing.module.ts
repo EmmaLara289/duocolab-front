@@ -66,6 +66,11 @@ const routes: Routes = [{
         .then(m => m.TicketModule),
         canActivate: [AuthGuard],
     },
+    /*{
+      path: 'ticket',
+      loadChildren: () => import('./access_control/access-control.module')
+        .then(m => m.AccessControlModule)
+    },*/
     {
       path: 'ticketStatus',
       loadChildren: () => import('./ticket-status/ticketStatus.module')

@@ -529,6 +529,22 @@ export class UserService {
     {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_epica:key_epica, key_sprint:key_sprint, key_proyecto:key_proyecto, key_colaborador:key_colaborador});
   }
 
+  public getModules():Observable<any>{
+    return this._http.get(global.url + 'getModules');
+  }
 
+  public getModuleOptionsByUser(id_user: number, id_module: number){
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    params = params.set('id_module', id_module);
+    return this._http.get(global.url + 'getAccesModules', {params: params});
+  }
+
+  public getModuleOptionsByUser22(id_user: number, id_module: number){
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    params = params.set('id_module', id_module);
+    return this._http.get(global.url + 'getAccesModules', {params: params});
+  }
 
 }

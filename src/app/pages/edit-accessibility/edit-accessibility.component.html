@@ -1,0 +1,69 @@
+<div class="addContainer">
+    <div class="modalHeader">
+      <div class="editRowModal">
+        <div class="modalHeader clearfix">
+          <div class="modal-about">
+            <div class="font-weight-bold p-t-5 p-l-10 font-17 mt-4">Control de acceso de usuario</div>
+          </div>
+        </div>
+      </div>
+      <button mat-icon-button (click)="dialogRef.close('CANCELED')" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div mat-dialog-content>
+      <!--------------------------------------------------------------------------------------------->
+  
+      <div class="container-fluid register-form mt-4">
+
+  
+        <div class="row mt-4 table-row">
+            <div class="col-12 col-md-6 col-lg-4 mb-2 mt-4">
+                <mat-form-field  appearance="outline" style="width: 100%;">
+                    <mat-label>Modulo</mat-label>
+                    <mat-select [(ngModel)]="selectedIdModule" (ngModelChange)="getOptions()">
+                        <mat-option *ngFor="let module of modules" [value]="module.id_module">
+                            {{module.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+          <div class="col-12">
+            <ngx-datatable #options_table class="material" [rows]="options" sortType="multi"
+            columnMode="force" [headerHeight]="50" [footerHeight]="50" rowHeight="auto"
+            [scrollbarH]="false" [limit]="10">
+            <ngx-datatable-column [sortable]="false" name="#" prop="id_module_option" [maxWidth]="150"></ngx-datatable-column>
+            <ngx-datatable-column [sortable]="false" name="OPCION" prop="path"></ngx-datatable-column>
+            <ngx-datatable-column [sortable]="false" name="ACCIÓN" [maxWidth]="100">
+                <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                    ngx-datatable-cell-template>
+                    <mat-slide-toggle  color="primary"  [checked]="row.has_access == 1"
+                    (change)="row.has_access = $event.checked ? 1 : 0"  
+                    matTooltip="Reinstringir acceso"
+                    (click)="updateAccesibility(row)"
+                    >
+                    </mat-slide-toggle>
+                </ng-template>
+            </ngx-datatable-column>
+        </ngx-datatable>
+          </div>
+        </div>
+  
+        <div class="row">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2 text-right p-4">
+                <div class="example-button-row">
+                    <button mat-raised-button color="primary" [disabled]="module_options_to_send.length==0"  (click)="submit()">
+                        Guardar
+                    </button>
+                    <button mat-raised-button color="warn" (click)="dialogRef.close('CANCELED')"
+                        tabindex="-1">Cancelar</button>
+                </div>
+            </div>
+        </div>
+      </div>
+  
+      <!--------------------------------------------------------------------------------------------->
+    </div>
+  </div>
+  <div (window:resize)="onWindowResize($event)" hidden></div>
+  
