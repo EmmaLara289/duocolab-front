@@ -4,9 +4,10 @@ import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
 import { CheckUser } from '../../services/checkUser';
 import Swal from 'sweetalert2';
+import { NbSpinnerService } from '@nebular/theme';
 
-
-
+//import { NbMenuItem } from '@nebular/theme';
+//import { MENU_ITEMS } from './pages-menu';
 
 @Component({
   selector: 'app-login',
@@ -14,26 +15,33 @@ import Swal from 'sweetalert2';
 })
 
 export class LoginComponent implements OnInit {
-
   public user: User;
+  valor: any;
 
   constructor(
+    private NbSpinnerService: NbSpinnerService,
     private _userService: UserService,
     private _router: Router,
     private _route: ActivatedRoute,
-    private ChekUser: CheckUser
+    private CheckUser: CheckUser
   ) {
     this.user = new User(1, '', '', '', '', 1);
     //this.user_reg = new User(1, '', '', '', '', '');
   }
 
   ngOnInit() {
-    this.ChekUser.userData = JSON.parse(localStorage.getItem('userData'));
-    console.log(this.ChekUser.userData);
-    this.ChekUser.login = JSON.parse(localStorage.getItem('login'));
+    
+    const aux = (localStorage.getItem('respuesta'));
+    this.CheckUser.menu = JSON.parse(aux);
+    this.CheckUser.userData = JSON.parse(localStorage.getItem('userData'));
+    console.log(this.CheckUser.userData);
+    console.log(this.CheckUser.menu);
+    this.CheckUser.login = JSON.parse(localStorage.getItem('login'));
     //console.log()
-    if(this.ChekUser.login === true){
+    if(this.CheckUser.login === true){
       this._router.navigate(['/pages/colaborador']);
+      this.valor = false;
+      this.loadMenu();
     }
   }
 
@@ -46,40 +54,47 @@ export class LoginComponent implements OnInit {
       response => {
         if (response.status != 'error') {
 //          console.log(response.user);
-          this.ChekUser.userData = response.user;
-          localStorage.setItem('userData', JSON.stringify(this.ChekUser.userData));
-          this.ChekUser.login = true;
-          localStorage.setItem('login', JSON.stringify(this.ChekUser.login));
+          
+          this.CheckUser.userData = response.user;
+          localStorage.setItem('userData', JSON.stringify(this.CheckUser.userData));
+          this.CheckUser.login = true;
+          localStorage.setItem('login', JSON.stringify(this.CheckUser.login));
+          this.loadMenu();
           if(response.user.key_role == 1){
             Swal.fire({
               position: 'center',
               icon: 'success',
               title: 'Bienvenido Administrador',
               showConfirmButton: false,
-              timer: 1200
+              timer: 3000
             });
-            this._router.navigate(['/pages/colaborador']);
+            this._router.navigate(['/pages/accesos']);
           }else if(response.user.key_role == 2){
             Swal.fire({
               position: 'center',
               icon: 'success',
               title: 'Bienvenido Colaborador',
               showConfirmButton: false,
-              timer: 1200
+              timer: 3000
             });
-            this._router.navigate(['/pages/colaborador']);
+            this._router.navigate(['/pages/tareas']);
           }else if(response.user.key_role == 3){
             Swal.fire({
               position: 'center',
               icon: 'success',
               title: 'Bienvenido Coordinador',
               showConfirmButton: false,
-              timer: 1200
+              timer: 3000
             });
-            this._router.navigate(['/pages/ticket']);
+            this._router.navigate(['/pages/tareas']);
           }
         }
-
+        
+        setTimeout(function() {
+          window.location.href = window.location.href;
+          // Puedes colocar aquí el código que deseas ejecutar después de 3 segundos
+        }, 3000); // 3000 milisegundos (3 segundos)
+       
         
       },
       error => {
@@ -88,6 +103,18 @@ export class LoginComponent implements OnInit {
     );
   }
 
-
+  loadMenu() {
+    this._userService.getUserMenu(this.CheckUser.userData.id).subscribe((response) => {
+      console.log(response);
+      this.CheckUser.menu = response;
+      //this.CheckUser.menu = response;
+              // Guarda solo los datos del menú en localStorage
+      localStorage.setItem('respuesta', JSON.stringify(this.CheckUser.menu));
+      if(this.valor !== false){
+        localStorage.setItem('menu', JSON.stringify(1));
+      }
+      });
+  }
+  
 
 }

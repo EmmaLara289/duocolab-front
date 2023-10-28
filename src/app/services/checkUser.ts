@@ -8,11 +8,15 @@ export class CheckUser {
 	//Admin: boolean =false;
 	//Admin: boolean = undefined;
     //public key_role: number;
-  	userData: any=[];
+	someValue: any;
+  	userData: any = [];
+	menu: any = [];
 	login = false;
   	static key_role: number;
 	  clearData() {
         this.userData = [];
 		this.login = false;
     }
+
+	
 }

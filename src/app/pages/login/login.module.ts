@@ -6,14 +6,16 @@ import { LoginComponent } from './login.component';
 import { routing } from './login.routing';
 import { NbInputModule } from '@nebular/theme';
 import { NbButtonModule } from '@nebular/theme';
-
+import { NbSpinnerModule } from '@nebular/theme';
+ 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     routing,
     NbInputModule,
-    NbButtonModule
+    NbButtonModule,
+    NbSpinnerModule
   ],
   declarations: [
     LoginComponent,

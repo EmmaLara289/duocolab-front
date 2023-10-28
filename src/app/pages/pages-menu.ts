@@ -1,8 +1,26 @@
 import { NbMenuItem } from '@nebular/theme';
 import { CheckUser } from '../services/checkUser';
 
+
+const aux = localStorage.getItem('respuesta');
+
+
+const aux2: NbMenuItem[] = JSON.parse(aux);
+/*
+  if(localStorage.getItem('menu') === "1"){
+    window.location.href = window.location.href;
+    localStorage.setItem('menu', JSON.stringify(2));
+  }*/
+export const MENU_ITEMS: NbMenuItem[] = aux2;
+
+/*
 export const MENU_ITEMS: NbMenuItem[] = [
 
+  {
+    icon: 'edit-2-outline',
+    title: 'Accesos',
+    link: '/pages/accesos'
+  },
   {
     icon: 'edit-2-outline',
     title: 'Colaboradores',
@@ -53,7 +71,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Estatus de Tickets',
     link: '/pages/ticketStatus'
   },
-]
+]*/
+
+
 /*
 let MENU_ITEMS: NbMenuItem[];
 console.log(CheckUser.key_role);

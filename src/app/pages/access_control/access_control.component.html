@@ -1,0 +1,111 @@
+<div class=" row">
+    <div class=" col-md-12">
+        <nb-card status="danger">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarAreas()">
+                    <div class="row">
+                        <div class="row align-items-center">
+                            <div class="px-md-2">
+                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Usuario">
+                            </div>
+                            <div class="px-md-2">
+                                <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div style="padding: 10px;"></div>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="custom-pagination">
+                        <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                        <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                    </div>
+                </div>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList2">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)">Editar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="custom-pagination">
+                        <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                        <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                    </div>
+                </div>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+
+<ng-template #update let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <table class="table dark-table ">
+                            <thead style="background-color: #27598F">
+                                <tr>
+                                    <th>Catalogo</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of userMenu">
+                                    <td>{{ item.module_name }}</td>
+                                    <td>
+                                        <nb-toggle status="success" *ngIf="item.has_access === 1" [(ngModel)]=" item.has_access" (click)="disablePath(item)">Permitido</nb-toggle>
+                                        <nb-toggle status="danger" *ngIf="item.has_access !== 1" [(ngModel)]=" item.has_access" (click)="ablePath(item)">Restringido</nb-toggle>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style=" padding: 20px;"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button nbButton status="danger" type="submit">Editar</button>
+                            </div>
+                            <div class="col text-right">
+                                <button nbButton status="primary" type="button" (click)="closeModal()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<!--<nb-toggle status="success ">Success</nb-toggle>-->

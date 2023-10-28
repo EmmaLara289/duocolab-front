@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AccessControlComponent } from './access-control.component';
+import { AccessControlComponent } from './access_control.component';
 
 const routes: Routes = [
   {

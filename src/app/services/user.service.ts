@@ -31,16 +31,40 @@ export class UserService {
     return this._http.get(global.url + 'getUsers');
   }
 
+  public getUserMenu2(id: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id)
+    return this._http.get(global.url + 'getAccesModules', {params:params});
+  }
+
+  public getUserMenu(id: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id)
+    return this._http.get(global.url + 'getUserMenu', {params:params});
+  }
+
   public getTickets(page: number): Observable<any>{
     let params = new HttpParams();
     params = params.set('page', page);
     return this._http.get(global.url + 'getTickets', {params: params});
   }
 
+  public updateAccess(id_user: number, module_options: any): Observable<any>{
+    return this._http.post(global.url + 'updateAccesModules',
+    { id_user: id_user, module_options: module_options });
+  }
+
   public findUsers(ids: string): Observable<any>{
     let params = new HttpParams();
     params = params.set('ids', ids);
     return this._http.get(this.url + 'findUsers', {params: params});
+  }
+
+  public findUsersName(text: string, page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('text', text);
+    params = params.set('page', page);
+    return this._http.get(this.url + 'searchUsers', {params: params});
   }
 
   public findColabs(ids: string): Observable<any>{
@@ -298,6 +322,12 @@ export class UserService {
     params = params.set('page', page);
     }
     return this._http.get(global.url + 'getPaginationProyectos', {params: params});
+  }
+
+  public getPaginationUsers(page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    return this._http.get(global.url + 'getUsersPaginate', {params:params});
   }
 
   public getEquipos(): Observable<any>{
