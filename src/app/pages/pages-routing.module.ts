@@ -79,6 +79,12 @@ const routes: Routes = [{
         canActivate: [AuthGuard],
     },
     {
+      path: 'reporteTareas',
+      loadChildren: () => import('./reporte_proyectos/reporte_proyectos.module')
+        .then(m => m.reporteTareasModule),
+        canActivate: [AuthGuard],
+    },
+    {
       path: '**',
       component: NotFoundComponent,
     },

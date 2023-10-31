@@ -61,40 +61,19 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('login', JSON.stringify(this.CheckUser.login));
           this.loadMenu();
           if(response.user.key_role == 1){
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Bienvenido Administrador',
-              showConfirmButton: false,
-              timer: 3000
-            });
-            this._router.navigate(['/pages/accesos']);
+            window.location.href = window.location.href;
           }else if(response.user.key_role == 2){
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Bienvenido Colaborador',
-              showConfirmButton: false,
-              timer: 3000
-            });
-            this._router.navigate(['/pages/tareas']);
+            window.location.href = window.location.href;
           }else if(response.user.key_role == 3){
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Bienvenido Coordinador',
-              showConfirmButton: false,
-              timer: 3000
-            });
-            this._router.navigate(['/pages/tareas']);
+            window.location.href = window.location.href;
           }
         }
-        
+        /*
         setTimeout(function() {
           window.location.href = window.location.href;
           // Puedes colocar aquí el código que deseas ejecutar después de 3 segundos
         }, 3000); // 3000 milisegundos (3 segundos)
-       
+       */
         
       },
       error => {
