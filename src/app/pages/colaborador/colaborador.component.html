@@ -87,6 +87,8 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
+                                        <th>GitHub</th>
+                                        <th>Correo</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
@@ -95,8 +97,10 @@
                                     <tr *ngFor="let item of myList">
                                         <td>{{ item.id_colab }}</td>
                                         <td>{{ item.nombre }}</td>
+                                        <td>{{ item.github}} </td>
+                                        <td>{{ item.correo}} </td>
                                         <td>
-                                            <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
+                                            <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon></button>
                                         </td>
                                         <td>
                                             <button *ngIf="item.status === 1" nbButton status="warning" type="button" (click)="disableColaborador(item)" size="medium">Deshabilitar</button>
@@ -117,6 +121,8 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>GitHub</th>
+                                    <th>Correo</th>
                                     <th></th>
                                     <th></th>
                                 </tr>
@@ -125,8 +131,10 @@
                                 <tr *ngFor="let item of myList2">
                                     <td>{{ item.id_colab }}</td>
                                     <td>{{ item.nombre }}</td>
+                                    <td>{{ item.github}} </td>
+                                    <td>{{ item.correo}} </td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button>
+                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon></button>
                                     </td>
                                     <td>
                                         <button *ngIf="item.status === 1" nbButton status="warning" type="button" (click)="disableColaborador(item)" size="medium">Deshabilitar</button>

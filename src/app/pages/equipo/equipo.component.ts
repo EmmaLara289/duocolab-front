@@ -503,7 +503,6 @@ export class EquipoComponent implements OnInit {
   this.modalEdit = this.dialogService.open(
       dialogEidt,
       { context: 'this is some additional data passed to dialog' });
-
   }
 
   closeModalEdit(){

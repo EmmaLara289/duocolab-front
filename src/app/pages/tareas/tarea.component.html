@@ -119,8 +119,7 @@
                                     <th>Epica</th>
                                     <th>Sprint</th>
                                     <th>Proyecto</th>
-                                    <th>Integrantes</th>
-                                    <th>Acciones</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,8 +130,8 @@
                                     <td>{{item.epica_nombre}} </td>
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
-                                    <td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
-                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button> </td>
+                                    <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
+                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -151,8 +150,7 @@
                                     <th>Epica</th>
                                     <th>Sprint</th>
                                     <th>Proyecto</th>
-                                    <th>Integrantes</th>
-                                    <th>Acciones</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -163,8 +161,8 @@
                                     <td>{{item.epica_nombre}} </td>
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
-                                    <td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>
-                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)">Editar</button> </td>
+                                    <!--<td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
+                                    <td> <button nbButton status="primary" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
                         </table>

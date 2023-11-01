@@ -29,7 +29,7 @@
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>
-                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)">Editar</button>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -53,7 +53,7 @@
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>
-                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)">Editar</button>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -87,7 +87,7 @@
                                     <td>{{ item.module_name }}</td>
                                     <td>
                                         <nb-toggle status="success" *ngIf="item.has_access === 1" [(ngModel)]=" item.has_access" (click)="disablePath(item)">Permitido</nb-toggle>
-                                        <nb-toggle status="danger" *ngIf="item.has_access !== 1" [(ngModel)]=" item.has_access" (click)="ablePath(item)">Restringido</nb-toggle>
+                                        <nb-toggle status="success" *ngIf="item.has_access !== 1" [(ngModel)]=" item.has_access" (click)="ablePath(item)">Restringido</nb-toggle>
                                     </td>
                                 </tr>
                             </tbody>

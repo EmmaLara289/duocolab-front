@@ -53,7 +53,7 @@ export class AccessControlComponent implements OnInit {
   }
 
   getUserMenu(id_user){
-    this._userService.getUserMenu(id_user).subscribe((response) => {
+    this._userService.getUserMenuGreed(id_user).subscribe((response) => {
         this.userMenu = response;
         console.log(response);
     })
@@ -68,24 +68,25 @@ export class AccessControlComponent implements OnInit {
   disablePath(item){
     const moduleUpdateArray = [
         {
-          id_module_option: item.id_module_option,
+          id_module_option: item.id_module,
           has_access: 0,
         },
       ];
       
       const moduleUpdateText = JSON.stringify(moduleUpdateArray);
       
-      console.log(moduleUpdateArray, " | ", typeof(moduleUpdateArray)); // Array | object
-      console.log(moduleUpdateText, " | ", typeof(moduleUpdateText)); // String | string
+      //console.log(moduleUpdateArray, " | ", typeof(moduleUpdateArray)); // Array | object
+      //console.log(moduleUpdateText, " | ", typeof(moduleUpdateText)); // String | string
     this._userService.updateAccess(this.user.id, moduleUpdateArray).subscribe((response) => {
-        item.has_access = 0;
+      item.has_access = 0;
+      //this.getUserMenu(this.user.id);
     });
   }
 
   ablePath(item){
     const moduleUpdateArray = [
         {
-          id_module_option: item.id_module_option,
+          id_module_option: item.id_module,
           has_access: 1,
         },
       ];

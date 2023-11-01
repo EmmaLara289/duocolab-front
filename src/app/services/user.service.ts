@@ -43,6 +43,12 @@ export class UserService {
     return this._http.get(global.url + 'getUserMenu', {params:params});
   }
 
+  public getUserMenuGreed(id: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id)
+    return this._http.get(global.url + 'getUserMenuGreed', {params:params});
+  }
+
   public getTickets(page: number): Observable<any>{
     let params = new HttpParams();
     params = params.set('page', page);
@@ -563,18 +569,34 @@ export class UserService {
     return this._http.get(global.url + 'getModules');
   }
 
-  public getModuleOptionsByUser(id_user: number, id_module: number){
+  public getModuleOptionsByUser(id_user: number, id_module: number):Observable<any>{
     let params = new HttpParams();
     params = params.set('id_user', id_user);
     params = params.set('id_module', id_module);
     return this._http.get(global.url + 'getAccesModules', {params: params});
   }
 
-  public getModuleOptionsByUser22(id_user: number, id_module: number){
+  public getModuleOptionsByUser22(id_user: number, id_module: number):Observable<any>{
     let params = new HttpParams();
     params = params.set('id_user', id_user);
     params = params.set('id_module', id_module);
     return this._http.get(global.url + 'getAccesModules', {params: params});
   }
+
+  public getExportTareas(key_proyecto: number): Observable<string> {
+    let params = new HttpParams();
+    params = params.set('key_proyecto', key_proyecto);
+
+    // Indica que esperas una respuesta de tipo texto (para capturar el encabezado)
+    return this._http.get(global.url + 'ExportTareasProyecto', {
+      params: params,
+      responseType: 'text' // Indica el tipo de respuesta esperada (texto)
+    });
+  }
+
+  public getReportTareas():Observable<any>{
+    return this._http.get(global.url + 'getReportTareasProyecto');
+  }
+  
 
 }
