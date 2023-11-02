@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, subscribeOn } from 'rxjs/operators';
 
 @Component({
   selector: "app-tarea",
@@ -73,6 +73,7 @@ export class TareaComponent {
   placeHolderEpica = "Seleccione un Proyecto";
   placeHolderColab = "Seleccione un Proyecto";
   integrantes: any;
+  nameColab = "";
   constructor(
     private _userService: UserService,
     private _router: Router,
@@ -347,7 +348,8 @@ export class TareaComponent {
     this.tareaCopy = {...item};
     console.log(item.sprint_nombre);
     console.log('Lista: ', item.colaboradores);
-    this.integrantes = item.colaboradores;
+    this.integrantes = item.integrantes_equipo;
+    console.log(this.integrantes);
   }
 
   modalUpdate(dialog: TemplateRef<any>){
@@ -411,6 +413,11 @@ export class TareaComponent {
   }
 
   selectedColabs(id) {
+
+    if(this.idSelectedColabs !== ""){
+      this.idSelectedColabs = "";
+    }
+
     const numerosArray = this.idSelectedColabs.split(",");
     //console.log(numerosArray.length);
     if (numerosArray.length === 1) {
@@ -421,12 +428,7 @@ export class TareaComponent {
       this.countColabs = this.countColabs + 1;
       console.log("igual a ", this.countColabs);
     }
-
-    if (this.countColabs === 1) {
-      this.colabsText = "1 Integrante";
-    } else {
-      this.colabsText = this.countColabs + " Integrantes";
-    }
+    
     //console.log("contador: ",this.countColabs);
     if (this.idSelectedColabs === "") {
       this.idSelectedColabs = id.toString(); // Convierte el número a cadena antes de asignarlo
@@ -438,6 +440,7 @@ export class TareaComponent {
       //console.log(colabs);
     }
     //this.equipo.key_colab = this.idSelectedColabs;
+    
     const index = this.colaboradorList.findIndex(
       (colaboradorList) => colaboradorList.id_colab === id
     );
@@ -448,12 +451,15 @@ export class TareaComponent {
     }
     //contador de usuarios
     this.countColabs = numerosArray.length;
+    this.excludeColabs(this.idSelectedColabs);
+    this.closeModalColaborador();
   }
 
   team(ids: string) {
     if (ids !== "") {
       this._userService.findColabs(ids).subscribe((response) => {
         this.colabsSelected = response;
+        this.colabsText = response[0].nombre ;
       });
     }
   }
@@ -485,11 +491,10 @@ export class TareaComponent {
       const numerosArray = this.idSelectedColabs.split(",");
       this.countColabs = numerosArray.length;
       //console.log("despues de borrar hay:", numerosArray.length);
-      if (numerosArray.length === 1) {
-        this.colabsText = "1 Integrante";
-      } else {
-        this.colabsText = this.countColabs + " Integrantes";
-      }
+      if (numerosArray.length === 0) {
+        this.colabsText = "Seleccione un colaborador";
+      } 
+      
     } else {
       //console.log("Hay solo uno");
       this.idSelectedColabs = "";
@@ -684,4 +689,16 @@ export class TareaComponent {
   });
   }
   
+  finishTarea(item){
+    this._userService.finishTarea(item).subscribe((response) => {
+      this.ngOnInit();
+    });
+  }
+
+  undoFinishTarea(item){
+    this._userService.undoFinishTarea(item).subscribe((response) => {
+      this.ngOnInit();
+    });
+  }
+
 }

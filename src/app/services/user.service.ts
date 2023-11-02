@@ -403,6 +403,16 @@ export class UserService {
     return this._http.get(global.url + 'colabsProyecto', {params: params});
   }
 
+  public finishTarea(id_tarea:string): Observable<any>{
+    return this._http.post(global.url + 'finishTarea',
+    {id_tarea:id_tarea});
+  }
+
+  public undoFinishTarea(id_tarea:string): Observable<any>{
+    return this._http.post(global.url + 'undoFinishTarea',
+    {id_tarea:id_tarea});
+  }
+
   public getEpicas(): Observable<any>{
     return this._http.get(global.url + 'getEpicas');
   }

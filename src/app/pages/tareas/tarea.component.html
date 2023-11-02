@@ -120,6 +120,7 @@
                                     <th>Sprint</th>
                                     <th>Proyecto</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -131,6 +132,10 @@
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
                                     <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
+                                    <td>
+                                        <button *ngIf="item.deleted_at === null" nbButton status="primary" type="button" size="medium" (click)="finishTarea(item.id_tarea)"><nb-icon nbSuffix icon="checkmark-outline" pack="eva"></nb-icon></button>
+                                        <button *ngIf="item.deleted_at !== null" nbButton status="success" type="button" size="medium" (click)="undoFinishTarea(item.id_tarea)"><nb-icon nbSuffix icon="done-all-outline" pack="eva"></nb-icon></button>
+                                    </td>
                                     <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
@@ -151,6 +156,7 @@
                                     <th>Sprint</th>
                                     <th>Proyecto</th>
                                     <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -162,6 +168,7 @@
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
                                     <!--<td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
+                                    <td> <button nbButton status="primary" type="button" size="medium"><nb-icon nbSuffix icon="done-all-outline" pack="eva"></nb-icon></button> </td>
                                     <td> <button nbButton status="primary" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
@@ -219,15 +226,11 @@
                                 </div>
                                 <div class="col-md-6 text-center">
                                     <div class="form-group">
-                                        <label class="label">Colaboradores</label>
+                                        <label class="label">Colaborador</label>
                                         <div style="padding: 1px;"></div>
                                         <nb-card-body>
-                                            <nb-list-item class="text-center" *ngFor="let item of integrantes">
-                                                <b>{{ item.nombre }}</b>
-                                                <div class="button" style="position: absolute; left: 300%;">
-                                                    <button *ngIf=" item.status !== 0" nbButton status="success" (click)="disableMember(item.id_colab)"><nb-icon icon="checkmark" pack="eva" type="button"></nb-icon></button>
-                                                    <button *ngIf=" item.status === 0" nbButton status="danger" (click)="ableMember(item.id_colab)"><nb-icon icon="alert-triangle" pack="eva" type="button"></nb-icon></button>
-                                                </div>
+                                            <nb-list-item class="text-center">
+                                                <b>{{ integrantes[0].colaborador }}</b>
                                             </nb-list-item>
                                         </nb-card-body>
                                     </div>
