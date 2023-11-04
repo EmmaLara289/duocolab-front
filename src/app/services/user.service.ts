@@ -31,6 +31,10 @@ export class UserService {
     return this._http.get(global.url + 'getUsers');
   }
 
+  public getTareaStatus(): Observable<any>{
+    return this._http.get(global.url + 'getTareaStatus');
+  }
+
   public getUserMenu2(id: number): Observable<any>{
     let params = new HttpParams();
     params = params.set('id_user', id)
@@ -570,9 +574,9 @@ export class UserService {
     {id_epica:id_epica, nombre:nombre, proyecto:proyecto, descripcion:descripcion});
   }
 
-  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string): Observable<any>{
+  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:string, key_tarea_status:string): Observable<any>{
     return this._http.post(global.url + 'updateTarea',
-    {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_epica:key_epica, key_sprint:key_sprint, key_proyecto:key_proyecto, key_colaborador:key_colaborador});
+    {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_colaborador:key_colaborador, key_tarea_status:key_tarea_status});
   }
 
   public getModules():Observable<any>{

@@ -1,11 +1,11 @@
-import { Component, TemplateRef, ViewChild, ElementRef  } from '@angular/core';
+import { Component, TemplateRef, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Tarea } from '../../models/tarea';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
 import { HttpClient } from '@angular/common/http';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, subscribeOn } from 'rxjs/operators';
 
@@ -15,6 +15,7 @@ import { map, startWith, subscribeOn } from 'rxjs/operators';
   styleUrls: ["./tarea.component.scss"],
 })
 export class TareaComponent {
+  copy_id_status: FormControl = new FormControl();
   private ref: NbDialogRef<any>;
 
   @ViewChild('EpicaAuto') autoEpica: ElementRef;
@@ -73,8 +74,11 @@ export class TareaComponent {
   placeHolderEpica = "Seleccione un Proyecto";
   placeHolderColab = "Seleccione un Proyecto";
   integrantes: any;
+  historial: any;
   nameColab = "";
-  constructor(
+  estatus = "";
+  tarea_status_options: any;
+    constructor(
     private _userService: UserService,
     private _router: Router,
     private http: HttpClient,
@@ -82,7 +86,8 @@ export class TareaComponent {
     private fb: FormBuilder,
 
   ) {
-    this.tarea = new Tarea("", "", "", "", "", "", "", "");
+    this.tarea = new Tarea("", "", "", "", "", "", "", "", "");
+    
     //this.tareaCopy = new Tarea('','','','','','','');
     
     this.form = this.fb.group({
@@ -135,6 +140,11 @@ export class TareaComponent {
         map(value => this._filterA(value))
       );
     });
+
+    this._userService.getTareaStatus().subscribe((response) => {
+      this.tarea_status_options = response;
+      console.log(response);
+    })
   }
 
   private filter(value: string, options: any[]): string[] {
@@ -293,21 +303,19 @@ export class TareaComponent {
   }
 
   updateTarea() {
+    console.log(this.tareaCopy);
     this._userService
       .updateTarea(
         this.tareaCopy.id_tarea,
-        this.tareaCopy.nombre,
-        this.tareaCopy.descripcion,
-        this.tareaCopy.key_epica,
-        this.tareaCopy.key_sprint,
-        this.tareaCopy.key_proyecto,
-        this.tareaCopy.key_colaborador
+        this.tareaCopy.tarea_nombre,
+        this.tareaCopy.tareas_descripcion,
+        this.tareaCopy.colaboradores[0].id_colab,
+        this.copy_id_status.value
       )
       .subscribe(
         (response) => {
           if (response.status != "error") {
             this.ngOnInit();
-            this.alertUpdate = true;
             this.clearData();
             Swal.fire({
               position: 'top-end',
@@ -315,7 +323,8 @@ export class TareaComponent {
               title: 'Guardado con éxito',
               showConfirmButton: false,
               timer: 1200
-            })
+            });
+            this.closeModalUpdate();
           }
         },
         (error) => {
@@ -339,17 +348,18 @@ export class TareaComponent {
   }
 
   clearData() {
-    this.tarea = new Tarea("", "", "", "", "", "", "", "");
+    this.tarea = new Tarea("", "", "", "", "", "", "", "", "");
     //this.tareaCopy = new Tarea("", "", "", "", "", "", "", "");
   }
 
-  openModalUpdate(item, dialog: TemplateRef<any>) {
+  openModalUpdate(item, dialog: TemplateRef<any>){
     this.modalUpdate(dialog);
     this.tareaCopy = {...item};
-    console.log(item.sprint_nombre);
-    console.log('Lista: ', item.colaboradores);
-    this.integrantes = item.integrantes_equipo;
-    console.log(this.integrantes);
+    console.log("Nombre:", this.tareaCopy.estatus[0].nombre);
+    console.log("ID:",this.tareaCopy.estatus[0].id_tarea_status);
+    this.integrantes = item.colaboradores;
+    this.historial = item.historial;
+    this.estatus = item.estatus[0].nombre;
   }
 
   modalUpdate(dialog: TemplateRef<any>){

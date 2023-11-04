@@ -119,7 +119,7 @@
                                     <th>Epica</th>
                                     <th>Sprint</th>
                                     <th>Proyecto</th>
-                                    <th></th>
+                                    <th>Estatus</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -131,11 +131,8 @@
                                     <td>{{item.epica_nombre}} </td>
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
+                                    <td><button nbButton status="primary" size="medium">{{item.estatus[0].nombre}}</button></td>
                                     <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
-                                    <td>
-                                        <button *ngIf="item.deleted_at === null" nbButton status="primary" type="button" size="medium" (click)="finishTarea(item.id_tarea)"><nb-icon nbSuffix icon="checkmark-outline" pack="eva"></nb-icon></button>
-                                        <button *ngIf="item.deleted_at !== null" nbButton status="success" type="button" size="medium" (click)="undoFinishTarea(item.id_tarea)"><nb-icon nbSuffix icon="done-all-outline" pack="eva"></nb-icon></button>
-                                    </td>
                                     <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
@@ -229,9 +226,19 @@
                                         <label class="label">Colaborador</label>
                                         <div style="padding: 1px;"></div>
                                         <nb-card-body>
-                                            <nb-list-item class="text-center">
-                                                <b>{{ integrantes[0].colaborador }}</b>
+                                            <nb-list-item *ngIf="integrantes.length !== 0" class="text-center">
+                                                <b>{{ integrantes[0].nombre }}</b>
                                             </nb-list-item>
+                                            <nb-list-item *ngIf="integrantes.length === 0" class="text-center">
+                                                <b> Agregar un colaborador</b>
+                                            </nb-list-item>
+                                        </nb-card-body>
+                                    </div>
+                                    <div class="form-group" style="position: relative; right: 50px;">
+                                        <nb-card-body>
+                                            <nb-select [placeholder]="tareaCopy.estatus[0].nombre" [formControl]="copy_id_status" style="width: 190px;" status="danger">
+                                                <nb-option *ngFor="let item of tarea_status_options" [value]="item.id_tarea_status">{{item.id_tarea_status}}</nb-option>
+                                            </nb-select>
                                         </nb-card-body>
                                     </div>
                                 </div>
@@ -241,6 +248,11 @@
                                 <label class="label">Descripción</label>
                                 <textarea nbInput fullWidth rows="3" status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round"></textarea>
                             </div>
+                            <nb-card-body>
+                                <nb-list-item class="text-center" *ngFor="let item of historial">
+                                    <b>{{ item.descripcion }}</b>
+                                </nb-list-item>
+                            </nb-card-body>
                             <div style="padding: 20px;"></div>
                             <div class="row">
                                 <div class="col">

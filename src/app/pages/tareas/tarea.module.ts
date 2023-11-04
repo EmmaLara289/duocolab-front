@@ -14,6 +14,7 @@ import {
   NbAlertModule,
   NbFormFieldModule,
   NbIconModule,
+  NbSelectModule,
   NbOptionComponent
 } from '@nebular/theme';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -37,9 +38,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     NbListModule,
     NbAutocompleteModule,
     ReactiveFormsModule,
-    MatAutocompleteModule,
-MatInputModule,
-MatFormFieldModule,
+    NbSelectModule
   ],
   declarations: [
     TareaComponent,
