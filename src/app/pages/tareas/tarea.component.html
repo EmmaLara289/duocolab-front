@@ -131,7 +131,7 @@
                                     <td>{{item.epica_nombre}} </td>
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
-                                    <td><button nbButton status="primary" size="medium">{{item.estatus[0].nombre}}</button></td>
+                                    <td><button nbButton ghost status="primary" size="medium">{{item.estatus[0].nombre}}</button></td>
                                     <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
                                     <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
@@ -195,7 +195,7 @@
                                     <div class="form-group">
                                         <label class="label">Nombre</label>
                                         <nb-form-field>
-                                            <input nbInput fullWidth status="danger" shape="semi-round" [value]="tareaCopy.tarea_nombre">
+                                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="tareaCopy.tarea_nombre">
                                             <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                                         </nb-form-field>
                                     </div>
@@ -229,15 +229,27 @@
                                             <nb-list-item *ngIf="integrantes.length !== 0" class="text-center">
                                                 <b>{{ integrantes[0].nombre }}</b>
                                             </nb-list-item>
-                                            <nb-list-item *ngIf="integrantes.length === 0" class="text-center">
-                                                <b> Agregar un colaborador</b>
+                                            <nb-list-item *ngIf="integrantes.length === 0">
+                                                <div style="display: flex; flex-direction: column; align-items: center;">
+                                                    <b> Agregar un colaborador</b>
+                                                    <nb-form-field style="margin-top: 10px;">
+                                                        <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('integrantes')" #IntegranteAuto type="text" (input)="onChangeIntegrante($event)" [nbAutocomplete]="autoIntegrantes">
+                                                        <nb-autocomplete #autoIntegrantes (selectedChange)="onIntegranteSelected($event)">
+                                                            <nb-option *ngFor="let option of filtredIntegrantes | async" [value]="option.colaborador">
+                                                                {{ option.colaborador }}
+                                                            </nb-option>
+                                                        </nb-autocomplete>
+                                                        <nb-icon nbSuffix icon="clipboard-outline" pack="eva"></nb-icon>
+                                                    </nb-form-field>
+                                                </div>
                                             </nb-list-item>
+
                                         </nb-card-body>
                                     </div>
-                                    <div class="form-group" style="position: relative; right: 50px;">
+                                    <div *ngIf="integrantes.length !== 0" class="form-group" style="position: relative; right: 50px;">
                                         <nb-card-body>
                                             <nb-select [placeholder]="tareaCopy.estatus[0].nombre" [formControl]="copy_id_status" style="width: 190px;" status="danger">
-                                                <nb-option *ngFor="let item of tarea_status_options" [value]="item.id_tarea_status">{{item.id_tarea_status}}</nb-option>
+                                                <nb-option *ngFor="let item of tarea_status_options" [value]="item.id_tarea_status">{{item.nombre}}</nb-option>
                                             </nb-select>
                                         </nb-card-body>
                                     </div>
@@ -246,12 +258,23 @@
                             <div style="padding: 5px;"></div>
                             <div class="row">
                                 <label class="label">Descripción</label>
-                                <textarea nbInput fullWidth rows="3" status="danger" [value]="tareaCopy.tareas_descripcion" shape="semi-round"></textarea>
+                                <textarea nbInput fullWidth rows="3" status="danger" type="text" name="descripcion" #descripcion="ngModel" [(ngModel)]="tareaCopy.tareas_descripcion" shape="semi-round"></textarea>
                             </div>
                             <nb-card-body>
-                                <nb-list-item class="text-center" *ngFor="let item of historial">
-                                    <b>{{ item.descripcion }}</b>
-                                </nb-list-item>
+                                <table class="table dark-table">
+                                    <thead style="background-color: #27598F">
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of historial">
+                                            <td>{{ item.descripcion }}</td>
+                                            <td>{{ item.created_at }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </nb-card-body>
                             <div style="padding: 20px;"></div>
                             <div class="row">

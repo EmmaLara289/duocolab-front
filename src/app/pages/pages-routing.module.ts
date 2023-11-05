@@ -85,6 +85,12 @@ const routes: Routes = [{
         canActivate: [AuthGuard],
     },
     {
+      path: 'mis-tareas',
+      loadChildren: () => import('./mis-tareas/mis-tareas.module')
+        .then(m => m.MisTareasModule),
+        canActivate: [AuthGuard],
+    },
+    {
       path: '**',
       component: NotFoundComponent,
     },

@@ -41,4 +41,4 @@ import { ReactiveFormsModule } from '@angular/forms';
     MisTareasComponent,
   ]
 })
-export class EquipoModule {}
+export class MisTareasModule {}

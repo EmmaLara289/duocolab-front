@@ -340,6 +340,18 @@ export class UserService {
     return this._http.get(global.url + 'getUsersPaginate', {params:params});
   }
 
+  public getPaginationTareaColab(id_colab:number, page: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    params = params.set('id_colab', id_colab)
+    return this._http.get(global.url + 'getTareasColab', {params:params});
+  }
+
+  public createHistorial(id_tarea:number, descripcion: string): Observable<any>{
+    return this._http.post(global.url + 'createStatusTarea',
+    {id_tarea:id_tarea, descripcion:descripcion});
+  }
+
   public getEquipos(): Observable<any>{
     return this._http.get(global.url + 'getEquipos');
   }
@@ -574,7 +586,7 @@ export class UserService {
     {id_epica:id_epica, nombre:nombre, proyecto:proyecto, descripcion:descripcion});
   }
 
-  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:string, key_tarea_status:string): Observable<any>{
+  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:number, key_tarea_status:string): Observable<any>{
     return this._http.post(global.url + 'updateTarea',
     {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_colaborador:key_colaborador, key_tarea_status:key_tarea_status});
   }

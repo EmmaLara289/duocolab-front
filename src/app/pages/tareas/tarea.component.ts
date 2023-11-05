@@ -23,11 +23,13 @@ export class TareaComponent {
   @ViewChild('SprintAuto') autoSprint: ElementRef;
   @ViewChild('AreatAuto') autoArea: ElementRef;
   @ViewChild('EpicasAuto') autosEpica: ElementRef;
+  @ViewChild('IntegrantesAuto') autoIntegrantes: ElementRef;
 
   filteredEpicas: Observable<any[]>;
   filtredProyects: Observable<string[]>;
   filtredSprints: Observable<string[]>;
   filtredAreas: Observable<string[]>;
+  filtredIntegrantes: Observable<string[]>;
 
   public identity;
   selectedOption: any;
@@ -78,6 +80,11 @@ export class TareaComponent {
   nameColab = "";
   estatus = "";
   tarea_status_options: any;
+  integrantesList: any;
+  id_colaboradorador_update: any;
+  tarea_status: any;
+  update_nombre: any;
+  update_descripcion: any;
     constructor(
     private _userService: UserService,
     private _router: Router,
@@ -94,7 +101,8 @@ export class TareaComponent {
       epica: [''],
       proyecto: [''],
       sprint: [''],
-      area: ['']
+      area: [''],
+      integrantes: [''],
       // FormControl para el input del usuario
     });
 
@@ -118,6 +126,11 @@ export class TareaComponent {
   private _filterA(value: string): any[]{
     const filterValue = value.toLowerCase();
     return this.areasList.filter(option => option.nombre.toLowerCase().includes(filterValue));
+  }
+
+  private _filterI(value: string): any[]{
+    const filterValue = value.toLowerCase();
+    return this.integrantesList.filter(option => option.colaborador.toLowerCase().includes(filterValue));
   }
 
   ngOnInit() {
@@ -223,6 +236,15 @@ export class TareaComponent {
     this.tarea.key_area = id.id_area;
   }
 
+  onIntegranteSelected(item){
+    console.log(this.integrantesList);
+    const id = this.integrantesList.find(option => option.colaborador === item);
+    if(id){
+    this.id_colaboradorador_update = id.id_colab;
+    }
+  }
+
+
   onChangeProyect($event) {
     console.log('el valor: ',$event);
     //this.filtredProyects$ = this.getFilteredOptionsProyect(this.autoProyect.nativeElement.value);
@@ -243,6 +265,12 @@ export class TareaComponent {
       this.tarea.key_sprint = undefined;
     }
     //this.filtredSprints = this.getFilteredOptionsSprint(this.autoSprint.nativeElement.value);
+  }
+
+  onChangeIntegrante($event){
+    if($event.data === null){
+      this.id_colaboradorador_update= undefined;
+    }
   }
 
   onSelectionChangeSprint($event) {
@@ -303,14 +331,29 @@ export class TareaComponent {
   }
 
   updateTarea() {
+    this.tarea_status = this.copy_id_status.value;
     console.log(this.tareaCopy);
+    console.log(this.id_colaboradorador_update);
+    
+    if(this.id_colaboradorador_update === undefined){
+      if(this.integrantes.length === 0){
+        this.id_colaboradorador_update = 0;
+      }else{
+        this.id_colaboradorador_update = this.tareaCopy.colaboradores[0].id_colab;
+      }
+    }
+    
+    if(this.tarea_status === null){
+      this.tarea_status = this.tareaCopy.estatus[0].id_tarea_status;
+    }
+
     this._userService
       .updateTarea(
         this.tareaCopy.id_tarea,
         this.tareaCopy.tarea_nombre,
         this.tareaCopy.tareas_descripcion,
-        this.tareaCopy.colaboradores[0].id_colab,
-        this.copy_id_status.value
+        this.id_colaboradorador_update,
+        this.tarea_status
       )
       .subscribe(
         (response) => {
@@ -355,8 +398,12 @@ export class TareaComponent {
   openModalUpdate(item, dialog: TemplateRef<any>){
     this.modalUpdate(dialog);
     this.tareaCopy = {...item};
-    console.log("Nombre:", this.tareaCopy.estatus[0].nombre);
-    console.log("ID:",this.tareaCopy.estatus[0].id_tarea_status);
+    this.integrantesList = item.integrantes_equipo;
+    this.filtredIntegrantes = this.form.get('integrantes').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterI(value))
+    );
+
     this.integrantes = item.colaboradores;
     this.historial = item.historial;
     this.estatus = item.estatus[0].nombre;
@@ -369,6 +416,8 @@ export class TareaComponent {
   }
 
   closeModalUpdate() {
+    this.form.get('integrantes').reset();
+    //this.tarea.key_colaborador = "undefined";
     this.modalUpdateDialog.close();
   }
 
