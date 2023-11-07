@@ -261,6 +261,16 @@ export class UserService {
     {id_tarea:id_tarea, key_colab:key_colab});
   }
 
+  public disableMemberEquipo(id_equipo:number, key_colab: number): Observable<any>{
+    return this._http.post(global.url + 'disableMember',
+    {id_equipo:id_equipo, key_colab:key_colab});
+  }
+
+  public ableMemberEquipo(id_equipo:number, key_colab: number): Observable<any>{
+    return this._http.post(global.url + 'ableMember',
+    {id_equipo:id_equipo, key_colab:key_colab});
+  }
+
   public ableMemberTarea(id_tarea:number, key_colab: number): Observable<any>{
     let params = new HttpParams();
     params = params.set('id_tarea', id_tarea)
@@ -586,7 +596,7 @@ export class UserService {
     {id_epica:id_epica, nombre:nombre, proyecto:proyecto, descripcion:descripcion});
   }
 
-  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:number, key_tarea_status:string): Observable<any>{
+  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:number, key_tarea_status:number): Observable<any>{
     return this._http.post(global.url + 'updateTarea',
     {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_colaborador:key_colaborador, key_tarea_status:key_tarea_status});
   }

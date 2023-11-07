@@ -5,8 +5,7 @@
                 <h5 class=" title">Mis Tareas</h5>
             </nb-card-header>
             <nb-card-body>
-                <!--
-                    <form class="pl-md-3" (ngSubmit)="buscarEstatusTareas()">
+                <!-- <form class="pl-md-3" (ngSubmit)="buscarEstatusTareas()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
@@ -26,6 +25,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Estatus</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -33,8 +33,9 @@
                                 <tr *ngFor="let item of myList">
                                     <td>{{ item.tarea.id_tarea }}</td>
                                     <td>{{ item.tarea.nombre }}</td>
+                                    <td>{{ item.estatus.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModal(item.tarea.id_tarea, history)">Reporte</button>
+                                        <button nbButton status="primary" type="button" size="medium" (click)="openModal(item.tarea.id_tarea, history)">Reporte</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -83,7 +84,14 @@
                     <nb-card-header>Descripción</nb-card-header>
                     <nb-card-body>
                         <textarea nbInput fullWidth name="descripcion_update" #ngModelDescripcionUpdate="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="descripcion_update" required minlength="5"></textarea>
-                        <button nbButton shape="semi-round" status="info" (click)="createHistorial()">Enviar</button>
+                        <div class="row">
+                            <div class="col">
+                                <button nbButton shape="semi-round" status="info" (click)="createHistorial()">Enviar</button>
+                            </div>
+                            <div class="col text-right">
+                                <button nbButton status="danger" type="button" (click)="closeModal()">Cerrar</button>
+                            </div>
+                        </div>
                     </nb-card-body>
                 </nb-card>
             </div>

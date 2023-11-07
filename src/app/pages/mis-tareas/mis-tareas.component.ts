@@ -38,7 +38,15 @@ export class MisTareasComponent implements OnInit {
       this.modalUpdate(dialog);
       this.id_tarea = item;
     }
-
+/*
+    buscarTareas() {
+      this._userService.findTarea(this.text, this.page).subscribe((response) => {
+        this.myList2 = response;
+        this.modalTable = true;
+        console.log(response);
+      });
+    }
+*/
     modalUpdate(dialog: TemplateRef<any>) {
       this.modalReport = this.dialogService.open(dialog, {
         context: "this is some additional data passed to dialog",
@@ -60,5 +68,77 @@ export class MisTareasComponent implements OnInit {
         });
         this.closeModal();
       })
+    }
+
+    next(){
+      this.page ++;
+      if(this.modalTable === false){
+      this._userService.getPaginationTareaColab(this.CheckUser.userData.id, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });
+    }else{
+      /*this._userService.findTarea(this.text, this.page).subscribe((response) => {
+        if(response.length !== 0){
+          this.myList2 = response;
+        }else{
+          this.page --;
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'No hay más resultados',
+            showConfirmButton: false,
+            timer: 1200
+          })
+        }
+      });*/
+    }
+    }
+
+    preview(){
+      if(this.page > 1){
+        this.page --;
+        if(this.modalTable === false){
+        this._userService.getPaginationTareaColab(this.CheckUser.userData.id, this.page).subscribe((response) => {
+          if(response.length !== 0){
+            this.myList = response;
+          }else{
+            this.page --;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'No hay más resultados',
+              showConfirmButton: false,
+              timer: 1200
+            })
+          }
+        });
+      }else{/*
+        this._userService.findTarea(this.text, this.page).subscribe((response) => {
+          if(response.length !== 0){
+            this.myList2 = response;
+          }else{
+            this.page --;
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              title: 'No hay más resultados',
+              showConfirmButton: false,
+              timer: 1200
+            })
+          }
+        });*/
+      }
+    }
     }
 }

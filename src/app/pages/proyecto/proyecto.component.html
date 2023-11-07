@@ -228,13 +228,13 @@
     <div class="row">
         <div class="col-md-10">
             <div class="row">
-                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                <nb-card status="danger" style="width: 900px; height: auto; overflow-y: auto;">
                     <nb-card-header>Foto</nb-card-header>
                     <nb-card-body>
                         <div class="row">
                             <img src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
-                            <div class="pl-md-3">
-                                <textarea nbInput status="danger" shape="semi-round" type="text" [value]="detalles_proyecto" readonly></textarea>
+                            <div class="pl-md-3" style="position: absolute; right: 20px;">
+                                <textarea nbInput style="width: 500px;" status="danger" rows="4" shape="semi-round" type="text" [value]="detalles_proyecto" readonly></textarea>
                             </div>
                         </div>
                     </nb-card-body>

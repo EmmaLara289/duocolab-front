@@ -191,6 +191,11 @@ export class TareaComponent {
   }
 
   onProyectSelected(item) {
+    this.form.get('epica').reset();
+    this.form.get('sprint').reset();
+    this.form.get('integrantes').reset();
+    
+    
     console.log(item);
     const id = this.proyectoList.find(option => option.nombre === item);
     console.log('ID: ',id);
@@ -312,6 +317,7 @@ export class TareaComponent {
         (response) => {
           if (response.status != "error") {
             this.ngOnInit();
+            this.form.reset();
             Swal.fire({
               position: 'top-end',
               icon: 'success',
@@ -320,7 +326,6 @@ export class TareaComponent {
               timer: 1200
             });
             this.clearData();
-            this.form.reset();
             this.colabsText = "";
           }
         },

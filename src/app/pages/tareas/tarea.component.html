@@ -83,7 +83,7 @@
                         <div class="col-md-2">
                             <label class="label">Descripción</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
+                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" (click)="openModalDescription(description)" [placeholder]="tarea.descripcion" readonly>
                                 <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
@@ -131,7 +131,7 @@
                                     <td>{{item.epica_nombre}} </td>
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
-                                    <td><button nbButton ghost status="primary" size="medium">{{item.estatus[0].nombre}}</button></td>
+                                    <td>{{item.estatus[0].nombre}}</td>
                                     <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
                                     <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
@@ -152,7 +152,7 @@
                                     <th>Epica</th>
                                     <th>Sprint</th>
                                     <th>Proyecto</th>
-                                    <th></th>
+                                    <th>Estatus</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -164,9 +164,9 @@
                                     <td>{{item.epica_nombre}} </td>
                                     <td>{{item.sprint_nombre}}</td>
                                     <td>{{item.proyecto_nombre}}</td>
-                                    <!--<td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
-                                    <td> <button nbButton status="primary" type="button" size="medium"><nb-icon nbSuffix icon="done-all-outline" pack="eva"></nb-icon></button> </td>
-                                    <td> <button nbButton status="primary" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
+                                    <td>{{item.estatus[0].nombre}}</td>
+                                    <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
+                                    <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
                         </table>

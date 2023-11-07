@@ -123,6 +123,7 @@ export class EquipoComponent implements OnInit {
       response => {
       if(response.status != 'error'){
           //this.ngOnInit();
+          this.form.reset();
           this.reloadPage();
           this.clearData();
           Swal.fire({
@@ -137,7 +138,6 @@ export class EquipoComponent implements OnInit {
           this.nameProyect = "";
           this.usersText = "";
           this.modalTable = false;
-          this.form.reset();
           this._userService.getPaginationEquipos(this.page).subscribe((response) => {
             this.myList = response;
           });
@@ -598,7 +598,7 @@ export class EquipoComponent implements OnInit {
   }
 
   disableColab(item){
-    this._userService.disableMember(this.equipoCopy.id_equipo, item.id).subscribe((response) => {
+    this._userService.disableMemberEquipo(this.equipoCopy.id_equipo, item.id).subscribe((response) => {
       console.log('able');
       this.loadMemberStatus(this.equipoCopy.id_equipo);
       if(this.modalTable === false){

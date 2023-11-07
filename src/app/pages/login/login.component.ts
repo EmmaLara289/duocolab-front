@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit {
     this.CheckUser.login = JSON.parse(localStorage.getItem('login'));
     //console.log()
     if(this.CheckUser.login === true){
-      this._router.navigate(['/pages/colaborador']);
+      this._router.navigate(['/pages/mis-tareas']);
       this.valor = false;
       this.loadMenu();
     }
