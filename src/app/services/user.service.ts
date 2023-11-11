@@ -455,6 +455,22 @@ export class UserService {
     return this._http.get(global.url + 'getTareas');
   }  
 
+  public getTareasBuzon(): Observable<any>{
+    return this._http.get(global.url + 'getTareasBuzon');
+  }  
+
+  public getTareasProgreso(): Observable<any>{
+    return this._http.get(global.url + 'getTareasProgreso');
+  }  
+
+  public getTareasProbando(): Observable<any>{
+    return this._http.get(global.url + 'getTareasProbando');
+  }  
+
+  public getTareasRealizadas(): Observable<any>{
+    return this._http.get(global.url + 'getTareasRealizadas');
+  }  
+
   public getPaginationTareas(page:number): Observable<any>{
     let params = new HttpParams();
     if(page !== undefined){

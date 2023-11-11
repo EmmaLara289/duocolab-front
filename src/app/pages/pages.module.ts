@@ -22,7 +22,7 @@ import { NbButtonModule } from '@nebular/theme';
     NbButtonModule
   ],
   declarations: [
-    PagesComponent,
+    PagesComponent
   ],
 })
 export class PagesModule {

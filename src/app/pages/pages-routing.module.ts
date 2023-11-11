@@ -91,6 +91,12 @@ const routes: Routes = [{
         canActivate: [AuthGuard],
     },
     {
+      path: 'tablero',
+      loadChildren: () => import('./tablero/tablero.module')
+        .then(m => m.TableroModule),
+        canActivate: [AuthGuard],
+    },
+    {
       path: '**',
       component: NotFoundComponent,
     },
