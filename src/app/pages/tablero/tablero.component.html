@@ -1,8 +1,8 @@
 <main class="board" cdkDropListGroup>
     <div class="row">
-        <div class="list" cdkDropList>
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'buzon')" [cdkDropListData]="tareasBuzon">
             <h3 class="list__title"><strong>Buzón</strong></h3>
-            <div class="task" id="listaBuzon" cdkDrag cdkDragPreviewContainer="parent" (cdkDropListDropped)="move($event, 'buzon')" [cdkDropListData]="item" *ngFor="let item of tareasBuzon">
+            <div class="task" id="listaBuzon" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasBuzon">
                 <div class="task__icon">
                 </div>
                 <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
@@ -10,9 +10,9 @@
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>
         </div>
-        <div class="list" cdkDropList>
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'progreso')" [cdkDropListData]="tareasProgreso">
             <h3 class="list__title"><strong>En Progreso</strong></h3>
-            <div class="task" id="listaProgreso" cdkDrag cdkDragPreviewContainer="parent" (cdkDropListDropped)="move($event, 'progreso')" [cdkDropListData]="item" *ngFor="let item of tareasProgreso">
+            <div class="task" id="listaProgreso" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasProgreso">
                 <div class="task__icon">
                 </div>
                 <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
@@ -20,9 +20,9 @@
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>
         </div>
-        <div class="list" cdkDropList>
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'probando')" [cdkDropListData]="tareasProbando">
             <h3 class="list__title"><strong>Probando</strong></h3>
-            <div class="task" id="listaProbando" cdkDrag cdkDragPreviewContainer="parent" (cdkDropListDropped)="move($event, 'probando')" [cdkDropListData]="item" *ngFor="let item of tareasProbando">
+            <div class="task" id="listaProbando" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasProbando">
                 <div class="task__icon">
                 </div>
                 <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
@@ -30,9 +30,9 @@
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>
         </div>
-        <div class="list" cdkDropList>
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'realizadas')" [cdkDropListData]="tareasRealizadas">
             <h3 class="list__title"><strong>Realizadas</strong></h3>
-            <div class="task" id="listaRealizado" cdkDrag cdkDragPreviewContainer="parent" (cdkDropListDropped)="move($event, 'realizadas')" [cdkDropListData]="item" *ngFor="let item of tareasRealizadas">
+            <div class="task" id="listaRealizado" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasRealizadas">
                 <div class="task__icon">
                 </div>
                 <h3 class="task__title">Tarea {{item.id_tarea}}</h3>

@@ -42,6 +42,9 @@ export class TableroComponent implements OnInit {
   
   move(event: CdkDragDrop<any[]>, listaDestino: string) {
     const tareaMovida = event.item.data;
+
+    console.log(event.item);
+    console.log(listaDestino);
   
     if (event.previousContainer === event.container) {
       // Mover dentro de la misma lista
