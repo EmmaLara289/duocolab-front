@@ -1,41 +1,48 @@
 <main class="board" cdkDropListGroup>
     <div class="row">
-        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'buzon')" [cdkDropListData]="tareasBuzon">
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, '2')" [cdkDropListData]="tareasBuzon">
             <h3 class="list__title"><strong>Buzón</strong></h3>
-            <div class="task" id="listaBuzon" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasBuzon">
+            <div class="task" id="listaBuzon" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasBuzon" [cdkDragData]="item">
                 <div class="task__icon">
+                    <nb-icon status="info" nbSuffix icon="clock-outline" pack="eva" style="width: 70%; height: auto;"></nb-icon>
                 </div>
-                <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
+                <h3 class="task__title">{{item.tarea_nombre}}</h3>
                 <p class="task__date"><strong>Fecha de creación: {{item.created_at}}</strong></p>
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>
         </div>
-        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'progreso')" [cdkDropListData]="tareasProgreso">
+
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, '3')" [cdkDropListData]="tareasProgreso">
             <h3 class="list__title"><strong>En Progreso</strong></h3>
-            <div class="task" id="listaProgreso" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasProgreso">
+            <div class="task" id="listaProgreso" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasProgreso" [cdkDragData]="item">
                 <div class="task__icon">
+                    <nb-icon status="info" nbSuffix icon="clock-outline" pack="eva" style="width: 70%; height: auto;"></nb-icon>
                 </div>
-                <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
+                <h3 class="task__title">{{item.tarea_nombre}}</h3>
                 <p class="task__date"><strong>Fecha de creación: {{item.created_at}}</strong></p>
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>
         </div>
-        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'probando')" [cdkDropListData]="tareasProbando">
+
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, '6')" [cdkDropListData]="tareasProbando">
             <h3 class="list__title"><strong>Probando</strong></h3>
-            <div class="task" id="listaProbando" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasProbando">
+            <div class="task" id="listaProbando" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasProbando" [cdkDragData]="item">
                 <div class="task__icon">
+                    <nb-icon status="info" nbSuffix icon="clock-outline" pack="eva" style="width: 70%; height: auto;"></nb-icon>
                 </div>
-                <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
+                <h3 class="task__title">{{item.tarea_nombre}}</h3>
                 <p class="task__date"><strong>Fecha de creación: {{item.created_at}}</strong></p>
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>
         </div>
-        <div class="list" cdkDropList (cdkDropListDropped)="move($event, 'realizadas')" [cdkDropListData]="tareasRealizadas">
+
+        <div class="list" cdkDropList (cdkDropListDropped)="move($event, '4')" [cdkDropListData]="tareasRealizadas">
             <h3 class="list__title"><strong>Realizadas</strong></h3>
-            <div class="task" id="listaRealizado" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasRealizadas">
+            <div class="task" id="listaRealizado" cdkDrag cdkDragPreviewContainer="parent" *ngFor="let item of tareasRealizadas" [cdkDragData]="item">
                 <div class="task__icon">
+                    <nb-icon status="info" nbSuffix icon="clock-outline" pack="eva" style="width: 70%; height: auto;"></nb-icon>
                 </div>
-                <h3 class="task__title">Tarea {{item.id_tarea}}</h3>
+                <h3 class="task__title">{{item.tarea_nombre}}</h3>
                 <p class="task__date"><strong>Fecha de creación: {{item.created_at}}</strong></p>
                 <p class="task__description">{{item.tareas_descripcion}}</p>
             </div>

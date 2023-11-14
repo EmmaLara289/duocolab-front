@@ -455,21 +455,34 @@ export class UserService {
     return this._http.get(global.url + 'getTareas');
   }  
 
-  public getTareasBuzon(): Observable<any>{
-    return this._http.get(global.url + 'getTareasBuzon');
+  public getTareasBuzon(id:number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_colaborador', id);
+    return this._http.get(global.url + 'getTareasBuzon', {params: params});
   }  
 
-  public getTareasProgreso(): Observable<any>{
-    return this._http.get(global.url + 'getTareasProgreso');
+  public getTareasProgreso(id:number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_colaborador', id);
+    return this._http.get(global.url + 'getTareasProgreso', {params: params});
   }  
 
-  public getTareasProbando(): Observable<any>{
-    return this._http.get(global.url + 'getTareasProbando');
+  public getTareasProbando(id:number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_colaborador', id);
+    return this._http.get(global.url + 'getTareasProbando', {params: params});
   }  
 
-  public getTareasRealizadas(): Observable<any>{
-    return this._http.get(global.url + 'getTareasRealizadas');
+  public getTareasRealizadas(id:number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_colaborador', id);
+    return this._http.get(global.url + 'getTareasRealizadas', {params: params});
   }  
+
+  public changeStatusTarea(id_tarea:number, key_tarea_status:number): Observable<any>{
+    return this._http.post(global.url + 'changeTareaStatus',
+    {id_tarea:id_tarea, key_tarea_status:key_tarea_status});
+  }
 
   public getPaginationTareas(page:number): Observable<any>{
     let params = new HttpParams();
