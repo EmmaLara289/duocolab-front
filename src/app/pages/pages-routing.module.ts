@@ -97,6 +97,12 @@ const routes: Routes = [{
         canActivate: [AuthGuard],
     },
     {
+      path: 'sprints',
+      loadChildren: () => import('./sprints/sprints.module')
+        .then(m => m.SprintsModule),
+        canActivate: [AuthGuard],
+    },
+    {
       path: '**',
       component: NotFoundComponent,
     },

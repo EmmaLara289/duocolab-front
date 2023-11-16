@@ -85,6 +85,7 @@ export class TareaComponent {
   tarea_status: any;
   update_nombre: any;
   update_descripcion: any;
+  key_prioridad: any
     constructor(
     private _userService: UserService,
     private _router: Router,
@@ -93,7 +94,7 @@ export class TareaComponent {
     private fb: FormBuilder,
 
   ) {
-    this.tarea = new Tarea("", "", "", "", "", "", "", "", "");
+    this.tarea = new Tarea("", "", "", "", "", "", "", "", "", "");
     
     //this.tareaCopy = new Tarea('','','','','','','');
     
@@ -312,6 +313,7 @@ export class TareaComponent {
         this.tarea.key_proyecto,
         this.tarea.key_colaborador,
         this.tarea.key_area,
+        this.tarea.key_prioridad_status
       )
       .subscribe(
         (response) => {
@@ -358,7 +360,8 @@ export class TareaComponent {
         this.tareaCopy.tarea_nombre,
         this.tareaCopy.tareas_descripcion,
         this.id_colaboradorador_update,
-        this.tarea_status
+        this.tarea_status,
+        this.key_prioridad
       )
       .subscribe(
         (response) => {
@@ -396,7 +399,7 @@ export class TareaComponent {
   }
 
   clearData() {
-    this.tarea = new Tarea("", "", "", "", "", "", "", "", "");
+    this.tarea = new Tarea("", "", "", "", "", "", "", "", "", "");
     //this.tareaCopy = new Tarea("", "", "", "", "", "", "", "");
   }
 

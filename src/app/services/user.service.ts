@@ -223,7 +223,7 @@ export class UserService {
   }
 
 
-  public registrarTarea(nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string, key_area: string): Observable<any>{
+  public registrarTarea(nombre:string, descripcion:string, key_epica:string, key_sprint:string, key_proyecto:string, key_colaborador:string, key_area: string, key_prioridad_status:string): Observable<any>{
     const formData = new FormData();
     formData.append('nombre', nombre);
     formData.append('descripcion', descripcion);
@@ -231,6 +231,7 @@ export class UserService {
     formData.append('key_sprint', key_sprint);
     formData.append('key_proyecto', key_proyecto);
     formData.append('key_area', key_area);
+    formData.append('key_prioridad_status', key_prioridad_status);
     if(key_colaborador !== ""){
       formData.append('key_colaborador', key_colaborador);
     }else{
@@ -405,11 +406,7 @@ export class UserService {
     params = params.set('page', page);
     return this._http.get(global.url + 'getPaginationPrioridades', {params: params});
   }
-
-  public getSprints(): Observable<any>{
-    return this._http.get(global.url + 'getSprints');
-  }
-
+  
   public sprintProyect(key_proyecto: number):Observable<any>{
     let params = new HttpParams();
     params = params.set('key_proyecto', key_proyecto);
@@ -625,9 +622,9 @@ export class UserService {
     {id_epica:id_epica, nombre:nombre, proyecto:proyecto, descripcion:descripcion});
   }
 
-  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:number, key_tarea_status:number): Observable<any>{
+  public updateTarea(id_tarea:string, nombre:string, descripcion:string, key_colaborador:number, key_tarea_status:number, key_prioridad_status: number): Observable<any>{
     return this._http.post(global.url + 'updateTarea',
-    {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_colaborador:key_colaborador, key_tarea_status:key_tarea_status});
+    {id_tarea:id_tarea, nombre:nombre, descripcion:descripcion, key_colaborador:key_colaborador, key_tarea_status:key_tarea_status, key_prioridad_status:key_prioridad_status});
   }
 
   public getModules():Observable<any>{
@@ -661,6 +658,21 @@ export class UserService {
 
   public getReportTareas():Observable<any>{
     return this._http.get(global.url + 'getReportTareasProyecto');
+  }
+
+  public getSprints(page: any):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    return this._http.get(global.url + 'getPaginationSprint', {params: params});
+  }
+
+  public getProyectosSprint():Observable<any>{
+    return this._http.get(global.url + 'getProyectosSprints');
+  }
+
+  public registerSprint(nombre:string, descripcion:string, key_proyecto:any): Observable<any>{
+    return this._http.post(global.url + 'createSprint',
+    { nombre:nombre, descripcion:descripcion, key_proyecto: key_proyecto});
   }
   
 

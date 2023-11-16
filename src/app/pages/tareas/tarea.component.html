@@ -87,6 +87,18 @@
                                 <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
+                        <div class="col-md-2">
+                            <label class="label">Prioridad</label>
+                            <nb-form-field>
+                                <nb-select placeholder="Seleccionar" type="text" name="prioridad" #prioridad="ngModel" [(ngModel)]="tarea.key_prioridad_status">
+                                    <nb-option value="1">Normal</nb-option>
+                                    <nb-option value="2">Media</nb-option>
+                                    <nb-option value="3">Alta</nb-option>
+                                    <nb-option value="4">Urgente</nb-option>
+                                </nb-select>
+                                <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                            </nb-form-field>
+                        </div>
                         <div class="px-md-1" style="position: relative; top: 25px;">
                             <button nbButton status="danger" type="submit"><nb-icon icon="plus-outline"></nb-icon></button>
                         </div>
@@ -252,6 +264,18 @@
                                                 <nb-option *ngFor="let item of tarea_status_options" [value]="item.id_tarea_status">{{item.nombre}}</nb-option>
                                             </nb-select>
                                         </nb-card-body>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="label">Prioridad</label>
+                                        <nb-form-field>
+                                            <nb-select [placeholder]="tareaCopy.prioridad" status="danger" style="width: 190px; position: relative; right: 10px;" type="text" name="prioridad" #prioridad="ngModel" [(ngModel)]="key_prioridad">
+                                                <nb-option value="1">Normal</nb-option>
+                                                <nb-option value="2">Media</nb-option>
+                                                <nb-option value="3">Alta</nb-option>
+                                                <nb-option value="4">Urgente</nb-option>
+                                            </nb-select>
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
                                     </div>
                                 </div>
                             </div>

@@ -11,6 +11,7 @@ export class Tarea {
         public key_colaborador: any,
         public key_area: any,
         public key_tarea_status: any,
+        public key_prioridad_status: any,
     ) { }
 
 }
