@@ -5,11 +5,11 @@
                 <h5 class=" title">Mis Tareas</h5>
             </nb-card-header>
             <nb-card-body>
-                <!-- <form class="pl-md-3" (ngSubmit)="buscarEstatusTareas()">
+                <form class="pl-md-3" (ngSubmit)="buscarTareas()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
-                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Estatus Tarea">
+                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar tarea">
                             </div>
                             <div class="px-md-2">
                                 <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
@@ -17,7 +17,6 @@
                         </div>
                     </div>
                 </form>
-            -->
                 <nb-card-body>
                     <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
                         <table class="table dark-table ">
@@ -51,15 +50,17 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Estatus</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of myList2">
-                                    <td>{{ item.id_estatus }}</td>
-                                    <td>{{ item.nombre }}</td>
+                                    <td>{{ item.tarea.id_tarea }}</td>
+                                    <td>{{ item.tarea.nombre }}</td>
+                                    <td>{{ item.estatus.nombre }}</td>
                                     <td>
-                                        <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, update)">Editar</button>
+                                        <button nbButton status="primary" type="button" size="medium" (click)="openModal(item.tarea.id_tarea, history)">Reporte</button>
                                     </td>
                                 </tr>
                             </tbody>

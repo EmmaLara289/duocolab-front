@@ -8,7 +8,7 @@
                 <div style="padding: 10px;"></div>
                 <form class="col-md-10" (ngSubmit)="registerSprint()">
                     <div class="form-group row">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <label class="label">Proyecto</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('proyecto')" #ProyectAuto type="text" (input)="onChangeProyect($event)" [nbAutocomplete]="autoProyectSprint">
@@ -20,17 +20,23 @@
                                 <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-5">
-                            <label class="label">Nombre del Sprint</label>
+                        <div class="col-md-4">
+                            <label class="label">Nombre de la Sprint</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="sprint.nombre" [ngModelOptions]="{standasalone: true}">
                                 <nb-icon nbSuffix icon="checkmark-square" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-2">
+                            <label class="label">Total Sprints</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="contador" [(ngModel)]="textSprints" readonly>
+                            </nb-form-field>
+                        </div>
+                        <div class="col-md-2">
                             <label class="label">Descripción</label>
                             <nb-form-field>
-                                <textarea nbInput fullWidth name="descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="sprint.descripcion" required minlength="10"></textarea>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="descripcion" #descripcion="ngModel" [(ngModel)]="sprint.descripcion" (click)="openModalDescription(description)" readonly>
                             </nb-form-field>
                         </div>
                         <div class="px-md-1" style="position: relative; top: 25px;">
@@ -41,13 +47,13 @@
                 </form>
             </nb-card-body>
         </nb-card>
-        <nb-card-body>
-            <!--
-                    <form class="pl-md-3" (ngSubmit)="buscarProyecto()">
+        <nb-card status="primary">
+            <nb-card-body>
+                <form class="pl-md-3" (ngSubmit)="buscarSprint()">
                     <div class="row">
                         <div class="row align-items-center">
                             <div class="px-md-2">
-                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Proyecto">
+                                <input nbInput fullWidth shape="semi-round" style="width : 600px;" fieldSize="giant" type="text" [(ngModel)]="text" name="text" placeholder="Buscar Sprint o Proyecto">
                             </div>
                             <div class="px-md-2">
                                 <button nbButton status="primary" type="submit" size="giant"><nb-icon icon="search-outline"></nb-icon></button>
@@ -55,58 +61,125 @@
                         </div>
                     </div>
                 </form>
-                -->
-            <div style="padding: 10px;"></div>
-            <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
-                <table class="table dark-table ">
-                    <thead style="background-color: #27598F">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Proyecto</th>
-                            <th>Inicio</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of myList.data">
-                            <td>{{ item.id_sprint }}</td>
-                            <td>{{ item.sprint }}</td>
-                            <td>{{ item.proyecto }}</td>
-                            <td>{{ item.created_at }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="custom-pagination">
-                    <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
-                    <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                <div style="padding: 10px;"></div>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="!modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Proyecto</th>
+                                <th>Inicio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList">
+                                <td>{{ item.id_sprint }}</td>
+                                <td>{{ item.sprint }}</td>
+                                <td>{{ item.proyecto }}</td>
+                                <td>{{ item.created_at }}</td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="custom-pagination">
+                        <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                        <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                    </div>
                 </div>
-            </div>
-            <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
-                <table class="table dark-table ">
-                    <thead style="background-color: #27598F">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Proyecto</th>
-                            <th>Inicio</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of myList2">
-                            <td>{{ item.id_proyecto }}</td>
-                            <td>{{ item.nombre }}</td>
-                            <td>{{ item.nombre_equipo }}</td>
-                            <td>{{ item.created_at }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="custom-pagination">
-                    <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
-                    <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                <div [class.show]="modalTable" style="display: block;" *ngIf="modalTable" class="table-responsive">
+                    <table class="table dark-table ">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Proyecto</th>
+                                <th>Inicio</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList2">
+                                <td>{{ item.id_sprint }}</td>
+                                <td>{{ item.sprint }}</td>
+                                <td>{{ item.proyecto }}</td>
+                                <td>{{ item.created_at }}</td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdate(item, modalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="custom-pagination">
+                        <button nbButton shape="semi-round" status="info" (click)="preview()">Anterior</button>
+                        <button nbButton shape="semi-round" status="info" (click)="next()">Siguiente</button>
+                    </div>
                 </div>
-            </div>
-        </nb-card-body>
+            </nb-card-body>
+        </nb-card>
     </div>
 </div>
+
+<ng-template #description let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Descripción</nb-card-header>
+                    <nb-card-body>
+                        <textarea nbInput fullWidth name="descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="sprint.descripcion" required minlength="10"></textarea>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #modalUpdate let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 700px; max-height: 920px; margin: 0 auto;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <form class="col-md-10 mx-auto">
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="label">Proyecto</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="proyecto" #proyecto="ngModel" [(ngModel)]="sprintCopy.proyecto" readonly>
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Nombre de Sprint</label>
+                                        <nb-form-field>
+                                            <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="sprint" #sprint="ngModel" [(ngModel)]="sprintCopy.sprint">
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Descripción</label>
+                                        <nb-form-field>
+                                            <textarea nbInput fullWidth status="danger" shape="semi-round" type="text" name="descripcion" #descripcion="ngModel" [(ngModel)]="sprintCopy.descripcion"> </textarea>
+                                            <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
+                                        </nb-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div style="padding: 20px;"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button nbButton status="primary" type="submit" (click)="updateSprint()">Editar</button>
+                            </div>
+                            <div class="col text-right">
+                                <button nbButton status="danger" type="button" (click)="closeModalUpdateDialog()">Cerrar</button>
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

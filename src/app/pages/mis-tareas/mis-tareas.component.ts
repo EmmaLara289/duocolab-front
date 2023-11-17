@@ -14,11 +14,13 @@ import { NbDialogRef, NbDialogService } from '@nebular/theme';
 })
 export class MisTareasComponent implements OnInit {
   myList : any;
+  myList2: any;
   modalTable = false;
   page = 1;
   modalReport: any;
   descripcion_update: string = "";
   id_tarea: any;
+  text = "";
   constructor(
     private _userService: UserService,
     private CheckUser: CheckUser,
@@ -38,15 +40,15 @@ export class MisTareasComponent implements OnInit {
       this.modalUpdate(dialog);
       this.id_tarea = item;
     }
-/*
+
     buscarTareas() {
-      this._userService.findTarea(this.text, this.page).subscribe((response) => {
+      this._userService.searchPaginationTareaColab(this.CheckUser.userData.id, this.page, this.text).subscribe((response) => {
         this.myList2 = response;
         this.modalTable = true;
         console.log(response);
       });
     }
-*/
+
     modalUpdate(dialog: TemplateRef<any>) {
       this.modalReport = this.dialogService.open(dialog, {
         context: "this is some additional data passed to dialog",

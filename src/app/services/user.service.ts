@@ -358,6 +358,14 @@ export class UserService {
     return this._http.get(global.url + 'getTareasColab', {params:params});
   }
 
+  public searchPaginationTareaColab(id_colab:number, page: number, text: string): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    params = params.set('id_colab', id_colab);
+    params = params.set('text', text);
+    return this._http.get(global.url + 'searchTareasColab', {params:params});
+  }
+
   public createHistorial(id_tarea:number, descripcion: string): Observable<any>{
     return this._http.post(global.url + 'createStatusTarea',
     {id_tarea:id_tarea, descripcion:descripcion});
@@ -612,9 +620,9 @@ export class UserService {
   return this._http.get(this.url+ 'searchPrioridades', {params: params});
   }
 
-  public updateSprint(id_sprint:string, nombre:string, descripcion:string, key_proyecto:string): Observable<any>{
+  public updateSprint(id_sprint:string, nombre:string, descripcion:string): Observable<any>{
     return this._http.post(global.url + 'updateSprint',
-    {id_sprint:id_sprint, nombre:nombre, descripcion:descripcion, key_proyecto:key_proyecto});
+    {id_sprint:id_sprint, nombre:nombre, descripcion:descripcion});
   }
 
   public updateEpica(id_epica:string, nombre:string, proyecto: string, descripcion:string): Observable<any>{
@@ -668,6 +676,19 @@ export class UserService {
 
   public getProyectosSprint():Observable<any>{
     return this._http.get(global.url + 'getProyectosSprints');
+  }
+
+  public getCountsSprint(key_proyecto: any):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_proyecto', key_proyecto);
+    return this._http.get(global.url + 'getCountsSprints', {params: params});
+  }
+
+  public searchSprints(page: any, text: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('page', page);
+    params = params.set('text', text);
+    return this._http.get(global.url + 'searchSprints', {params: params});
   }
 
   public registerSprint(nombre:string, descripcion:string, key_proyecto:any): Observable<any>{

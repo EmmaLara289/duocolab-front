@@ -406,6 +406,8 @@ export class TareaComponent {
   openModalUpdate(item, dialog: TemplateRef<any>){
     this.modalUpdate(dialog);
     this.tareaCopy = {...item};
+    console.log(item.key_prioridad_status);
+    this.key_prioridad = item.key_prioridad_status;
     this.integrantesList = item.integrantes_equipo;
     this.filtredIntegrantes = this.form.get('integrantes').valueChanges.pipe(
       startWith(''),
