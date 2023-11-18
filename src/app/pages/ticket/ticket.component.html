@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <nb-card>
+        <nb-card status="primary">
             <nb-card-header>
                 <h5 class="title">Registrar Ticket</h5>
             </nb-card-header>
@@ -34,7 +34,7 @@
                         <div class="col-md-2">
                             <label class="label">Descripción</label>
                             <nb-form-field>
-                                <input nbInput fullWidth status="danger" class="text-center" shape="semi-round" type="text" (click)="openModalDescription(description)" readonly>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" (click)="openModalDescription(description)" name="descripcion" #descripcion="ngModel" [(ngModel)]="ticket.detalles" readonly>
                                 <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
@@ -57,6 +57,37 @@
                 <div style="padding: 10px;"></div>
             </nb-card-body>
         </nb-card>
+        <nb-card status="primary">
+            <nb-card-body>
+                <div class="table-responsive">
+                    <table class="table dark-table">
+                        <thead style="background-color: #27598F">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Proyecto</th>
+                                <th>Estatus Tarea</th>
+                                <th>Prioridad del Ticket</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of myList">
+                                <td>{{item.id_ticket }}</td>
+                                <td>{{item.ticket_nombre}}</td>
+                                <td>{{item.detalles}}</td>
+                                <td>{{item.nombre}} </td>
+                                <td>{{item.estatus_tarea}}</td>
+                                <td>{{item.ticket_status}}</td>
+                                <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdateDialog(item, ModalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </nb-card-body>
+        </nb-card>
     </div>
 </div>
 
@@ -68,6 +99,25 @@
                     <nb-card-header>Descripción</nb-card-header>
                     <nb-card-body>
                         <textarea nbInput fullWidth name="descripcion" #descripcion="ngModel" [ngModelOptions]="{standalone: true}" [(ngModel)]="ticket.detalles" required minlength="10"></textarea>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #ModalUpdate let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Ticket</nb-card-header>
+                    <nb-card-body>
+                        <p class="text-message">¿Estás segur@ de liberar este Ticket?</p>
+                        <div class="custom-pagination">
+                            <button nbButton shape="semi-round" status="info" (click)="freeTicket()">Liberar</button>
+                            <button nbButton shape="semi-round" status="danger" (click)="closeModalUpdateDialog()">Cancelar</button>
+                        </div>
                     </nb-card-body>
                 </nb-card>
             </div>

@@ -11,7 +11,8 @@ import { CheckUser } from '../../services/checkUser';
 
 @Component({
   selector: 'app-ticket',
-  templateUrl: './ticket.component.html'
+  templateUrl: './ticket.component.html',
+  styleUrls: ["./ticket.component.scss"],
 })
 export class TicketComponent implements OnInit {
   private ref: NbDialogRef<any>;
@@ -30,6 +31,10 @@ export class TicketComponent implements OnInit {
   proyectoList: any;
   prioridadList: any;
   modalDescription: any;
+  myList: any;
+  modalUpdate: any;
+  id_ticket: any;
+  message:  any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -50,7 +55,7 @@ export class TicketComponent implements OnInit {
     console.log(this.CheckUser.userData);
     this.ticket.key_usuario = this.CheckUser.userData.id;
 
-    this._userService.getProyectos().subscribe((response) => {
+    this._userService.getProyectosByUser(this.CheckUser.userData.id).subscribe((response) => {
       this.proyectoList = response;
       this.filtredProyects = this.form.get('proyecto').valueChanges.pipe(
         startWith(''),
@@ -59,14 +64,19 @@ export class TicketComponent implements OnInit {
       //console.log("Proyectos: ",response);
     });
 
-    this._userService.getPrioridades().subscribe((response) => {
+    this._userService.getPrioridadesStatus().subscribe((response) => {
       this.prioridadList = response;
       this.filtredPrioridades = this.form.get('prioridades').valueChanges.pipe(
         startWith(''),
         map(value => this._filterPD(value))
     );
-
     });
+
+    this._userService.getTicketInProcess(this.CheckUser.userData.id).subscribe((response) => {
+      this.myList = response;
+      console.log(response);
+      }
+    );
   }
 
   private _filterP(value: string): any[] {
@@ -101,16 +111,68 @@ export class TicketComponent implements OnInit {
     console.log(item);
     const id = this.prioridadList.find(option => option.nombre === item);
     console.log('ID: ',id);
-    this.ticket.key_prioridad = id.id_prioridad;
+    this.ticket.key_prioridad = id.id_prioridad_status;
     // Aquí puedes hacer lo que necesites con el objeto completo de la opción seleccionada
   }
 
-  registrarTicket(){
-  this._userService.registrarTicket(this.ticket.key_proyecto, this.ticket.key_usuario, this.ticket.titulo, this.ticket.detalles, this.ticket.key_prioridad).subscribe(
-      response => {
+  registrarTicket() {
+    let message: string;  // Declarar la variable fuera del observable
+  
+    this._userService.registrarTicket(this.CheckUser.userData.id, this.ticket.key_proyecto, this.ticket.key_usuario, this.ticket.titulo, this.ticket.detalles, this.ticket.key_prioridad)
+      .subscribe(
+        (response) => {
+          console.log(response);  // Imprimir la respuesta en la consola
+          message = response.status;
+          this.ngOnInit();
+          this.ticket = new Ticket('', '', '', '', '');
+          this.form.reset();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Guardado con éxito',
+            showConfirmButton: false,
+            timer: 1200
+          });
+        },
+        (error) => {
+          console.error(error);  // Imprimir el error en la consola
+          if (error.error.message === "Libere primero el ticket") {
+            Swal.fire('Hay un ticket por liberar aún.', 'Libere el ticket antes de crear uno nuevo', 'error');
+          }else{
+            Swal.fire('UPS', 'El ticket no se ha podido registrar.', 'error');
+          }
+        }
+      );
+  }
+  
+
+  openModalDescription(dialog: TemplateRef<any>) {
+    this.modalDescription = this.dialogService.open(dialog, {
+      context: "this is some additional data passed to dialog",
+    });
+  }
+
+  openModalUpdateDialog(item, dialog: TemplateRef<any>){
+    this.modalUpdate = this.dialogService.open(dialog);
+    this.id_ticket = item.id_ticket;
+  }
+
+  closeModalUpdateDialog(){
+    this.modalUpdate.close();
+  }
+
+  freeTicket(){
+    this._userService.freeTicket(this.id_ticket).subscribe(response => {
       if(response.status != 'error'){
         this.ngOnInit();
-        this.alert = true;
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Guardado con éxito',
+          showConfirmButton: false,
+          timer: 1200
+        });
+        this.closeModalUpdateDialog();
         this.ticket= new Ticket('','','','','');
         this.form.reset();
         }
@@ -120,12 +182,6 @@ export class TicketComponent implements OnInit {
         Swal.fire('UPS', 'El ticket no se ha podido registrar.', 'error');
       	}
    	);
-	}
-
-  openModalDescription(dialog: TemplateRef<any>) {
-    this.modalDescription = this.dialogService.open(dialog, {
-      context: "this is some additional data passed to dialog",
-    });
   }
 
 }

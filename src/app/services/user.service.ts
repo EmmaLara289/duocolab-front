@@ -312,9 +312,9 @@ export class UserService {
     {nombre:nombre});
   }
 
-  public registrarTicket(key_proyecto:string, key_usuario:string, titulo:string, detalles:string, key_prioridad:string): Observable <any>{
+  public registrarTicket(id_user:number, key_proyecto:string, key_usuario:string, titulo:string, detalles:string, key_prioridad:string): Observable <any>{
     return this._http.post(global.url + 'createTicket',
-    {key_proyecto:key_proyecto, key_usuario:key_usuario, titulo:titulo, detalles:detalles, key_prioridad:key_prioridad});
+    {id_user:id_user, key_proyecto:key_proyecto, key_usuario:key_usuario, titulo:titulo, detalles:detalles, key_prioridad:key_prioridad});
   }
 
   public findTicket(text:string, page: number):Observable<any>{
@@ -335,6 +335,18 @@ export class UserService {
 
   public getProyectos(): Observable<any>{
     return this._http.get(global.url + 'getProyectos');
+  }
+
+  public getProyectosByUser(id_user: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    return this._http.get(global.url + 'getProyectosByUser', {params: params});
+  }
+
+  public getTicketInProcess(id_user: number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    return this._http.get(global.url + 'getTicketInProcess', {params: params});
   }
 
   public getPaginationProyectos(page: number): Observable<any>{
@@ -369,6 +381,11 @@ export class UserService {
   public createHistorial(id_tarea:number, descripcion: string): Observable<any>{
     return this._http.post(global.url + 'createStatusTarea',
     {id_tarea:id_tarea, descripcion:descripcion});
+  }
+
+  public freeTicket(id_ticket:number): Observable<any>{
+    return this._http.post(global.url + 'freeTicket',
+    {id_ticket:id_ticket});
   }
 
   public getEquipos(): Observable<any>{
@@ -407,6 +424,10 @@ export class UserService {
 
   public getPrioridades(): Observable<any>{
     return this._http.get(global.url + 'getPrioridades');
+  }
+
+  public getPrioridadesStatus(): Observable<any>{
+    return this._http.get(global.url + 'getPrioridadStatus');
   }
 
   public getPaginationPrioridades(page: number): Observable<any>{
