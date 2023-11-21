@@ -716,6 +716,12 @@ export class UserService {
     return this._http.post(global.url + 'createSprint',
     { nombre:nombre, descripcion:descripcion, key_proyecto: key_proyecto});
   }
+
+  public getHistoryTicket(key_ticket:number): Observable<any>{
+    let params = new HttpParams();
+    params = params.set('key_ticket', key_ticket);
+    return this._http.get(global.url + 'getHistoryTicket', { params: params });
+  }
   
 
 }

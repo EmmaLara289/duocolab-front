@@ -38,7 +38,7 @@
                                 <nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label class="label">Prioridad</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('prioridades')" #PrioridadAuto type="text" (input)="onChangePrioridad($event)" [nbAutocomplete]="autoPrioridad">
@@ -70,6 +70,7 @@
                                 <th>Estatus Tarea</th>
                                 <th>Prioridad del Ticket</th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +82,8 @@
                                 <td>{{item.estatus_tarea}}</td>
                                 <td>{{item.ticket_status}}</td>
                                 <!--td><button nbButton status="info"><nb-icon nbSuffix icon="people" pack="eva"></nb-icon></button></td>-->
-                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalUpdateDialog(item, ModalUpdate)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
+                                <td> <button nbButton status="primary" type="button" size="medium" (click)="openModalUpdateDialog(item, ModalUpdate)"><nb-icon nbSuffix icon="unlock-outline" pack="eva"></nb-icon></button> </td>
+                                <td> <button nbButton status="danger" type="button" size="medium" (click)="openModalDialogHistory(item.id_ticket, ModalDialogHistry)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -118,6 +120,36 @@
                             <button nbButton shape="semi-round" status="info" (click)="freeTicket()">Liberar</button>
                             <button nbButton shape="semi-round" status="danger" (click)="closeModalUpdateDialog()">Cancelar</button>
                         </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #ModalDialogHistry let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 800px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Historial del Ticket</nb-card-header>
+                    <nb-card-body>
+                        <nb-card-body>
+                            <table class="table dark-table">
+                                <thead style="background-color: #27598F">
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of estatus_ticket">
+                                        <td>{{ item.descripcion }}</td>
+                                        <td>{{ item.created_at }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </nb-card-body>
                     </nb-card-body>
                 </nb-card>
             </div>

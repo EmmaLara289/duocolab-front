@@ -59,7 +59,7 @@ export class ProyectoComponent implements OnInit {
 
   this.form = this.fb.group({
     equipo: [''],
-    equipoModal: ['']
+    equipoModal: [''],
   });
 
   }
@@ -122,6 +122,7 @@ export class ProyectoComponent implements OnInit {
       response => {
       if(response.status != 'error'){
         this.ngOnInit();
+        this.form.get('equipo').reset();
         Swal.fire({
           position: 'top-end',
           icon: 'success',
@@ -131,7 +132,6 @@ export class ProyectoComponent implements OnInit {
         });
         this.clearData();
         this.closeModal();
-        this.form.reset();
         this.fotoAlert = true;
         }
 

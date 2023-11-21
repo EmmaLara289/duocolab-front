@@ -90,7 +90,7 @@
                         <div class="col-md-2">
                             <label class="label">Prioridad</label>
                             <nb-form-field>
-                                <nb-select placeholder="Seleccionar" type="text" name="prioridad" #prioridad="ngModel" [(ngModel)]="tarea.key_prioridad_status">
+                                <nb-select status="danger" placeholder="Seleccionar" type="text" name="prioridad" #prioridad="ngModel" [(ngModel)]="tarea.key_prioridad_status">
                                     <nb-option value="1">Normal</nb-option>
                                     <nb-option value="2">Media</nb-option>
                                     <nb-option value="3">Alta</nb-option>

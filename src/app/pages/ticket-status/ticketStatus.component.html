@@ -29,6 +29,7 @@
                                     <th>Detalles</th>
                                     <th>Nombre</th>
                                     <th>Estatus</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -38,7 +39,9 @@
                                     <td>{{ item.name }}</td>
                                     <td>{{ item.detalles }}</td>
                                     <td>{{ item.nombre }}</td>
-                                    <td>{{ item.estatus }}</td>
+                                    <td *ngIf="item.estatus === 1">En Proceso</td>
+                                    <td *ngIf="item.estatus === 2">Liberado</td>
+                                    <td> <button nbButton status="primary" type="button" size="medium" (click)="openModalHistoryTicket(item.id_ticket, ModalDialogHistry)"><nb-icon nbSuffix icon="file-text" pack="eva"></nb-icon></button> </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -80,3 +83,34 @@
         </nb-card>
     </div>
 </div>
+
+
+<ng-template #ModalDialogHistry let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 800px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Historial del Ticket</nb-card-header>
+                    <nb-card-body>
+                        <nb-card-body>
+                            <table class="table dark-table">
+                                <thead style="background-color: #27598F">
+                                    <tr>
+                                        <th>Descripción</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of estatus_ticket">
+                                        <td>{{ item.descripcion }}</td>
+                                        <td>{{ item.created_at }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </nb-card-body>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>

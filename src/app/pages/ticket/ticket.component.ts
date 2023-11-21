@@ -35,6 +35,8 @@ export class TicketComponent implements OnInit {
   modalUpdate: any;
   id_ticket: any;
   message:  any;
+  estatus_ticket: any;
+  modalDialogHistory: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -77,6 +79,7 @@ export class TicketComponent implements OnInit {
       console.log(response);
       }
     );
+
   }
 
   private _filterP(value: string): any[] {
@@ -183,5 +186,16 @@ export class TicketComponent implements OnInit {
       	}
    	);
   }
+
+  openModalDialogHistory(item, dialog: TemplateRef<any>){
+    this.modalDialogHistory = this.dialogService.open(dialog);
+
+    this._userService.getHistoryTicket(item).subscribe((response) => {
+      this.estatus_ticket = response;
+  });
+
+  }
+
+
 
 }

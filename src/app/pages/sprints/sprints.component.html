@@ -20,17 +20,17 @@
                                 <nb-icon nbSuffix icon="briefcase" pack="eva"></nb-icon>
                             </nb-form-field>
                         </div>
+                        <div class="col-md-2">
+                            <label class="label">Total Sprints</label>
+                            <nb-form-field>
+                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="contador" [(ngModel)]="textSprints" readonly>
+                            </nb-form-field>
+                        </div>
                         <div class="col-md-4">
                             <label class="label">Nombre de la Sprint</label>
                             <nb-form-field>
                                 <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="nombre" #nombre="ngModel" [(ngModel)]="sprint.nombre" [ngModelOptions]="{standasalone: true}">
                                 <nb-icon nbSuffix icon="checkmark-square" pack="eva"></nb-icon>
-                            </nb-form-field>
-                        </div>
-                        <div class="col-md-2">
-                            <label class="label">Total Sprints</label>
-                            <nb-form-field>
-                                <input nbInput fullWidth status="danger" shape="semi-round" type="text" name="contador" [(ngModel)]="textSprints" readonly>
                             </nb-form-field>
                         </div>
                         <div class="col-md-2">

@@ -22,6 +22,8 @@ export class TicketStatusComponent implements OnInit {
   text = "";
   pageSearch = 1;
   modalTable = false;
+  modalDialogHistory: any;
+  estatus_ticket: any;
   constructor(
   private _userService: UserService,
   private _router: Router,
@@ -53,7 +55,20 @@ export class TicketStatusComponent implements OnInit {
     }
   }
 
-  
+  openModalHistoryTicket(item, dialog: TemplateRef<any>){
+
+    this._userService.getHistoryTicket(item).subscribe((response) => {
+      this.estatus_ticket = response;
+    });
+
+    this.modalDialogHistory = this.dialogService.open(dialog);
+    
+  }
+
+  closeModalHistoryTicket(){
+    this.modalDialogHistory.close();
+  }
+   
   next(){
     this.page ++;
     this._userService.getTickets(this.page).subscribe((response) => {

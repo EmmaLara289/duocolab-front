@@ -17,6 +17,7 @@ import { NbSpinnerService } from '@nebular/theme';
 export class LoginComponent implements OnInit {
   public user: User;
   valor: any;
+  key_role: any;
 
   constructor(
     private NbSpinnerService: NbSpinnerService,
@@ -31,15 +32,24 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     
-    const aux = (localStorage.getItem('respuesta'));
-    this.CheckUser.menu = JSON.parse(aux);
+    this.key_role = (localStorage.getItem('key_role'));
+    console.log(this.key_role, typeof(this.key_role));
+    //this.CheckUser.menu = JSON.parse(aux);
     this.CheckUser.userData = JSON.parse(localStorage.getItem('userData'));
     console.log(this.CheckUser.userData);
-    console.log(this.CheckUser.menu);
+    //console.log(this.CheckUser.menu);
     this.CheckUser.login = JSON.parse(localStorage.getItem('login'));
     //console.log()
-    if(this.CheckUser.login === true){
+    if(this.CheckUser.login === true && this.key_role === "1"){
       this._router.navigate(['/pages/mis-tareas']);
+      this.valor = false;
+      this.loadMenu();
+    }else if(this.CheckUser.login === true && this.key_role === "2"){
+      this._router.navigate(['/pages/mis-tareas']);
+      this.valor = false;
+      this.loadMenu();
+    }else if(this.CheckUser.login === true && this.key_role === "3"){
+      this._router.navigate(['/pages/ticket']);
       this.valor = false;
       this.loadMenu();
     }
@@ -57,6 +67,7 @@ export class LoginComponent implements OnInit {
           
           this.CheckUser.userData = response.user;
           localStorage.setItem('userData', JSON.stringify(this.CheckUser.userData));
+          localStorage.setItem('key_role', JSON.stringify(response.user.key_role));
           this.CheckUser.login = true;
           localStorage.setItem('login', JSON.stringify(this.CheckUser.login));
           this.loadMenu();

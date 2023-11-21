@@ -157,11 +157,13 @@
                                 <label class="label">Equipo</label>
                                 <nb-form-field>
                                     <input nbInput fullWidth status="danger" shape="semi-round" [formControl]="form.get('equipoModal')" #EquipoModalAuto type="text" (input)="onChangeModal($event)" [nbAutocomplete]="autoEquipoModal" readonly>
+                                    <!--
                                     <nb-autocomplete #autoEquipoModal (selectedChange)="onSelectionModalChange($event)">
                                         <nb-option *ngFor="let option of filteredEquiposModal | async" [value]="option.nombre">
                                             {{ option.nombre }}
                                         </nb-option>
                                     </nb-autocomplete>
+                                    -->
                                     <nb-icon nbSuffix icon="people" pack="eva"></nb-icon>
                                 </nb-form-field>
                             </div>
@@ -232,7 +234,7 @@
                     <nb-card-header>Foto</nb-card-header>
                     <nb-card-body>
                         <div class="row">
-                            <img src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%;">
+                            <img src="{{this.getFotoUrlAddress}}storage/proyectos/{{this.image}}" alt="..." style="width: 250;; height: 150px; border-radius: 5%; position: relative; margin-left: 100px;">
                             <div class="pl-md-3" style="position: absolute; right: 20px;">
                                 <textarea nbInput style="width: 500px;" status="danger" rows="4" shape="semi-round" type="text" [value]="detalles_proyecto" readonly></textarea>
                             </div>
