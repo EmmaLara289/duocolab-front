@@ -712,6 +712,26 @@ export class UserService {
     return this._http.get(global.url + 'searchSprints', {params: params});
   }
 
+  public getAccessProyect(id_user: number):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    return this._http.get(global.url + 'proyectoAccess', {params: params});
+  }
+
+  public deniedAccessProyect(id_user: string, id_proyecto: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    params = params.set('id_proyecto', id_proyecto);
+    return this._http.get(global.url + 'deniedAccessProyect', {params: params});
+  }
+
+  public authAccessProyect(id_user: string, id_proyecto: string):Observable<any>{
+    let params = new HttpParams();
+    params = params.set('id_user', id_user);
+    params = params.set('id_proyecto', id_proyecto);
+    return this._http.get(global.url + 'authAccessProyect', {params: params});
+  }
+
   public registerSprint(nombre:string, descripcion:string, key_proyecto:any): Observable<any>{
     return this._http.post(global.url + 'createSprint',
     { nombre:nombre, descripcion:descripcion, key_proyecto: key_proyecto});

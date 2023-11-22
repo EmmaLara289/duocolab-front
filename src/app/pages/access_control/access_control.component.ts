@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 export class AccessControlComponent implements OnInit {
   user: any;
   userMenu: any;
+  userProyectos: any;
   areaCopy: any;
   id_area:string=null;
   areas: any=[];
@@ -29,6 +30,7 @@ export class AccessControlComponent implements OnInit {
   page = 1;
   modalName: any;
   modalAccess: any;
+  modalProyecto: any;
   
 
   constructor(
@@ -52,9 +54,31 @@ export class AccessControlComponent implements OnInit {
     this.getUserMenu(item.id);
   }
 
+  openModalProyectos(item, dialog: TemplateRef<any>){
+    this.modalProyectoDialog(dialog);
+    this.getUserProyectos(item.id);
+    this.user = item;
+  }
+
+  modalProyectoDialog(dialog){
+    this.modalProyecto = this.dialogService.open(dialog);
+  }
+
+  closeModalProyectoDialog(){
+    this.modalProyecto.close();
+    this.userProyectos = undefined;
+  }
+
   getUserMenu(id_user){
     this._userService.getUserMenuGreed(id_user).subscribe((response) => {
         this.userMenu = response;
+        console.log(response);
+    })
+  }
+
+  getUserProyectos(id_user){
+    this._userService.getAccessProyect(id_user).subscribe((response) => {
+        this.userProyectos = response;
         console.log(response);
     })
   }
@@ -97,6 +121,18 @@ export class AccessControlComponent implements OnInit {
       console.log(moduleUpdateText, " | ", typeof(moduleUpdateText)); // String | string
     this._userService.updateAccess(this.user.id, moduleUpdateArray).subscribe((response) => {
         item.has_access = 1;
+    });
+  }
+
+  deniedAccessProyect(item){
+    this._userService.deniedAccessProyect(this.user.id, item.id_proyecto).subscribe((response) =>{
+      item.has_access = 0;
+    });
+  }
+
+  authAccessProyect(item){
+    this._userService.authAccessProyect(this.user.id, item.id_proyecto).subscribe((response) =>{
+      item.has_access = 1;
     });
   }
 

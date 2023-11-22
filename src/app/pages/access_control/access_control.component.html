@@ -21,7 +21,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Acciones</th>
+                                <th>Proyectos</th>
+                                <th>Accesos</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,7 +30,10 @@
                                 <td>{{ item.id }}</td>
                                 <td>{{ item.name }}</td>
                                 <td>
-                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)"><nb-icon nbSuffix icon="edit-2" pack="eva"></nb-icon></button>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModalProyectos(item, proyectos)"><nb-icon nbSuffix icon="briefcase-outline" pack="eva"></nb-icon></button>
+                                </td>
+                                <td>
+                                    <button nbButton status="danger" type="button" size="medium" (click)="openModal(item, update)"><nb-icon nbSuffix icon="person-delete-outline" pack="eva"></nb-icon></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -79,7 +83,7 @@
                             <thead style="background-color: #27598F">
                                 <tr>
                                     <th>Catalogo</th>
-                                    <th></th>
+                                    <th>Acceso</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -93,13 +97,43 @@
                             </tbody>
                         </table>
                         <div style=" padding: 20px;"></div>
-                        <div class="row">
-                            <div class="col">
-                                <button nbButton status="danger" type="submit">Editar</button>
-                            </div>
-                            <div class="col text-right">
-                                <button nbButton status="primary" type="button" (click)="closeModal()">Cerrar</button>
-                            </div>
+                        <div class="row justify-content-center">
+                            <button nbButton status="primary" type="button" (click)="closeModal()">Cerrar</button>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #proyectos let-data let-ref="dialogRef">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="row">
+                <nb-card status="danger" style="width: 600px; max-height: 900px; overflow-y: auto;">
+                    <nb-card-header>Editor</nb-card-header>
+                    <nb-card-body>
+                        <table class="table dark-table ">
+                            <thead style="background-color: #27598F">
+                                <tr>
+                                    <th>Catalogo</th>
+                                    <th>Acceso</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of userProyectos">
+                                    <td>{{ item.nombre }}</td>
+                                    <td>
+                                        <nb-toggle status="success" *ngIf="item.has_access === 1" [(ngModel)]=" item.has_access" (click)="deniedAccessProyect(item)">Permitido</nb-toggle>
+                                        <nb-toggle status="success" *ngIf="item.has_access !== 1" [(ngModel)]=" item.has_access" (click)="authAccessProyect(item)">Restringido</nb-toggle>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style=" padding: 20px;"></div>
+                        <div class="row justify-content-center">
+                            <button nbButton status="primary" type="button" (click)="closeModalProyectoDialog()">Cerrar</button>
                         </div>
                     </nb-card-body>
                 </nb-card>
