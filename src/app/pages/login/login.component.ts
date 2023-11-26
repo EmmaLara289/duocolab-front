@@ -18,7 +18,8 @@ export class LoginComponent implements OnInit {
   public user: User;
   valor: any;
   key_role: any;
-
+  response: any;
+  token: any;
   constructor(
     private NbSpinnerService: NbSpinnerService,
     private _userService: UserService,
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+    this.token = (localStorage.getItem('token'));
+    console.log(this.token);
     this.key_role = (localStorage.getItem('key_role'));
     console.log(this.key_role, typeof(this.key_role));
     //this.CheckUser.menu = JSON.parse(aux);
@@ -63,8 +65,7 @@ export class LoginComponent implements OnInit {
     this._userService.login(this.user.email, this.user.password).subscribe(
       response => {
         if (response.status != 'error') {
-//          console.log(response.user);
-          
+          localStorage.setItem('token', response.token.replace(/['"]/g, ''));
           this.CheckUser.userData = response.user;
           localStorage.setItem('userData', JSON.stringify(this.CheckUser.userData));
           localStorage.setItem('key_role', JSON.stringify(response.user.key_role));
